@@ -38,18 +38,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# visual studio
-vs/packages
-vs/Eye.Api/bin
-vs/Eye.Api/obj
-vs/Eye.Common/bin
-vs/Eye.Common/obj
-vs/Eye.DataRepository/bin
-vs/Eye.DataRepository/obj
-vs/Eye.ItemManager/bin
-vs/Eye.ItemManager/obj
-
-
 
 
 
