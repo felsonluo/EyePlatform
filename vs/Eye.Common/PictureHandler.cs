@@ -6,7 +6,6 @@ CLR 版本:4.0.30319.42000
 文件描述:
 * **************************************************/
 
-using Eye.DataModel.DataModel;
 using MetadataExtractor;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Eye.PhotoManager.Utility
+namespace Eye.Common
 {
     /// <summary>
     /// 创 建 者:小莫
@@ -170,35 +169,14 @@ namespace Eye.PhotoManager.Utility
             }
         }
 
-        /// <summary>
-        /// 填充数据
-        /// </summary>
-        /// <param name="picture"></param>
-        public static void FillPictureInfo(Picture picture)
-        {
-            var info = GetInnerInfo(picture.Path);
 
-            picture.Tags1 = info.Tag1;
-            picture.Tags2 = info.Tag2;
-            picture.Description = info.Description;
-            picture.Width = int.Parse(info.Width);
-            picture.Height = int.Parse(info.Height);
-
-            DateTime time;
-            var s = DateTime.TryParse(info.TakeTime, out time);
-            if (!s)
-            {
-                s = DateTime.TryParse(info.ModifyTime, out time);
-            }
-            picture.TakeTime = time;
-        }
 
         /// <summary>
         /// 获取图片信息
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private static PictureInnerInfo GetInnerInfo(string path)
+        public static PictureInnerInfo GetInnerInfo(string path)
         {
             var info = new PictureInnerInfo();
 
@@ -243,7 +221,7 @@ namespace Eye.PhotoManager.Utility
         }
 
 
-        class PictureInnerInfo
+        public class PictureInnerInfo
         {
             public string AuthorName = "Windows XP Author";
             public string Tag1Name = "Windows XP Keywords";

@@ -18,6 +18,7 @@ using System.Configuration;
 using System.Drawing;
 using MetadataExtractor;
 using Eye.DataModel.DataModel;
+using Eye.Common;
 
 namespace Eye.PhotoManager.Utility
 {
@@ -85,6 +86,29 @@ namespace Eye.PhotoManager.Utility
             }
 
             return count;
+        }
+
+        /// <summary>
+        /// 填充数据
+        /// </summary>
+        /// <param name="picture"></param>
+        public static void FillPictureInfo(Picture picture)
+        {
+            var info = PictureHandler.GetInnerInfo(picture.Path);
+
+            picture.Tags1 = info.Tag1;
+            picture.Tags2 = info.Tag2;
+            picture.Description = info.Description;
+            picture.Width = int.Parse(info.Width);
+            picture.Height = int.Parse(info.Height);
+
+            DateTime time;
+            var s = DateTime.TryParse(info.TakeTime, out time);
+            if (!s)
+            {
+                s = DateTime.TryParse(info.ModifyTime, out time);
+            }
+            picture.TakeTime = time;
         }
 
         /// <summary>
@@ -189,7 +213,7 @@ namespace Eye.PhotoManager.Utility
             picture.Path = info.FullName;
             picture.Id = GUIDHelper.GetGuid();
 
-            PictureHandler.FillPictureInfo(picture);
+            FillPictureInfo(picture);
 
             return picture;
         }

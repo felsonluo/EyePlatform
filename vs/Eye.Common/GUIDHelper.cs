@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Eye.PhotoManager.Utility
+namespace Eye.Common
 {
     /// <summary>
     /// 创 建 者:小莫
