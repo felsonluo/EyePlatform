@@ -1,0 +1,35 @@
+<div id='featuredProduct'>
+    <mat-list-item>
+        <div id="featureCardList">
+            <carousel>
+                <slide *ngFor="let productList of featuredProductList">
+                    <div class='featuredCard'>
+                        <mat-card *ngFor="let product of productList" class="example-card">
+                            <i class='tag'></i>
+                            <div class='card-picture'>
+                                <img class='clickable' src={{product.detail.photoPath[0]}} [ngStyle]="imageService.getImageStyle(product.detail.photoPath[0], 160)" (click)="openImageDialog(product.detail.photoPath[0]) ">
+                            </div>
+                            <mat-card-content>{{product.nameKey}}</mat-card-content>
+                            <mat-card-actions>
+                                <button (click)="openModal(detail, product.id)" mat-button>VIEW</button>
+                                <mat-chip color="primary" selected>
+                                    {{product.detail.currency.symbol}} {{product.detail.price}}
+                                </mat-chip>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </slide>
+            </carousel>
+        </div>
+    </mat-list-item>
+</div>
+<ng-template #detail>
+    <div class="modal-header ">
+        <h4 class="modal-title pull-left "></h4>
+        <button type="button " class="close pull-right " aria-label="Close " (click)="modalRef.hide() ">
+            <span aria-hidden="true ">&times;</span>
+        </button>
+    </div>
+    <app-detail [id]="detailId ">
+    </app-detail>
+</ng-template>

@@ -1,0 +1,8 @@
+#carouselBlk .carousel-control.left {
+    left: 10px !important;
+}
+
+#carouselBlk .carousel-control.right {
+    right: 10px !important;
+    left: auto;
+}

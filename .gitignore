@@ -1,0 +1,56 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# visual studio
+vs/packages
+vs/Eye.Api/bin
+vs/Eye.Api/obj
+vs/Eye.Common/bin
+vs/Eye.Common/obj
+vs/Eye.DataRepository/bin
+vs/Eye.DataRepository/obj
+vs/Eye.ItemManager/bin
+vs/Eye.ItemManager/obj
+
+
+
+
+
+

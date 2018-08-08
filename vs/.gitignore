@@ -1,0 +1,20 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# visual studio
+packages
+Eye.Api/bin
+Eye.Api/obj
+Eye.Common/bin
+Eye.Common/obj
+Eye.DataRepository/bin
+Eye.DataRepository/obj
+Eye.ItemManager/bin
+Eye.ItemManager/obj
+Eye.DataModel/bin
+Eye.DataModel/obj
+
+
+
+
+
+

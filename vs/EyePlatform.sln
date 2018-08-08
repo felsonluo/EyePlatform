@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eye.PhotoManager", "Eye.ItemManager\Eye.PhotoManager.csproj", "{082918A6-932E-430D-830E-784DAB22D8FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eye.DataModel", "Eye.DataModel\Eye.DataModel.csproj", "{F49797BF-BBC6-46CB-BDF3-D59E6C37D55B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eye.Api", "Eye.Api\Eye.Api.csproj", "{47A6C5A2-02EF-4E0C-BA78-13956E4E16AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eye.DataRepository", "Eye.DataRepository\Eye.DataRepository.csproj", "{54F106F3-2101-48B0-B167-3151B889BA21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eye.Common", "Eye.Common\Eye.Common.csproj", "{F7388103-9E56-4C23-9ADB-6EB1F5D64886}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{082918A6-932E-430D-830E-784DAB22D8FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{082918A6-932E-430D-830E-784DAB22D8FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{082918A6-932E-430D-830E-784DAB22D8FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{082918A6-932E-430D-830E-784DAB22D8FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F49797BF-BBC6-46CB-BDF3-D59E6C37D55B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F49797BF-BBC6-46CB-BDF3-D59E6C37D55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F49797BF-BBC6-46CB-BDF3-D59E6C37D55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F49797BF-BBC6-46CB-BDF3-D59E6C37D55B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47A6C5A2-02EF-4E0C-BA78-13956E4E16AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47A6C5A2-02EF-4E0C-BA78-13956E4E16AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47A6C5A2-02EF-4E0C-BA78-13956E4E16AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47A6C5A2-02EF-4E0C-BA78-13956E4E16AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54F106F3-2101-48B0-B167-3151B889BA21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54F106F3-2101-48B0-B167-3151B889BA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54F106F3-2101-48B0-B167-3151B889BA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54F106F3-2101-48B0-B167-3151B889BA21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7388103-9E56-4C23-9ADB-6EB1F5D64886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7388103-9E56-4C23-9ADB-6EB1F5D64886}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7388103-9E56-4C23-9ADB-6EB1F5D64886}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7388103-9E56-4C23-9ADB-6EB1F5D64886}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
