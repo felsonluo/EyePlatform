@@ -1,70 +1,73 @@
-import { Category } from "./category.model";
-import { Currency } from "./currency.model";
-import { Document } from "./document.model";
+import { CategoryModel } from "./category.model";
+import { CurrencyModel } from "./currency.model";
+import { DocumentModel } from "./document.model";
+import { PictureModel } from "./picture.model";
 
 //具体商品
-export class Item {
-
-    //商品名称
-    ItemName?: string;
-
-    //别名
-    ItemAliasName?: string;
-
-    //商品代码
-    Code?: string;
+export class ItemModel {
 
     //id
-    Id?: string;
+    EId?: string;
+
+    //商品名称
+    EName?: string;
+
+    //别名
+    EDetailName?: string;
+
+    //商品代码
+    ECode?: string;
 
     //描述
-    Description?: string;
-
-    //是否是新品
-    IsNew?: boolean;
-
-    //是否显示
-    Show?: boolean;
-
-    //商品价格
-    Price?: number;
-
-    //图片路径
-    Path?: string[];
-
-    //备注
-    Comments?: string;
-
-    //是否作为有特征的产品
-    Featured?: boolean;
-
-    //折扣
-    Discount?: number;
-
-    //库存
-    Stock?: number;
-
-    //价格小数位
-    Precise?: number;
+    EDescription?: string;
 
     //特性
-    Features?: string;
+    EFeatures?: string;
 
-    //币别Id
-    CurrencyId?: string;
-
-    //类别ID
-    CategoryId?: string;
+    //是否是新品
+    EIsNew?: boolean;
 
     //是否显示
-    Active?: boolean;
+    EShow?: boolean;
+
+    //商品价格
+    EPrice?: number;
+
+    //折扣
+    EDiscount?: number;
+
+    //库存
+    EStock?: number;
+
+    //价格小数位
+    EPrecise?: number;
+
+    //备注
+    EComments?: string;
+
+    //是否作为有特征的产品
+    EFeatured?: boolean;
+
+    //币别Id
+    ECurrencyId?: string;
+
+    //类别ID
+    ECategoryId?: string;
+
+    //是否显示
+    EActive?: boolean;
+
+
 
     //价格币别
-    Currency?: Currency;
+    ECurrency?: CurrencyModel;
 
     //类别
-    Category?: Category;
+    ECategory?: CategoryModel;
 
-    
-    Documents?: Document[];
+    //对应的图片
+    EPictures?: PictureModel[];
+
+    //对应的文档
+    EDocuments?: DocumentModel[];
 }

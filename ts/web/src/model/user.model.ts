@@ -1,41 +1,41 @@
 import { KeyValuePairs } from "../entity/keyvaluepairs";
 
 //商家
-export class User {
+export class OwnerModel {
 
     //商品名称
-    name?: string;
+    EName?: string;
 
     //id
-    id?: string;
+    EId?: string;
 
     //网站样式
-    theme?: string;
+    ETheme?: string;
 
     //地址
-    address?: string;
+    EAddress?: string;
 
     //邮箱
-    email?: string;
+    EEmail?: string;
 
     //电话
-    telephone?: string;
+    ETelephone?: string;
 
     //传真
-    fax?: string;
+    EFax?: string;
 
     //网址
-    website?: string;
+    EWebsite?: string;
 
     //
-    wechatId?: string;
+    EWechatId?: string;
 
     //
-    qq?: string;
+    EQQ?: string;
 
     //
-    openHours?: KeyValuePairs[];
+    EOpenHours?: KeyValuePairs[];
 
     //是否显示
-    active?: boolean;
+    EIsActive?: boolean;
 }

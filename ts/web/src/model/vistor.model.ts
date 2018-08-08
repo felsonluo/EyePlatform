@@ -1,18 +1,17 @@
 //客户
 export class Visitor {
 
-    name?: string;
+    EName?: string;
 
-    email?: string;
+    EEmail?: string;
 
-    telephone?: string;
+    ETelephone?: string;
 
-    wechatId?: string;
+    EWechatId?: string;
 
-    qq?: string;
+    EQQ?: string;
 
-    ip?: string;
-
+    EIP?: string;
     //是否显示
-    active?: boolean;
+    EIsActive?: boolean;
 }

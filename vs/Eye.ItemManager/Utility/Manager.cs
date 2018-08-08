@@ -64,7 +64,7 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
-        public static int ReducePictures(List<Picture> pictures, string targetPath, int width)
+        public static int ReducePictures(List<PictureModel> pictures, string targetPath, int width)
         {
             var count = 0;
 
@@ -74,14 +74,14 @@ namespace Eye.PhotoManager.Utility
             {
                 var picture = pictures[i];
 
-                var target = targetPath + "\\" + picture.Name;
+                var target = targetPath + "\\" + picture.EName;
 
-                var success = PictureHandler.GetReducedImage(picture.Path, width, target);
+                var success = PictureHandler.GetReducedImage(picture.EPath, width, target);
 
                 if (success)
                 {
                     count++;
-                    picture.SnapshotPath = target;
+                    picture.ESnapshotPath = target;
                 }
             }
 
@@ -92,23 +92,24 @@ namespace Eye.PhotoManager.Utility
         /// 填充数据
         /// </summary>
         /// <param name="picture"></param>
-        public static void FillPictureInfo(Picture picture)
+        public static void FillPictureInfo(PictureModel picture)
         {
-            var info = PictureHandler.GetInnerInfo(picture.Path);
+            var info = PictureHandler.GetInnerInfo(picture.EPath);
 
-            picture.Tags1 = info.Tag1;
-            picture.Tags2 = info.Tag2;
-            picture.Description = info.Description;
-            picture.Width = int.Parse(info.Width);
-            picture.Height = int.Parse(info.Height);
+            picture.ETags1 = info.Tag1;
+            picture.ETags2 = info.Tag2;
+            picture.EDescription = info.Description;
+            picture.EWidth = int.Parse(info.Width);
+            picture.EHeight = int.Parse(info.Height);
 
             DateTime time;
-            var s = DateTime.TryParse(info.TakeTime, out time);
-            if (!s)
-            {
-                s = DateTime.TryParse(info.ModifyTime, out time);
-            }
-            picture.TakeTime = time;
+            var s = DateTime.TryParseExact(info.TakeTime,
+                    "yyyy:MM:dd HH:mm:ss",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None,
+                    out time);
+
+            picture.ETakeTime = time;
         }
 
         /// <summary>
@@ -116,7 +117,7 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
-        public static int MovePictures(List<Picture> pictures, string path)
+        public static int MovePictures(List<PictureModel> pictures, string path)
         {
             var count = 0;
 
@@ -124,13 +125,15 @@ namespace Eye.PhotoManager.Utility
 
             for (var i = 0; i < pictures.Count; i++)
             {
-                var newPath = path + "\\" + pictures[i].Name;
+                var dirPath = CreateCategoryFolder(path, pictures[i].ETakeTime);
+
+                var newPath = dirPath + "\\" + pictures[i].EName;
 
                 try
                 {
-                    //先删主体
-                    if (File.Exists(pictures[i].Path))
-                        File.Move(pictures[i].Path, newPath);
+                    //
+                    if (File.Exists(pictures[i].EPath))
+                        File.Move(pictures[i].EPath, newPath);
                     count++;
                 }
                 catch (Exception)
@@ -143,10 +146,34 @@ namespace Eye.PhotoManager.Utility
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private static string CreateCategoryFolder(string path, DateTime date)
+        {
+            date = date.IsValid() ? date : DateTime.Now;
+
+            var yearPath = path + "\\" + date.Year;
+            var monthPath = yearPath + "\\" + date.ToString("MM");
+
+            if (!System.IO.Directory.Exists(yearPath))
+            {
+                System.IO.Directory.CreateDirectory(yearPath);
+            }
+
+            if (!System.IO.Directory.Exists(monthPath))
+            {
+                System.IO.Directory.CreateDirectory(monthPath);
+            }
+
+            return monthPath;
+        }
+
+        /// <summary>
         /// 删除图片
         /// </summary>
         /// <param name="filePath"></param>
-        public static int DeletePictures(List<Picture> pictures)
+        public static int DeletePictures(List<PictureModel> pictures)
         {
             var count = 0;
 
@@ -157,12 +184,12 @@ namespace Eye.PhotoManager.Utility
                 try
                 {
                     //先删主体
-                    if (File.Exists(pictures[i].Path))
-                        File.Delete(pictures[i].Path);
+                    if (File.Exists(pictures[i].EPath))
+                        File.Delete(pictures[i].EPath);
 
                     //再删快照
-                    if (File.Exists(pictures[i].SnapshotPath))
-                        File.Delete(pictures[i].SnapshotPath);
+                    if (File.Exists(pictures[i].ESnapshotPath))
+                        File.Delete(pictures[i].ESnapshotPath);
 
                     count++;
                 }
@@ -180,9 +207,9 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="directory"></param>
         /// <returns></returns>
-        public static List<Picture> GetPictureList(string directory)
+        public static List<PictureModel> GetPictureList(string directory)
         {
-            var list = new List<Picture>();
+            var list = new List<PictureModel>();
 
             var files = GetFiles(directory);
 
@@ -202,18 +229,20 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private static Picture GetPicture(FileInfo info)
+        private static PictureModel GetPicture(FileInfo info)
         {
 
-            var picture = new Picture();
+            var picture = new PictureModel();
 
-            picture.Description = string.Empty;
-            picture.Size = Math.Ceiling(info.Length / 1024.0);
-            picture.Name = info.Name;
-            picture.Path = info.FullName;
-            picture.Id = GUIDHelper.GetGuid();
+            picture.EDescription = string.Empty;
+            picture.ESize = Math.Ceiling(info.Length / 1024.0);
+            picture.EName = info.Name;
+            picture.EPath = info.FullName;
+            picture.EId = GUIDHelper.GetGuid();
 
             FillPictureInfo(picture);
+
+            picture.ETakeTime = !picture.ETakeTime.IsValid() ? info.LastWriteTime : picture.ETakeTime;
 
             return picture;
         }

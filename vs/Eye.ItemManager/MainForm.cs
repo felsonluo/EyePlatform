@@ -1,4 +1,5 @@
 ﻿using ComponentFactory.Krypton.Toolkit;
+using Eye.Common;
 using Eye.DataModel.DataModel;
 using Eye.PhotoManager.Utility;
 using System;
@@ -72,7 +73,7 @@ namespace Eye.PhotoManager
         /// 讲数据展示到表格
         /// </summary>
         /// <param name="pictures"></param>
-        private void showPictures2Grid(List<Picture> pictures)
+        private void showPictures2Grid(List<PictureModel> pictures)
         {
             this.dataGridView1.Rows.Clear();
 
@@ -96,19 +97,19 @@ namespace Eye.PhotoManager
         /// <param name="row"></param>
         /// <param name="picture"></param>
         /// <returns></returns>
-        private DataGridViewRow FillRowWithPicture(DataGridViewRow row, Picture picture)
+        private DataGridViewRow FillRowWithPicture(DataGridViewRow row, PictureModel picture)
         {
-            row.Cells[nameof(picture.Checked)].Value = false;
-            row.Cells[nameof(picture.Id)].Value = picture.Id;
-            row.Cells[nameof(picture.Name)].Value = picture.Name;
-            row.Cells[nameof(picture.Path)].Value = picture.Path;
-            row.Cells[nameof(picture.SnapshotPath)].Value = picture.SnapshotPath;
-            row.Cells[nameof(picture.TakeTime)].Value = picture.TakeTime;
-            row.Cells[nameof(picture.TakeLocation)].Value = picture.TakeLocation;
-            row.Cells[nameof(picture.Size)].Value = picture.Size;
-            row.Cells[nameof(picture.Tags1)].Value = picture.Tags1;
-            row.Cells[nameof(picture.Tags2)].Value = picture.Tags2;
-            row.Cells[nameof(picture.Description)].Value = picture.Description;
+            row.Cells[nameof(picture.EChecked)].Value = false;
+            row.Cells[nameof(picture.EId)].Value = picture.EId;
+            row.Cells[nameof(picture.EName)].Value = picture.EName;
+            row.Cells[nameof(picture.EPath)].Value = picture.EPath;
+            row.Cells[nameof(picture.ESnapshotPath)].Value = picture.ESnapshotPath;
+            row.Cells[nameof(picture.ETakeTime)].Value = picture.ETakeTime;
+            row.Cells[nameof(picture.ETakeLocation)].Value = picture.ETakeLocation;
+            row.Cells[nameof(picture.ESize)].Value = picture.ESize;
+            row.Cells[nameof(picture.ETags1)].Value = picture.ETags1;
+            row.Cells[nameof(picture.ETags2)].Value = picture.ETags2;
+            row.Cells[nameof(picture.EDescription)].Value = picture.EDescription;
 
             return row;
         }
@@ -118,22 +119,22 @@ namespace Eye.PhotoManager
         /// </summary>
         /// <param name="row"></param>
         /// <returns></returns>
-        private Picture GetPicture(DataGridViewRow row)
+        private PictureModel GetPicture(DataGridViewRow row)
         {
-            var picture = new Picture();
+            var picture = new PictureModel();
 
-            picture.Checked = bool.Parse(row.Cells[nameof(picture.Checked)].Value?.ToString());
-            picture.Id = row.Cells[nameof(picture.Id)].Value?.ToString();
-            picture.Name = row.Cells[nameof(picture.Name)].Value?.ToString();
-            picture.Path = row.Cells[nameof(picture.Path)].Value?.ToString();
-            picture.SnapshotPath = row.Cells[nameof(picture.SnapshotPath)].Value?.ToString();
-            picture.TakeTime = DateTime.Parse(row.Cells[nameof(picture.TakeTime)].Value?.ToString());
-            picture.TakeLocation = row.Cells[nameof(picture.TakeLocation)].Value?.ToString();
-            picture.Size = double.Parse(row.Cells[nameof(picture.Size)].Value?.ToString());
-            picture.Tags1 = row.Cells[nameof(picture.Tags1)].Value?.ToString();
-            picture.Tags2 = row.Cells[nameof(picture.Tags2)].Value?.ToString();
-            picture.Description = row.Cells[nameof(picture.Description)].Value?.ToString();
-            picture.Row = row;
+            picture.EChecked = bool.Parse(row.Cells[nameof(picture.EChecked)].Value?.ToString());
+            picture.EId = row.Cells[nameof(picture.EId)].Value?.ToString();
+            picture.EName = row.Cells[nameof(picture.EName)].Value?.ToString();
+            picture.EPath = row.Cells[nameof(picture.EPath)].Value?.ToString();
+            picture.ESnapshotPath = row.Cells[nameof(picture.ESnapshotPath)].Value?.ToString();
+            picture.ETakeTime = DateTime.Parse(row.Cells[nameof(picture.ETakeTime)].Value?.ToString());
+            picture.ETakeLocation = row.Cells[nameof(picture.ETakeLocation)].Value?.ToString();
+            picture.ESize = double.Parse(row.Cells[nameof(picture.ESize)].Value?.ToString());
+            picture.ETags1 = row.Cells[nameof(picture.ETags1)].Value?.ToString();
+            picture.ETags2 = row.Cells[nameof(picture.ETags2)].Value?.ToString();
+            picture.EDescription = row.Cells[nameof(picture.EDescription)].Value?.ToString();
+            picture.ERow = row;
 
             return picture;
         }
@@ -142,15 +143,15 @@ namespace Eye.PhotoManager
         /// 
         /// </summary>
         /// <param name="picture"></param>
-        private void FillPicture2Detail(Picture picture)
+        private void FillPicture2Detail(PictureModel picture)
         {
-            this.pictureBox2.ImageLocation = string.IsNullOrWhiteSpace(picture.SnapshotPath) ? picture.Path : picture.SnapshotPath;
-            this.txtName.Text = picture.Name;
-            this.txtDate.Text = picture.TakeTime.ToString("yyyy-MM-dd HH:mm:ss");
-            this.txtLocation.Text = picture.TakeLocation;
-            this.txtTags1.Text = picture.Tags1;
-            this.txtTags2.Text = picture.Tags2;
-            this.txtDescription.Text = picture.Description;
+            this.pictureBox2.ImageLocation = string.IsNullOrWhiteSpace(picture.ESnapshotPath) ? picture.EPath : picture.ESnapshotPath;
+            this.txtName.Text = picture.EName;
+            this.txtDate.Text = picture.ETakeTime.IsValid() ? picture.ETakeTime.ToString("yyyy-MM-dd HH:mm:ss") : "";
+            this.txtLocation.Text = picture.ETakeLocation;
+            this.txtTags1.Text = picture.ETags1;
+            this.txtTags2.Text = picture.ETags2;
+            this.txtDescription.Text = picture.EDescription;
 
         }
 
@@ -179,7 +180,7 @@ namespace Eye.PhotoManager
 
             for (var i = 0; i < this.dataGridView1.Rows.Count; i++)
             {
-                if (bool.Parse(this.dataGridView1.Rows[i].Cells["Checked"].Value.ToString()))
+                if (bool.Parse(this.dataGridView1.Rows[i].Cells["EChecked"].Value.ToString()))
                     list.Add(this.dataGridView1.Rows[i]);
             }
 
@@ -210,7 +211,7 @@ namespace Eye.PhotoManager
 
             for (var i = 0; i < this.dataGridView1.Rows.Count; i++)
             {
-                this.dataGridView1.Rows[i].Cells["Checked"].Value = isChecked;
+                this.dataGridView1.Rows[i].Cells["EChecked"].Value = isChecked;
             }
         }
 
@@ -235,13 +236,13 @@ namespace Eye.PhotoManager
         /// <param name="row"></param>
         private void FillRowWithEditData(DataGridViewRow row)
         {
-            var picture = new Picture();
-            row.Cells[nameof(picture.Name)].Value = this.txtName.Text;
-            row.Cells[nameof(picture.TakeTime)].Value = this.txtDate.Text;
-            row.Cells[nameof(picture.TakeLocation)].Value = this.txtLocation.Text;
-            row.Cells[nameof(picture.Tags1)].Value = this.txtTags1.Text;
-            row.Cells[nameof(picture.Tags2)].Value = this.txtTags2.Text;
-            row.Cells[nameof(picture.Description)].Value = this.txtDescription.Text;
+            var picture = new PictureModel();
+            row.Cells[nameof(picture.EName)].Value = this.txtName.Text;
+            row.Cells[nameof(picture.ETakeTime)].Value = this.txtDate.Text;
+            row.Cells[nameof(picture.ETakeLocation)].Value = this.txtLocation.Text;
+            row.Cells[nameof(picture.ETags1)].Value = this.txtTags1.Text;
+            row.Cells[nameof(picture.ETags2)].Value = this.txtTags2.Text;
+            row.Cells[nameof(picture.EDescription)].Value = this.txtDescription.Text;
         }
 
         /// <summary>
@@ -287,9 +288,9 @@ namespace Eye.PhotoManager
         /// </summary>
         /// <param name="rows"></param>
         /// <returns></returns>
-        private List<Picture> GetPictures(List<DataGridViewRow> rows)
+        private List<PictureModel> GetPictures(List<DataGridViewRow> rows)
         {
-            var pictures = new List<Picture>();
+            var pictures = new List<PictureModel>();
 
             if (rows != null && rows.Any())
             {
@@ -306,7 +307,7 @@ namespace Eye.PhotoManager
         /// 获取选中的图片
         /// </summary>
         /// <returns></returns>
-        private List<Picture> GetCheckedPictures()
+        private List<PictureModel> GetCheckedPictures()
         {
             var selectedRows = this.GetCheckedRows();
 
@@ -332,7 +333,7 @@ namespace Eye.PhotoManager
             {
                 var picture = pictures[i];
 
-                picture.Row.Cells[nameof(picture.SnapshotPath)].Value = picture.SnapshotPath;
+                picture.ERow.Cells[nameof(picture.ESnapshotPath)].Value = picture.ESnapshotPath;
 
             }
 

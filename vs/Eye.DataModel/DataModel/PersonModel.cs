@@ -21,7 +21,7 @@ namespace Eye.DataModel.DataModel
     /// 描   述:功能描述
 	///
     /// </summary>
-    public class Person
+    public class PersonModel
     {
 
         #region 全局变量

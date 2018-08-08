@@ -21,86 +21,86 @@ namespace Eye.DataModel.DataModel
     /// 描   述:功能描述
 	///
     /// </summary>
-    public class Picture
+    public class PictureModel
     {
 
         #region 全局变量
         /// <summary>
         /// 
         /// </summary>
-        public string Id { get; set; }
+        public string EId { get; set; }
 
         /// <summary>
         /// 是否选中
         /// </summary>
-        public bool Checked { get; set; }
+        public bool EChecked { get; set; }
 
         /// <summary>
         /// 文件名
         /// </summary>
-        public string Name { get; set; }
+        public string EName { get; set; }
 
         /// <summary>
         /// 图片路径
         /// </summary>
-        public string Path { get; set; }
+        public string EPath { get; set; }
 
         /// <summary>
         /// 压缩后图片的路径
         /// </summary>
-        public string SnapshotPath { get; set; }
+        public string ESnapshotPath { get; set; }
 
         /// <summary>
         /// 拍摄日期
         /// </summary>
-        public DateTime TakeTime { get; set; }
+        public DateTime ETakeTime { get; set; }
 
 
         /// <summary>
         /// 拍摄者
         /// </summary>
-        public string Author { get; set; }
+        public string EAuthor { get; set; }
 
         /// <summary>
         /// 拍摄地点
         /// </summary>
-        public string TakeLocation { get; set; }
+        public string ETakeLocation { get; set; }
 
         /// <summary>
         /// 图片大小
         /// </summary>
-        public double Size { get; set; }
+        public double ESize { get; set; }
 
         /// <summary>
         /// 宽度
         /// </summary>
-        public int Width { get; set; }
+        public int EWidth { get; set; }
 
         /// <summary>
         /// 高度
         /// </summary>
-        public int Height { get; set; }
+        public int EHeight { get; set; }
 
 
         /// <summary>
         /// 标签1（里面有哪些人物）
         /// </summary>
-        public string Tags1 { get; set; }
+        public string ETags1 { get; set; }
 
 
         /// <summary>
         /// 标签2（属于哪个相册）
         /// </summary>
-        public string Tags2 { get; set; }
+        public string ETags2 { get; set; }
 
 
         /// <summary>
         /// 照片描述
         /// </summary>
-        public string Description { get; set; }
+        public string EDescription { get; set; }
 
 
-        public DataGridViewRow Row { get; set; }
+        public DataGridViewRow ERow { get; set; }
 
 
 

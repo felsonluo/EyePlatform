@@ -1,25 +1,25 @@
-import { Item } from "./item.model";
+import { ItemModel } from "./item.model";
 
-export class Category {
+export class CategoryModel {
 
     //类别ID
-    Id?: string;
+    EId?: string;
 
     //名称键
-    CategoryName?: string;
+    ECategoryName?: string;
 
     //父属性id
-    ParentId?: string;
+    EParentId?: string;
 
     //展示排序
-    Index?: number;
+    EIndex?: number;
 
     //是否显示
-    IsActive?: boolean;
+    EIsActive?: boolean;
 
     //子类别
-    SubCategories?: Category[];
+    ESubCategories?: CategoryModel[];
 
     //对应的项目
-    Items?: Item[];
+    EItems?: ItemModel[];
 }
