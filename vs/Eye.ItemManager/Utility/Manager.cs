@@ -84,7 +84,7 @@ namespace Eye.PhotoManager.Utility
                     picture.ESnapshotPath = target;
                 }
             }
-             
+
             return count;
         }
 
@@ -92,9 +92,11 @@ namespace Eye.PhotoManager.Utility
         /// 填充数据
         /// </summary>
         /// <param name="picture"></param>
-        public static void FillPictureInfo(PictureModel picture)
+        public static bool FillPictureInfo(PictureModel picture)
         {
             var info = PictureHandler.GetInnerInfo(picture.EPath);
+
+            if (info == null) return false;
 
             picture.ETags1 = info.Tag1;
             picture.ETags2 = info.Tag2;
@@ -110,6 +112,36 @@ namespace Eye.PhotoManager.Utility
                     out time);
 
             picture.ETakeTime = time;
+
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="picture"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool MovePicture(PictureModel picture, string path)
+        {
+
+            var dirPath = CreateCategoryFolder(path, picture.ETakeTime);
+
+            var newPath = dirPath + "\\" + picture.EName;
+
+            try
+            {
+                if (File.Exists(picture.EPath))
+                {
+                    File.Copy(picture.EPath, newPath, true);
+                    File.Delete(picture.EPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -125,21 +157,9 @@ namespace Eye.PhotoManager.Utility
 
             for (var i = 0; i < pictures.Count; i++)
             {
-                var dirPath = CreateCategoryFolder(path, pictures[i].ETakeTime);
+                var result = MovePicture(pictures[i], path);
 
-                var newPath = dirPath + "\\" + pictures[i].EName;
-
-                try
-                {
-                    //
-                    if (File.Exists(pictures[i].EPath))
-                        File.Move(pictures[i].EPath, newPath);
-                    count++;
-                }
-                catch (Exception)
-                {
-                }
-
+                if (result) count++;
             }
 
             return count;
@@ -207,7 +227,7 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="directory"></param>
         /// <returns></returns>
-        public static List<PictureModel> GetPictureList(string directory)
+        public static List<PictureModel> GetPictureList(string directory, int page = 0)
         {
             var list = new List<PictureModel>();
 
@@ -218,6 +238,8 @@ namespace Eye.PhotoManager.Utility
                 var picture = GetPicture(files[i]);
 
                 list.Add(picture);
+
+                if (list.Count == page) return list;
             }
 
             return list;
@@ -240,7 +262,9 @@ namespace Eye.PhotoManager.Utility
             picture.EPath = info.FullName;
             picture.EId = GUIDHelper.GetGuid();
 
-            FillPictureInfo(picture);
+            var result = FillPictureInfo(picture);
+
+            if (!result) File.Delete(info.FullName);
 
             picture.ETakeTime = !picture.ETakeTime.IsValid() ? info.LastWriteTime : picture.ETakeTime;
 

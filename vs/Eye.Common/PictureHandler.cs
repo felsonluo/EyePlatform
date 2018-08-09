@@ -178,38 +178,48 @@ namespace Eye.Common
         /// <returns></returns>
         public static PictureInnerInfo GetInnerInfo(string path)
         {
-            var info = new PictureInnerInfo();
 
-            var data = ImageMetadataReader.ReadMetadata(path);
-
-            for (var i = 0; i < data.Count; i++)
+            try
             {
-                if (data[i].Tags == null || data[i].TagCount == 0) continue;
+                var info = new PictureInnerInfo();
 
-                for (var j = 0; j < data[i].Tags.Count; j++)
+                var data = ImageMetadataReader.ReadMetadata(path);
+
+                for (var i = 0; i < data.Count; i++)
                 {
-                    var tag = data[i].Tags[j];
+                    if (data[i].Tags == null || data[i].TagCount == 0) continue;
 
-                    if (!tag.HasName) continue;
+                    for (var j = 0; j < data[i].Tags.Count; j++)
+                    {
+                        var tag = data[i].Tags[j];
 
-                    if (tag.Name == info.AuthorName)
-                        info.Author = tag.Description;
-                    else if (tag.Name == info.Tag1Name)
-                        info.Tag1 = tag.Description;
-                    else if (tag.Name == info.Tag2Name)
-                        info.Tag2 = tag.Description;
-                    else if (tag.Name == info.DescriptionName)
-                        info.Description = tag.Description;
-                    else if (tag.Name == info.HeightName)
-                        info.Height = tag.Description.Replace("pixels", "").Trim();
-                    else if (tag.Name == info.WidthName)
-                        info.Width = tag.Description.Replace("pixels", "").Trim();
-                    else if (tag.Name == info.TakeTimeName)
-                        info.TakeTime = tag.Description;
+                        if (!tag.HasName) continue;
+
+                        if (tag.Name == info.AuthorName)
+                            info.Author = tag.Description;
+                        else if (tag.Name == info.Tag1Name)
+                            info.Tag1 = tag.Description;
+                        else if (tag.Name == info.Tag2Name)
+                            info.Tag2 = tag.Description;
+                        else if (tag.Name == info.DescriptionName)
+                            info.Description = tag.Description;
+                        else if (tag.Name == info.HeightName)
+                            info.Height = tag.Description.Replace("pixels", "").Trim();
+                        else if (tag.Name == info.WidthName)
+                            info.Width = tag.Description.Replace("pixels", "").Trim();
+                        else if (tag.Name == info.TakeTimeName)
+                            info.TakeTime = tag.Description;
+                    }
                 }
+
+                return info;
+            }
+            catch (Exception)
+            {
+
             }
 
-            return info;
+            return null;
         }
 
 

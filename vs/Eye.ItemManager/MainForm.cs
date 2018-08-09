@@ -26,8 +26,13 @@ namespace Eye.PhotoManager
         private static readonly string _mainPath = "photo";
         private static readonly int FixWidth = 160;
 
+
+        private bool loadSuccess = false;
+
         //当前编辑的行
         private int EditIndex = -1;
+
+        private System.Timers.Timer timer1 = new System.Timers.Timer();
 
         public MainForm()
         {
@@ -41,33 +46,65 @@ namespace Eye.PhotoManager
 
             if (folder.Length == 0 || !Directory.Exists(folder)) return;
 
-            var thread = new Thread(new ParameterizedThreadStart(LoadPictures));
+
+            InitLoadPictureWorker(folder);
+        }
+
+
+        /// <summary>
+        /// 加载图片
+        /// </summary>
+        private void InitLoadPictureWorker(string folder)
+        {
+            this.checkBox1.Checked = false;
+
+            this.timer1.Enabled = false;
 
             this.button3.Enabled = false;
 
-            thread.Start(folder);
+            this.loadSuccess = false;
+
+            this.backgroundWorker2 = new BackgroundWorker(); // 实例化后台对象
+
+            backgroundWorker2.WorkerReportsProgress = true; // 设置可以通告进度
+            backgroundWorker2.WorkerSupportsCancellation = true; // 设置可以取消
+
+            backgroundWorker2.DoWork += new DoWorkEventHandler(LoadPictures);
+            backgroundWorker2.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadPicturesCompleted);
+
+            backgroundWorker2.RunWorkerAsync(folder);
+
         }
 
         /// <summary>
         /// 加载图片
         /// </summary>
-        private void LoadPictures(object obj)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadPictures(object sender, DoWorkEventArgs e)
         {
+            var folder = e.Argument as string;
 
-            var foler = obj.ToString();
+            var pictures = Manager.GetPictureList(folder, 2000);
 
-            Action<string> action = (data) =>
+            Action<List<PictureModel>> action = (data) =>
             {
-                var pictures = Manager.GetPictureList(data);
 
-                this.showPictures2Grid(pictures);
+                this.showPictures2Grid(data);
 
                 this.button3.Enabled = true;
+
+                this.loadSuccess = true;
             };
 
-            this.Invoke(action, foler);
+            this.Invoke(action, pictures);
+        }
+        void LoadPicturesCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
 
         }
+
 
         /// <summary>
         /// 讲数据展示到表格
@@ -360,21 +397,130 @@ namespace Eye.PhotoManager
         {
             var pictures = this.GetCheckedPictures();
 
-            if (pictures.Count == 0) return;
-
             var mess = MessageBoxButtons.OKCancel;
             DialogResult dr = MessageBox.Show("确定要转移" + pictures.Count + "条记录吗?", "提示", mess);
-            if (dr == DialogResult.OK)
+            if (dr != DialogResult.OK) return;
+
+            this.ArrangeOnce();
+        }
+
+
+        /// <summary>
+        /// 单次整理
+        /// </summary>
+        public void ArrangeOnce(bool auto = false)
+        {
+            this.timer1.Enabled = false;
+
+            var pictures = this.GetCheckedPictures();
+
+            if (pictures.Count == 0) return;
+
+            this.backgroundWorker1 = new BackgroundWorker(); // 实例化后台对象
+
+            backgroundWorker1.WorkerReportsProgress = true; // 设置可以通告进度
+            backgroundWorker1.WorkerSupportsCancellation = true; // 设置可以取消
+
+            backgroundWorker1.DoWork += new DoWorkEventHandler(ArrangePicture);
+            backgroundWorker1.ProgressChanged += new ProgressChangedEventHandler(UpdateProgress);
+            if (auto)
             {
-                var path = this.textBox2.Text + "\\" + _mainPath;
+                backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CompletedWorkAndStart);
+            }
+            else
+            {
+                backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CompletedWork);
+            }
 
-                var count = Manager.MovePictures(pictures, path);
+            backgroundWorker1.RunWorkerAsync(pictures);
+        }
 
-                MessageBox.Show("转移了" + count + "条记录!");
+        /// <summary>
+        /// 整理图片
+        /// </summary>
+        /// <param name="pictures"></param>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        private void ArrangePicture(object sender, DoWorkEventArgs e)
+        {
 
-                this.button3_Click(sender, e);
+            var pictures = e.Argument as List<PictureModel>;
+
+            var path = this.textBox2.Text + "\\" + _mainPath;
+
+            var count = 0;
+
+            for (var i = 0; i < pictures.Count; i++)
+            {
+                try
+                {
+                    var result = Manager.MovePicture(pictures[i], path);
+
+                    if (result)
+                    {
+                        var value = Convert.ToInt32(++count * 1.0 / pictures.Count * 100.00);
+
+                        this.backgroundWorker1.ReportProgress(value);
+                    }
+                }
+                catch (Exception)
+                {
+
+                    continue;
+                }
+
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        protected void SetProgress(int value)
+        {
+            this.Invoke(new Action(() =>
+            {
+                progressBar1.Value = value;
+            }));
+        }
+
+        void UpdateProgress(object sender, ProgressChangedEventArgs e)
+        {
+            SetProgress(e.ProgressPercentage);
+        }
+
+        void CompletedWork(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                MessageBox.Show("转移出现错误");
+            }
+            else if (e.Cancelled)
+            {
+                MessageBox.Show("取消");
+            }
+            else
+            {
+                MessageBox.Show("完成!");
+            }
+
+            this.button3_Click(sender, e);
+        }
+
+        void CompletedWorkAndStart(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button3_Click(sender, e);
+
+            this.timer1.Interval = 300;
+            this.timer1.Enabled = true;
+            this.timer1.Elapsed += new System.Timers.ElapsedEventHandler(timer1_Elapsed);
+        }
+
+        void timer1_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.checkBox1.Checked = true;
+            this.ArrangeOnce();
+        }
+
 
         private void button9_Click(object sender, EventArgs e)
         {
@@ -408,6 +554,19 @@ namespace Eye.PhotoManager
 
                 box.Text = string.Join(",", tagList);
             }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            this.AutoArrange();
+        }
+
+        private void AutoArrange()
+        {
+
+            this.checkBox1.Checked = true;
+
+            this.ArrangeOnce(true);
         }
     }
 }
