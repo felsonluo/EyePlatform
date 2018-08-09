@@ -84,7 +84,7 @@ namespace Eye.PhotoManager.Utility
                     picture.ESnapshotPath = target;
                 }
             }
-
+             
             return count;
         }
 
