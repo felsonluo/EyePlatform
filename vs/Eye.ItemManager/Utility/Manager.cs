@@ -60,7 +60,7 @@ namespace Eye.PhotoManager.Utility
         #region 公开方法
 
         /// <summary>
-        /// 
+        /// 压缩图片
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
