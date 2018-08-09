@@ -1,6 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # visual studio
+.vs
 Eye.Api/bin
 Eye.Api/obj
 Eye.Common/bin
