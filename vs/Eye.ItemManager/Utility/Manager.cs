@@ -35,6 +35,17 @@ namespace Eye.PhotoManager.Utility
         private readonly static string[] IncludeFiles = new string[] { ".jpg", ".jpeg", ".png" };
 
 
+        private static bool DeleteAfterCopy
+        {
+            get
+            {
+                var setting = ConfigurationManager.AppSettings["deleteAfterCopy"];
+
+                return string.IsNullOrWhiteSpace(setting) ? false : bool.Parse(setting);
+            }
+        }
+
+
         public static List<string> Tags1
         {
             get
@@ -133,8 +144,9 @@ namespace Eye.PhotoManager.Utility
             {
                 if (File.Exists(picture.EPath))
                 {
-                    File.Copy(picture.EPath, newPath, true);
-                    File.Delete(picture.EPath);
+                    File.Copy(picture.EPath, newPath, false);
+
+                    if (DeleteAfterCopy) File.Delete(picture.EPath);
                 }
             }
             catch (Exception ex)
