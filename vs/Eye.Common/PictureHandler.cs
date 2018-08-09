@@ -204,16 +204,8 @@ namespace Eye.Common
                         info.Height = tag.Description.Replace("pixels", "").Trim();
                     else if (tag.Name == info.WidthName)
                         info.Width = tag.Description.Replace("pixels", "").Trim();
-                    else if (tag.Name == info.ModifyTimeName)
-                        info.ModifyTime = tag.Description;
                     else if (tag.Name == info.TakeTimeName)
                         info.TakeTime = tag.Description;
-
-                    if (!string.IsNullOrWhiteSpace(info.Author)
-                        && !string.IsNullOrWhiteSpace(info.Tag1)
-                        && !string.IsNullOrWhiteSpace(info.Tag2)
-                        && !string.IsNullOrWhiteSpace(info.Description))
-                        return info;
                 }
             }
 

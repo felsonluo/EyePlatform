@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiResponseHelper.cs" />
+    <Compile Include="Extension.cs" />
     <Compile Include="EyeApiController.cs" />
     <Compile Include="GUIDHelper.cs" />
     <Compile Include="PictureCompress.cs" />

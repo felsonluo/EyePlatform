@@ -1,15 +1,15 @@
 //币种
-export class Currency {
+export class CurrencyModel {
 
     //名称
-    CurrencyName?: string;
+    ECurrencyName?: string;
 
     //id
-    Id?: string;
+    EId?: string;
 
     //符号
-    Symbol?: string;
+    ESymbol?: string;
 
     //是否显示
-    IsActive?: boolean;
+    EIsActive?: boolean;
 }

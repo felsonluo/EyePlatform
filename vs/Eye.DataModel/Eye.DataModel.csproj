@@ -42,8 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataModel\Person.cs" />
-    <Compile Include="DataModel\Picture.cs" />
+    <Compile Include="DataModel\CategoryModel.cs" />
+    <Compile Include="DataModel\CurrencyModel.cs" />
+    <Compile Include="DataModel\DocumentModel.cs" />
+    <Compile Include="DataModel\ItemModel.cs" />
+    <Compile Include="DataModel\MessageModel.cs" />
+    <Compile Include="DataModel\OwnerModel.cs" />
+    <Compile Include="DataModel\PersonModel.cs" />
+    <Compile Include="DataModel\PictureModel.cs" />
+    <Compile Include="DataModel\VisitorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

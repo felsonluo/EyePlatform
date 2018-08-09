@@ -1,10 +1,10 @@
-export class Document {
+export class DocumentModel {
 
-    Id?: string;
+    EId?: string;
 
-    Path?: string;
+    EPath?: string;
 
-    IsMaster?: boolean;
+    EIsMaster?: boolean;
 
-    IsActive?: boolean;
+    EIsActive?: boolean;
 }

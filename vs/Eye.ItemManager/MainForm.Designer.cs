@@ -64,17 +64,17 @@
             this.txtDate = new System.Windows.Forms.DateTimePicker();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
-            this.Checked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PicName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TakeTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TakeLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Path = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SnapshotPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tags1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tags2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.EId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETakeTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETakeLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ESnapshotPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ESize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETags1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETags2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -109,7 +109,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(273, 23);
             this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "E:\\照片文件\\yuki\\108_0501";
+            this.textBox1.Text = "E:\\Felson\\Document\\证件照片";
             // 
             // tabControl1
             // 
@@ -140,17 +140,17 @@
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Checked,
-            this.Id,
-            this.PicName,
-            this.TakeTime,
-            this.TakeLocation,
-            this.Path,
-            this.SnapshotPath,
-            this.FileSize,
-            this.Tags1,
-            this.Tags2,
-            this.Description});
+            this.EChecked,
+            this.EId,
+            this.EName,
+            this.ETakeTime,
+            this.ETakeLocation,
+            this.EPath,
+            this.ESnapshotPath,
+            this.ESize,
+            this.ETags1,
+            this.ETags2,
+            this.EDescription});
             this.dataGridView1.Location = new System.Drawing.Point(4, 4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
@@ -363,7 +363,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(231, 23);
             this.textBox2.TabIndex = 51;
-            this.textBox2.Text = "E:\\照片文件\\yuki_data";
+            this.textBox2.Text = "E:\\Felson\\photo";
             // 
             // label3
             // 
@@ -426,72 +426,72 @@
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
-            // Checked
+            // EChecked
             // 
-            this.Checked.HeaderText = "选择";
-            this.Checked.Name = "Checked";
-            this.Checked.ReadOnly = true;
+            this.EChecked.HeaderText = "选择";
+            this.EChecked.Name = "EChecked";
+            this.EChecked.ReadOnly = true;
             // 
-            // Id
+            // EId
             // 
-            this.Id.HeaderText = "ID";
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            this.Id.Visible = false;
+            this.EId.HeaderText = "ID";
+            this.EId.Name = "EId";
+            this.EId.ReadOnly = true;
+            this.EId.Visible = false;
             // 
-            // PicName
+            // EName
             // 
-            this.PicName.HeaderText = "名称";
-            this.PicName.Name = "PicName";
-            this.PicName.ReadOnly = true;
+            this.EName.HeaderText = "名称";
+            this.EName.Name = "EName";
+            this.EName.ReadOnly = true;
             // 
-            // TakeTime
+            // ETakeTime
             // 
-            this.TakeTime.HeaderText = "拍摄日期";
-            this.TakeTime.Name = "TakeTime";
-            this.TakeTime.ReadOnly = true;
+            this.ETakeTime.HeaderText = "拍摄日期";
+            this.ETakeTime.Name = "ETakeTime";
+            this.ETakeTime.ReadOnly = true;
             // 
-            // TakeLocation
+            // ETakeLocation
             // 
-            this.TakeLocation.HeaderText = "拍摄地点";
-            this.TakeLocation.Name = "TakeLocation";
-            this.TakeLocation.ReadOnly = true;
+            this.ETakeLocation.HeaderText = "拍摄地点";
+            this.ETakeLocation.Name = "ETakeLocation";
+            this.ETakeLocation.ReadOnly = true;
             // 
-            // Path
+            // EPath
             // 
-            this.Path.HeaderText = "原始路径";
-            this.Path.Name = "Path";
-            this.Path.ReadOnly = true;
+            this.EPath.HeaderText = "原始路径";
+            this.EPath.Name = "EPath";
+            this.EPath.ReadOnly = true;
             // 
-            // SnapshotPath
+            // ESnapshotPath
             // 
-            this.SnapshotPath.HeaderText = "快照路径";
-            this.SnapshotPath.Name = "SnapshotPath";
-            this.SnapshotPath.ReadOnly = true;
+            this.ESnapshotPath.HeaderText = "快照路径";
+            this.ESnapshotPath.Name = "ESnapshotPath";
+            this.ESnapshotPath.ReadOnly = true;
             // 
-            // FileSize
+            // ESize
             // 
-            this.FileSize.HeaderText = "大小";
-            this.FileSize.Name = "FileSize";
-            this.FileSize.ReadOnly = true;
+            this.ESize.HeaderText = "大小";
+            this.ESize.Name = "ESize";
+            this.ESize.ReadOnly = true;
             // 
-            // Tags1
+            // ETags1
             // 
-            this.Tags1.HeaderText = "人物";
-            this.Tags1.Name = "Tags1";
-            this.Tags1.ReadOnly = true;
+            this.ETags1.HeaderText = "人物";
+            this.ETags1.Name = "ETags1";
+            this.ETags1.ReadOnly = true;
             // 
-            // Tags2
+            // ETags2
             // 
-            this.Tags2.HeaderText = "标签";
-            this.Tags2.Name = "Tags2";
-            this.Tags2.ReadOnly = true;
+            this.ETags2.HeaderText = "标签";
+            this.ETags2.Name = "ETags2";
+            this.ETags2.ReadOnly = true;
             // 
-            // Description
+            // EDescription
             // 
-            this.Description.HeaderText = "描述";
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
+            this.EDescription.HeaderText = "描述";
+            this.EDescription.Name = "EDescription";
+            this.EDescription.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -581,17 +581,17 @@
         private System.Windows.Forms.DateTimePicker txtDate;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Checked;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PicName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TakeTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TakeLocation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Path;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SnapshotPath;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FileSize;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Tags1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Tags2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Description;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn EChecked;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ETakeTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ETakeLocation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EPath;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ESnapshotPath;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ESize;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ETags1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ETags2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EDescription;
     }
 }
 
