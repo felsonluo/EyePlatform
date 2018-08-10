@@ -2,15 +2,10 @@ import { CategoryModel } from "./category.model";
 import { CurrencyModel } from "./currency.model";
 import { DocumentModel } from "./document.model";
 import { PictureModel } from "./picture.model";
+import { BaseModel } from "src/model/base.model";
 
 //具体商品
-export class ItemModel {
-
-    //id
-    EId?: string;
-
-    //商品名称
-    EName?: string;
+export class ItemModel extends BaseModel {
 
     //别名
     EDetailName?: string;
@@ -53,9 +48,6 @@ export class ItemModel {
 
     //类别ID
     ECategoryId?: string;
-
-    //是否显示
-    EActive?: boolean;
 
 
 

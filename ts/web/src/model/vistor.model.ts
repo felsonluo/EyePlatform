@@ -1,7 +1,7 @@
-//客户
-export class Visitor {
+import { BaseModel } from "src/model/base.model";
 
-    EName?: string;
+//客户
+export class Visitor extends BaseModel {
 
     EEmail?: string;
 
@@ -12,6 +12,4 @@ export class Visitor {
     EQQ?: string;
 
     EIP?: string;
-    //是否显示
-    EIsActive?: boolean;
 }

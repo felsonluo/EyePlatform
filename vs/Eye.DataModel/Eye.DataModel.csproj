@@ -53,6 +53,15 @@
     <Compile Include="DataModel\VisitorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Eye.Common\Eye.Common.csproj">
+      <Project>{F7388103-9E56-4C23-9ADB-6EB1F5D64886}</Project>
+      <Name>Eye.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EntityModel\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

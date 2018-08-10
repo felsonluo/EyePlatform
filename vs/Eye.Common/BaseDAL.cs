@@ -6,18 +6,24 @@ using MongoDB.Bson;
 using MongoDB;
 using System.Configuration;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Eye.Common
 {
     /// <summary>
     /// Mongo帮助类
     /// </summary>
-    public class MongoDBHelper<T> where T: BaseModel
+    public class BaseDAL<T> where T : BaseModel, new()
     {
 
         private IMongoDatabase database;
         private MongoClient client;
         private IMongoCollection<T> collection;
+
+
+        public bool IsDescending { get; set; }
+
+        public Expression<Func<T, bool>> SortPropertyName { get; set; }
 
         private static string _connectionString;
         private static string ConnectionString
@@ -36,7 +42,7 @@ namespace Eye.Common
         /// <summary>
         /// 默认构造函数
         /// </summary>
-        public MongoDBHelper()
+        public BaseDAL()
         {
             client = new MongoClient(ConnectionString);
             database = client.GetDatabase(new MongoUrl(ConnectionString).DatabaseName);
@@ -48,7 +54,7 @@ namespace Eye.Common
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="databaseName"></param>
-        public MongoDBHelper(string connection)
+        public BaseDAL(string connection)
         {
             client = new MongoClient(connection);
             database = client.GetDatabase(new MongoUrl(ConnectionString).DatabaseName);
@@ -59,7 +65,7 @@ namespace Eye.Common
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="databaseName"></param>
-        public MongoDBHelper(string connection, string databaseName)
+        public BaseDAL(string connection, string databaseName)
         {
             client = new MongoClient(connection);
             database = client.GetDatabase(databaseName);
@@ -78,6 +84,16 @@ namespace Eye.Common
 
 
         /// <summary>
+        /// 查询数据库,检查是否存在指定ID的对象
+        /// </summary>
+        /// <param name="key">对象的ID值</param>
+        /// <returns>存在则返回指定的对象,否则返回Null</returns>
+        public virtual T FindByID(string id)
+        {
+            return collection.Find(s => s.EId == id).FirstOrDefault();
+        }
+
+        /// <summary>
         /// 根据条件查询数据库,如果存在返回第一个对象
         /// </summary>
         /// <param name="filter">条件表达式</param>
@@ -89,51 +105,13 @@ namespace Eye.Common
 
 
         /// <summary>
-        /// 插入多条记录
+        /// 查询数据库,检查是否存在指定ID的对象（异步）
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public bool InsertBatch(IEnumerable<T> list)
+        /// <param name="key">对象的ID值</param>
+        /// <returns>存在则返回指定的对象,否则返回Null</returns>
+        public virtual async Task<T> FindByIDAsync(string id)
         {
-            if (this.database == null) return false;
-
-            try
-            {
-                //批量插入
-                collection.InsertMany(list);
-
-                return true;
-
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 插入单条记录
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public bool Insert(T t)
-        {
-            if (this.database == null) return false;
-
-            try
-            {
-                //批量插入
-                collection.InsertOne(t);
-
-                return true;
-
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return await collection.FindAsync(s => s.EId == id).Result.FirstOrDefaultAsync();
         }
 
 
@@ -148,19 +126,20 @@ namespace Eye.Common
             return query;
         }
 
-        /// <summary>
-        /// 根据条件表达式返回可查询的记录源
-        /// </summary>
-        /// <param name="query">查询条件</param>
-        /// <param name="sortPropertyName">排序表达式</param>
-        /// <param name="isDescending">如果为true则为降序，否则为升序</param>
-        /// <returns></returns>
-        public virtual IFindFluent<T, T> GetQueryable(FilterDefinition<T> query)
-        {
-            IFindFluent<T, T> queryable = collection.Find(query);
 
-            return queryable;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="match"></param>
+        /// <param name="orderByProperty"></param>
+        /// <param name="isDescending"></param>
+        /// <returns></returns>
+        public virtual IQueryable<T> GetQueryable<TKey>(Expression<Func<T, bool>> match)
+        {
+            return GetQueryable(match, this.SortPropertyName, this.IsDescending);
         }
+
 
         /// <summary>
         /// 根据条件表达式返回可查询的记录源
@@ -169,7 +148,7 @@ namespace Eye.Common
         /// <param name="orderByProperty">排序表达式</param>
         /// <param name="isDescending">如果为true则为降序，否则为升序</param>
         /// <returns></returns>
-        public virtual IQueryable<T> GetQueryable<TKey>(Expression<Func<T, bool>> match)
+        public virtual IQueryable<T> GetQueryable<TKey>(Expression<Func<T, bool>> match, Expression<Func<T, TKey>> orderByProperty, bool isDescending = true)
         {
             IQueryable<T> query = collection.AsQueryable();
 
@@ -178,6 +157,14 @@ namespace Eye.Common
                 query = query.Where(match);
             }
 
+            if (orderByProperty != null)
+            {
+                query = isDescending ? query.OrderByDescending(orderByProperty) : query.OrderBy(orderByProperty);
+            }
+            else
+            {
+                query = isDescending ? query.OrderByDescending(this.SortPropertyName) : query.OrderBy(this.SortPropertyName);
+            }
             return query;
         }
 
@@ -187,31 +174,71 @@ namespace Eye.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <returns></returns>
-        public List<T> FindAll()
+        public virtual List<T> FindAll()
         {
             return GetQueryable().ToList();
-        }
-
-        /// <summary>
-        /// 获取所有
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public List<T> Find(Expression<Func<T, bool>> match)
-        {
-            return GetQueryable(match).ToList();
         }
 
         /// <summary>
         /// 根据条件查询数据库,并返回对象集合
         /// </summary>
         /// <param name="match">条件表达式</param>
-        /// <returns>指定对象的集合</returns>
-        public virtual IList<T> Find(FilterDefinition<T> query)
+        /// <param name="orderByProperty">排序表达式</param>
+        /// <param name="isDescending">如果为true则为降序，否则为升序</param>
+        /// <returns></returns>
+        public virtual IList<T> Find<TKey>(Expression<Func<T, bool>> match, Expression<Func<T, TKey>> orderByProperty, bool isDescending = true)
         {
-            return GetQueryable(query).ToList();
+            return GetQueryable<TKey>(match, orderByProperty, isDescending).ToList();
         }
 
+        /// <summary>
+        /// 根据条件查询数据库,并返回对象集合(用于分页数据显示)
+        /// </summary>
+        /// <param name="match">条件表达式</param>
+        /// <param name="info">分页实体</param>
+        /// <returns>指定对象的集合</returns>
+        public virtual IList<T> FindWithPager(Expression<Func<T, bool>> match, PagerInfo info)
+        {
+            int pageindex = (info.CurrentPageIndex < 1) ? 1 : info.CurrentPageIndex;
+            int pageSize = (info.PageSize <= 0) ? 20 : info.PageSize;
+
+            int excludedRows = (pageindex - 1) * pageSize;
+
+            IQueryable<T> query = GetQueryable<string>(match);
+            info.RecordCount = query.Count();
+
+            return query.Skip(excludedRows).Take(pageSize).ToList();
+        }
+
+        /// <summary>
+        /// 插入单条记录
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public bool Insert(T t)
+        {
+
+            //批量插入
+            collection.InsertOne(t);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 插入多条记录
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public bool InsertBatch(IEnumerable<T> list)
+        {
+
+            //批量插入
+            collection.InsertMany(list);
+
+            return true;
+        }
 
         /// <summary>
         /// 更新对象属性到数据库中
@@ -238,7 +265,6 @@ namespace Eye.Common
         /// <returns>执行成功返回<c>true</c>，否则为<c>false</c></returns>
         public virtual bool Update(string id, UpdateDefinition<T> update)
         {
-            
             var result = collection.UpdateOne(s => s.EId == id, update, new UpdateOptions() { IsUpsert = true });
             return result != null && result.ModifiedCount > 0;
         }
@@ -262,7 +288,6 @@ namespace Eye.Common
         /// <returns>执行成功返回<c>true</c>，否则为<c>false</c>。</returns>
         public virtual bool DeleteBatch(List<string> idList)
         {
-            
             var result = collection.DeleteMany(s => idList.Contains(s.EId));
             return result != null && result.DeletedCount > 0;
         }
@@ -288,5 +313,56 @@ namespace Eye.Common
             var result = collection.DeleteMany(query);
             return result != null && result.DeletedCount > 0;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

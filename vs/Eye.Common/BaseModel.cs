@@ -14,5 +14,6 @@ namespace Eye.Common
         public string EName { get; set; }
 
         public bool EIsActive { get; set; }
+
     }
 }

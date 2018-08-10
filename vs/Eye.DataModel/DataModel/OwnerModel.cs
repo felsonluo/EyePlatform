@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eye.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace Eye.DataModel.DataModel
 {
-    public class OwnerModel
+    public class OwnerModel : BaseModel
     {
-        //商品名称
-        public string EName { get; set; }
-
-        //id
-        public string EId { get; set; }
 
         //网站样式
         public string ETheme { get; set; }
@@ -41,7 +37,5 @@ namespace Eye.DataModel.DataModel
         //
         public List<KeyValuePair<string, DateTime>> EOpenHours { get; set; }
 
-        //是否显示
-        public bool EIsActive { get; set; }
     }
 }

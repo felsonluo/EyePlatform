@@ -41,7 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Eye.Common\Eye.Common.csproj">
+      <Project>{F7388103-9E56-4C23-9ADB-6EB1F5D64886}</Project>
+      <Name>Eye.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Eye.DataModel\Eye.DataModel.csproj">
+      <Project>{F49797BF-BBC6-46CB-BDF3-D59E6C37D55B}</Project>
+      <Name>Eye.DataModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,19 +1,12 @@
-export class PictureModel {
+import { BaseModel } from "src/model/base.model";
 
-    /// <summary>
-    /// 
-    /// </summary>
-    EId?: string;
+export class PictureModel extends BaseModel {
+
 
     /// <summary>
     /// 是否选中
     /// </summary>
     EChecked?: boolean;
-
-    /// <summary>
-    /// 文件名
-    /// </summary>
-    EName?: string;
 
     /// <summary>
     /// 图片路径

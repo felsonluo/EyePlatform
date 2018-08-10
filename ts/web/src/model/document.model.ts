@@ -1,10 +1,8 @@
-export class DocumentModel {
+import { BaseModel } from "src/model/base.model";
 
-    EId?: string;
+export class DocumentModel  extends BaseModel{
 
     EPath?: string;
 
     EIsMaster?: boolean;
-
-    EIsActive?: boolean;
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eye.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace Eye.DataModel.DataModel
 {
-    public class ItemModel
+    public class ItemModel : BaseModel
     {
-        //id
-        public string EId { get; set; }
-
-        //商品名称
-        public string EName { get; set; }
 
         //别名
         public string EDetailName { get; set; }
@@ -56,9 +52,6 @@ namespace Eye.DataModel.DataModel
 
         //类别ID
         public string ECategoryId { get; set; }
-
-        //是否显示
-        public bool EActive { get; set; }
 
 
 

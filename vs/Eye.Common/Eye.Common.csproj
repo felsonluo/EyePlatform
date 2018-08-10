@@ -86,7 +86,8 @@
     <Compile Include="Extension.cs" />
     <Compile Include="EyeApiController.cs" />
     <Compile Include="GUIDHelper.cs" />
-    <Compile Include="MongoHelper.cs" />
+    <Compile Include="BaseDAL.cs" />
+    <Compile Include="PagerInfo.cs" />
     <Compile Include="PictureCompress.cs" />
     <Compile Include="PictureHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

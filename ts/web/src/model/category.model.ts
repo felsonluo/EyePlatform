@@ -1,9 +1,7 @@
 import { ItemModel } from "./item.model";
+import { BaseModel } from "src/model/base.model";
 
-export class CategoryModel {
-
-    //类别ID
-    EId?: string;
+export class CategoryModel extends BaseModel {
 
     //名称键
     ECategoryName?: string;
@@ -13,9 +11,6 @@ export class CategoryModel {
 
     //展示排序
     EIndex?: number;
-
-    //是否显示
-    EIsActive?: boolean;
 
     //子类别
     ESubCategories?: CategoryModel[];

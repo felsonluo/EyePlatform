@@ -6,6 +6,7 @@ CLR 版本:4.0.30319.42000
 文件描述:
 * **************************************************/
 
+using Eye.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,24 +22,15 @@ namespace Eye.DataModel.DataModel
     /// 描   述:功能描述
 	///
     /// </summary>
-    public class PictureModel
+    public class PictureModel : BaseModel
     {
 
         #region 全局变量
-        /// <summary>
-        /// 
-        /// </summary>
-        public string EId { get; set; }
 
         /// <summary>
         /// 是否选中
         /// </summary>
         public bool EChecked { get; set; }
-
-        /// <summary>
-        /// 文件名
-        /// </summary>
-        public string EName { get; set; }
 
         /// <summary>
         /// 图片路径

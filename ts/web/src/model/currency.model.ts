@@ -1,15 +1,8 @@
+import { BaseModel } from "src/model/base.model";
+
 //币种
-export class CurrencyModel {
-
-    //名称
-    ECurrencyName?: string;
-
-    //id
-    EId?: string;
+export class CurrencyModel extends BaseModel {
 
     //符号
     ESymbol?: string;
-
-    //是否显示
-    EIsActive?: boolean;
 }

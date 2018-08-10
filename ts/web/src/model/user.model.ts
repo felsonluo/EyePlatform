@@ -1,13 +1,8 @@
 import { KeyValuePairs } from "../entity/keyvaluepairs";
+import { BaseModel } from "src/model/base.model";
 
 //商家
-export class OwnerModel {
-
-    //商品名称
-    EName?: string;
-
-    //id
-    EId?: string;
+export class OwnerModel extends BaseModel {
 
     //网站样式
     ETheme?: string;
@@ -35,7 +30,4 @@ export class OwnerModel {
 
     //
     EOpenHours?: KeyValuePairs[];
-
-    //是否显示
-    EIsActive?: boolean;
 }
