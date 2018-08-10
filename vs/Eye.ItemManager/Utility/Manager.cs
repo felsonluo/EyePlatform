@@ -144,9 +144,24 @@ namespace Eye.PhotoManager.Utility
             {
                 if (File.Exists(picture.EPath))
                 {
-                    File.Copy(picture.EPath, newPath, false);
+                    if (!File.Exists(newPath))
+                    {
+                        File.Copy(picture.EPath, newPath, false);
+                    }
 
-                    if (DeleteAfterCopy) File.Delete(picture.EPath);
+                    if (DeleteAfterCopy)
+                    {
+                        if (File.GetAttributes(picture.EPath).ToString().IndexOf("ReadOnly") != -1)
+                        {
+                            File.SetAttributes(picture.EPath, FileAttributes.Normal);
+                        }
+                        File.Delete(picture.EPath);
+                    }
+
+
+                    picture.EPath = newPath;
+
+                    picture.ERow.Cells[nameof(picture.EPath)].Value = newPath;
                 }
             }
             catch (Exception ex)

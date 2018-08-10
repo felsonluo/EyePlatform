@@ -279,6 +279,8 @@ namespace Eye.PhotoManager
 
             var count = 0;
 
+            this.progressBar1.Visible = true;
+
             for (var i = 0; i < pictures.Count; i++)
             {
                 try
@@ -331,6 +333,8 @@ namespace Eye.PhotoManager
             {
                 MessageBox.Show("完成!");
             }
+
+            this.progressBar1.Visible = false;
 
             this.button3_Click(sender, e);
         }
