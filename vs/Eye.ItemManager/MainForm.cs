@@ -142,6 +142,7 @@ namespace Eye.PhotoManager
 
             picture.EChecked = bool.Parse(row.Cells[nameof(picture.EChecked)].Value?.ToString());
             picture.EId = row.Cells[nameof(picture.EId)].Value?.ToString();
+            picture.EItemId = row.Cells[nameof(picture.EItemId)].Value?.ToString();
             picture.EName = row.Cells[nameof(picture.EName)].Value?.ToString();
             picture.EPath = row.Cells[nameof(picture.EPath)].Value?.ToString();
             picture.ESnapshotPath = row.Cells[nameof(picture.ESnapshotPath)].Value?.ToString();
@@ -206,6 +207,41 @@ namespace Eye.PhotoManager
         }
 
         /// <summary>
+        /// 获取设置好的picture
+        /// </summary>
+        /// <returns></returns>
+        private PictureModel GetEditPrictureData()
+        {
+            var picture = new PictureModel()
+            {
+                ETakeTime = DateTime.Parse(this.txtDate.Text),
+                ETakeLocation = this.txtLocation.Text.Trim(),
+                ETags1 = this.txtTags1.Text.Trim(),
+                ETags2 = this.txtTags2.Text.Trim(),
+                EDescription = this.txtDescription.Text.Trim()
+
+            };
+            return picture;
+        }
+
+        /// <summary>
+        /// 批量设置
+        /// </summary>
+        private void BatchSetPictrueData(List<PictureModel> pictures, PictureModel picture)
+        {
+            for (var i = 0; i < pictures.Count; i++)
+            {
+                var row = pictures[i].ERow;
+
+                row.Cells[nameof(picture.ETakeTime)].Value = picture.ETakeTime.IsValid() ? picture.ETakeTime : pictures[i].ETakeTime;
+                row.Cells[nameof(picture.ETakeLocation)].Value = !string.IsNullOrWhiteSpace(picture.ETakeLocation) ? picture.ETakeLocation : pictures[i].ETakeLocation;
+                row.Cells[nameof(picture.ETags1)].Value = !string.IsNullOrWhiteSpace(picture.ETags1) ? picture.ETags1 : pictures[i].ETags1;
+                row.Cells[nameof(picture.ETags2)].Value = !string.IsNullOrWhiteSpace(picture.ETags2) ? picture.ETags2 : pictures[i].ETags2;
+                row.Cells[nameof(picture.EDescription)].Value = !string.IsNullOrWhiteSpace(picture.EDescription) ? picture.EDescription : pictures[i].EDescription;
+            }
+        }
+
+        /// <summary>
         /// 获取图片列表
         /// </summary>
         /// <param name="rows"></param>
@@ -238,7 +274,7 @@ namespace Eye.PhotoManager
             return pictures;
         }
 
-        
+
 
 
         /// <summary>
@@ -367,6 +403,11 @@ namespace Eye.PhotoManager
 
         #region 页面事件
 
+        /// <summary>
+        /// 打开文件夹
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             this.folderBrowserDialog1.SelectedPath = this.textBox1.Text;
@@ -374,7 +415,32 @@ namespace Eye.PhotoManager
             this.textBox1.Text = this.folderBrowserDialog1.SelectedPath;
         }
 
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var list = new List<DataGridViewRow>();
 
+            for(var i = 0;i <  this.dataGridView1.Rows.Count;i++)
+            {
+                list.Add(this.dataGridView1.Rows[i]);
+            }
+
+            var pictures = GetPictures(list);
+
+            pictures.ForEach(x => x.ERow = null);
+
+            Manager.SavePictures(pictures);
+        }
+
+        /// <summary>
+        /// 加载照片
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
             var folder = this.textBox1.Text.Trim();
@@ -537,7 +603,25 @@ namespace Eye.PhotoManager
                 this.dataGridView1.Rows[i].Cells["EChecked"].Value = isChecked;
             }
         }
+        /// <summary>
+        /// 批量设置数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button13_Click(object sender, EventArgs e)
+        {
+            var selectedPictures = this.GetCheckedPictures();
+
+            if (selectedPictures.Count == 0) return;
+
+            var pcitrue = GetEditPrictureData();
+
+            BatchSetPictrueData(selectedPictures, pcitrue);
+        }
+
 
         #endregion
+
+
     }
 }

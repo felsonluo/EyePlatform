@@ -169,7 +169,52 @@ namespace Eye.Common
             }
         }
 
+        /// <summary>
+        /// 设置图片的信息
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool SetPictureInfo(List<KeyValuePair<string, string>> pairs)
+        {
+            var count = 0;
 
+            for (var i = 0; i < pairs.Count; i++)
+            {
+                var path = pairs[i].Key;
+                var id = pairs[i].Value;
+
+                var result = SetPictrueId(path, id);
+
+                if (result) count++;
+            }
+
+            return count == pairs.Count;
+        }
+        /// <summary>
+        /// 设置图片的值
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool SetPictrueId(string path, string value)
+        {
+            try
+            {
+                var img = new Bitmap(path);
+
+                var ef = new EXIFextractor(ref img, "");
+
+                ef.setTag(0x10E, value);
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
 
         /// <summary>
         /// 获取图片信息

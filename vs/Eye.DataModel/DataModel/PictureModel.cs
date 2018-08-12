@@ -27,6 +27,12 @@ namespace Eye.DataModel.DataModel
 
         #region 全局变量
 
+
+        /// <summary>
+        /// 所属项目的Id
+        /// </summary>
+        public string EItemId { get; set; }
+
         /// <summary>
         /// 是否选中
         /// </summary>

@@ -23,9 +23,6 @@ namespace Eye.DataModel.DataModel
         //特性
         public string EFeatures { get; set; }
 
-        //是否是新品
-        public bool EIsNew { get; set; }
-
         //是否显示
         public bool EShow { get; set; }
 

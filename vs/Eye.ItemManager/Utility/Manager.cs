@@ -19,6 +19,7 @@ using System.Drawing;
 using MetadataExtractor;
 using Eye.DataModel.DataModel;
 using Eye.Common;
+using Eye.BusinessService;
 
 namespace Eye.PhotoManager.Utility
 {
@@ -42,6 +43,17 @@ namespace Eye.PhotoManager.Utility
                 var setting = ConfigurationManager.AppSettings["deleteAfterCopy"];
 
                 return string.IsNullOrWhiteSpace(setting) ? false : bool.Parse(setting);
+            }
+        }
+
+
+        private static int BatchCount
+        {
+            get
+            {
+                var setting = ConfigurationManager.AppSettings["BatchCount"];
+
+                return string.IsNullOrWhiteSpace(setting) ? 200 : int.Parse(setting);
             }
         }
 
@@ -328,6 +340,18 @@ namespace Eye.PhotoManager.Utility
             dirs.ForEach(x => GetFiles(x, list));
 
             return list;
+        }
+
+        /// <summary>
+        /// 保存图片
+        /// </summary>
+        /// <param name="pictures"></param>
+        /// <returns></returns>
+        public static bool SavePictures(List<PictureModel> pictures)
+        {
+            var result = new PictureBusiness().SavePictures(pictures);
+
+            return result;
         }
 
         #endregion

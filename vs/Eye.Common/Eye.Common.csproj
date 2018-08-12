@@ -72,6 +72,7 @@
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -83,6 +84,7 @@
   <ItemGroup>
     <Compile Include="ApiResponseHelper.cs" />
     <Compile Include="BaseModel.cs" />
+    <Compile Include="EXIFextractor.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="EyeApiController.cs" />
     <Compile Include="GUIDHelper.cs" />
