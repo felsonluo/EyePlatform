@@ -70,7 +70,7 @@ namespace Eye.PhotoManager
         {
             var filter = e.Argument as LoadFilter;
 
-            var pictures = Manager.GetPictureList(filter, Manager.BatchCount);
+            var pictures = Manager.GetPictureList(filter);
 
             Action<List<PictureModel>> action = (data) =>
             {
@@ -103,6 +103,7 @@ namespace Eye.PhotoManager
                 IncludeDraft = this.checkBox4.Checked,
                 IncludeSaved = this.checkBox5.Checked,
                 Keyword = string.Empty,
+                Page = Manager.BatchCount,
                 Folder = this.textBox1.Text.Trim()
             };
             return filter;

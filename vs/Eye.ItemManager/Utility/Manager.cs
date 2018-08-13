@@ -275,30 +275,49 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="directory"></param>
         /// <returns></returns>
-        public static List<PictureModel> GetPictureList(LoadFilter filter, int page)
+        public static List<PictureModel> GetPictureList(LoadFilter filter)
         {
             var result = new List<PictureModel>();
 
             //先获取所有的
-            //var items = new ItemBusiness().GetItems();
+            var items = new ItemBusiness().GetItems();
             //获取所有的分类
-            //var categories = new CategoryBusiness().GetCategories();
+            var categories = new CategoryBusiness().GetCategories();
+
             //获取所有的图片
-            //var picturesInDatabase = new PictureBusiness().GetPictures();
+            var picturesInDatabase = new PictureBusiness().GetPictures();
             //文件夹里面的
-            var picturesInFolder = filter.FromFolder ? GetPictureFromFolder(filter, page) : new List<PictureModel>();
+            var picturesInFolder = filter.FromFolder ? GetPictureFromFolder(filter) : new List<PictureModel>();
 
+            //已入库的
+            var picturesSaved = new List<PictureModel>();
+            //未入库的
+            var picturesDraft = new List<PictureModel>();
+            //分别处理
+            picturesInFolder.ForEach(x => { if (picturesInDatabase.Exists(y => y.EId == x.EId)) { picturesSaved.Add(x); } else { picturesDraft.Add(x); } });
 
+            //包含文件夹
+            if (filter.FromFolder)
+            {
+                if (filter.IncludeSaved)
+                    result.AddRange(picturesSaved);
+                if (filter.IncludeDraft)
+                    result.AddRange(picturesDraft);
+            }
+            //包含数据库
+            if (filter.FromDatabase)
+            {
+                picturesInDatabase.ForEach(x => { if (!result.Exists(y => y.EId == x.EId)) { result.Add(x); } });
+            }
 
-            return picturesInFolder;
-
+            return result;
         }
 
         /// <summary>
         /// 从文件夹获取照片
         /// </summary>
         /// <returns></returns>
-        private static List<PictureModel> GetPictureFromFolder(LoadFilter filter, int page)
+        private static List<PictureModel> GetPictureFromFolder(LoadFilter filter)
         {
             var list = new List<PictureModel>();
 
@@ -310,7 +329,7 @@ namespace Eye.PhotoManager.Utility
 
                 list.Add(picture);
 
-                if (list.Count == page) return list;
+                if (list.Count == filter.Page) return list;
             }
 
             return list;
@@ -379,7 +398,7 @@ namespace Eye.PhotoManager.Utility
         /// <returns></returns>
         public static bool SavePictures(List<PictureModel> pictures)
         {
-            var result = new PictureBusiness().SavePictures(pictures);
+            var result = new PictureBusiness().SetPictures(pictures);
 
             for (var i = 0; i < pictures.Count; i++)
             {

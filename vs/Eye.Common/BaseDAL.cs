@@ -233,9 +233,27 @@ namespace Eye.Common
         /// <returns></returns>
         public bool InsertBatch(IEnumerable<T> list)
         {
-
             //批量插入
             collection.InsertMany(list);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 插入多条记录
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public bool InsertOrUpdateBatch(IEnumerable<T> list)
+        {
+            var newItems = list.Where(x => x.EIsNew);
+
+            var oldItems = list.Where(x => !x.EIsNew);
+            //批量插入
+            collection.InsertMany(newItems);
+
+            UpdateBatch(oldItems);
 
             return true;
         }
@@ -246,15 +264,31 @@ namespace Eye.Common
         /// <param name="t">指定的对象</param>
         /// <param name="id">主键的值</param>
         /// <returns>执行成功返回<c>true</c>，否则为<c>false</c></returns>
-        public virtual bool Update(T t, string id)
+        public virtual bool Update(T t)
         {
 
             bool result = false;
             //使用 IsUpsert = true ，如果没有记录则写入
-            var update = collection.ReplaceOne(s => s.EId == id, t, new UpdateOptions() { IsUpsert = true });
+            var update = collection.ReplaceOne(s => s.EId == t.EId, t, new UpdateOptions() { IsUpsert = true });
             result = update != null && update.ModifiedCount > 0;
 
             return result;
+        }
+
+        /// <summary>
+        /// 批量更新
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public virtual bool UpdateBatch(IEnumerable<T> ts)
+        {
+            foreach (var x in ts)
+            {
+                if (!Update(x))
+                    return false;
+            }
+
+            return true;
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace Eye.BusinessService
         /// <returns></returns>
         public bool SaveItems(List<ItemModel> items)
         {
-            return _item.InsertBatch(items);
+            return _item.InsertOrUpdateBatch(items);
         }
     }
 }

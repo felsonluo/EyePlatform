@@ -27,7 +27,7 @@ namespace Eye.BusinessService
         /// <returns></returns>
         public bool SaveCategorys(List<CategoryModel> categories)
         {
-            return _category.InsertBatch(categories);
+            return _category.InsertOrUpdateBatch(categories);
         }
     }
 }

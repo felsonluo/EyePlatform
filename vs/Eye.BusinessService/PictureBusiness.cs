@@ -32,7 +32,7 @@ namespace Eye.BusinessService
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
-        public bool SavePictures(List<PictureModel> pictures)
+        public bool SetPictures(List<PictureModel> pictures)
         {
 
             //项目分类
@@ -46,14 +46,29 @@ namespace Eye.BusinessService
             for (var i = 0; i < pictures.Count; i++)
             {
                 //1.处理图片的Id
-                if (string.IsNullOrWhiteSpace(pictures[i].EId))
+                if (string.IsNullOrWhiteSpace(pictures[i].EId) || !pictures.Exists(x => x.EId == pictures[i].EId))
                 {
                     //新建一个Id
                     pictures[i].EId = GUIDHelper.GetGuid();
-
+                    pictures[i].EIsNew = true;
                     //处理分类
                     var catetoryName = pictures[i].ETakeTime.ToString("yyyy-MM");
                     var category = categories.FirstOrDefault(x => x.EName == catetoryName);
+
+                    var parentCategoryName = pictures[i].ETakeTime.ToString("yyyy");
+                    var parentCategory = categories.FirstOrDefault(x => x.EName == parentCategoryName);
+
+                    if (parentCategory == null)
+                    {
+                        parentCategory = new CategoryModel()
+                        {
+                            EId = GUIDHelper.GetGuid(),
+                            EName = parentCategoryName,
+                            EIsNew = true
+                        };
+
+                        categories.Add(parentCategory);
+                    }
                     //如果不存在
                     if (category == null)
                     {
@@ -62,6 +77,7 @@ namespace Eye.BusinessService
                         {
                             EId = GUIDHelper.GetGuid(),
                             EName = catetoryName,
+                            EParentId = parentCategory.EId,
                             EIsNew = true
                         };
 
@@ -87,13 +103,27 @@ namespace Eye.BusinessService
 
             PictureHandler.SetPictureInfo(PictruePropertyHexTable.Author, pictures2modify);
 
-            _item.SaveItems(items.Where(x => x.EIsNew).ToList());
+            _item.SaveItems(items);
 
-            _category.SaveCategorys(categories.Where(x => x.EIsNew).ToList());
+            _category.SaveCategorys(categories);
 
-            _dal.InsertBatch(pictures);
+            SavePictures(pictures);
 
             return true;
         }
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <param name="pictures"></param>
+        /// <returns></returns>
+        public bool SavePictures(List<PictureModel> pictures)
+        {
+            var result = _dal.InsertOrUpdateBatch(pictures);
+
+            return result;
+        }
+
+
     }
 }

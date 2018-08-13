@@ -112,7 +112,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoadFilter.cs" />
+    <Compile Include="Model\GridPictures.cs" />
+    <Compile Include="Model\LoadFilter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

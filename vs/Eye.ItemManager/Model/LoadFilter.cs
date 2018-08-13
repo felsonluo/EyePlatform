@@ -48,6 +48,11 @@ namespace PhotoManager
         public string Folder { get; set; }
 
         /// <summary>
+        /// 每页处理的数
+        /// </summary>
+        public int Page { get; set; }
+
+        /// <summary>
         /// 关键字
         /// </summary>
         public string Keyword { get; set; }
