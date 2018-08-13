@@ -46,7 +46,7 @@ namespace Eye.Common
         {
             client = new MongoClient(ConnectionString);
             database = client.GetDatabase(new MongoUrl(ConnectionString).DatabaseName);
-            collection = database.GetCollection<T>(typeof(T).Name);
+            collection = database.GetCollection<T>(("c" + "_" + typeof(T).Name.Replace("Model", "")).ToLower());
         }
 
         /// <summary>

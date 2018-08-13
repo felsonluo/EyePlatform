@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Eye.Common.PictureHandler;
 
 namespace Eye.BusinessService
 {
@@ -15,6 +16,17 @@ namespace Eye.BusinessService
         private readonly ItemBusiness _item = new ItemBusiness();
 
         private readonly PictureRepository _dal = new PictureRepository();
+
+        /// <summary>
+        /// 获取所有图片
+        /// </summary>
+        /// <returns></returns>
+        public List<PictureModel> GetPictures()
+        {
+            var pictures = _dal.FindAll();
+
+            return pictures;
+        }
         /// <summary>
         /// 保存图片
         /// </summary>
@@ -73,13 +85,13 @@ namespace Eye.BusinessService
             }
 
 
+            PictureHandler.SetPictureInfo(PictruePropertyHexTable.Author, pictures2modify);
+
             _item.SaveItems(items.Where(x => x.EIsNew).ToList());
 
             _category.SaveCategorys(categories.Where(x => x.EIsNew).ToList());
 
             _dal.InsertBatch(pictures);
-
-            PictureHandler.SetPictureInfo(pictures2modify);
 
             return true;
         }

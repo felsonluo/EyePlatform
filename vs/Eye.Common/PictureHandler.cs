@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -175,7 +176,7 @@ namespace Eye.Common
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool SetPictureInfo(List<KeyValuePair<string, string>> pairs)
+        public static bool SetPictureInfo(int key, List<KeyValuePair<string, string>> pairs)
         {
             var count = 0;
 
@@ -184,32 +185,58 @@ namespace Eye.Common
                 var path = pairs[i].Key;
                 var id = pairs[i].Value;
 
-                var result = SetPictrueId(path, id);
+                var result = SetPictrueProperty(key, path, id);
 
                 if (result) count++;
             }
 
             return count == pairs.Count;
         }
+
+        private static void SetProperty(Image image, string value, int id, short type)
+        {
+            var content = Encoding.ASCII.GetBytes(value);
+            PropertyItem pi = image.PropertyItems[0];
+            pi.Id = id;
+            pi.Type = type;
+            pi.Value = content;
+            pi.Len = pi.Value.Length;
+            image.SetPropertyItem(pi);
+        }
+
+
         /// <summary>
-        /// 设置图片的值
+        /// 设置图片的Id 0x5034
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool SetPictrueId(string path, string value)
+        public static bool SetPictrueProperty(int key, string path, string value)
         {
             try
             {
                 var img = new Bitmap(path);
 
-                var ef = new EXIFextractor(ref img, "");
+                SetProperty(img, value, PictruePropertyHexTable.Author, 2);
 
-                ef.setTag(0x10E, value);
+
+                //1.保存到另外一个文件
+                var fileInfo = new FileInfo(path);
+                var tempPath = fileInfo.DirectoryName + "\\" + GUIDHelper.GetGuid() + ".jpg";
+                img.Save(tempPath);
+                img.Dispose();
+
+                //删除源文件
+                fileInfo.Delete();
+
+                File.Copy(tempPath, path, true);
+
+                //将另外一个文件删除
+                File.Delete(tempPath);
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return false;
@@ -241,7 +268,7 @@ namespace Eye.Common
                         if (!tag.HasName) continue;
 
                         if (tag.Name == info.AuthorName)
-                            info.Author = tag.Description;
+                            info.Author = tag.Description?.Replace(@"\0x0001", "");
                         else if (tag.Name == info.Tag1Name)
                             info.Tag1 = tag.Description;
                         else if (tag.Name == info.Tag2Name)
@@ -270,7 +297,7 @@ namespace Eye.Common
 
         public class PictureInnerInfo
         {
-            public string AuthorName = "Windows XP Author";
+            public string AuthorName = "Artist";
             public string Tag1Name = "Windows XP Keywords";
             public string Tag2Name = "Windows XP Title";
             public string DescriptionName = "Windows XP Comment";
@@ -287,6 +314,17 @@ namespace Eye.Common
             public string Width { get; set; }
             public string ModifyTime { get; set; }
             public string TakeTime { get; set; }
+        }
+
+        /// <summary>
+        ///图片属性对应的十六进制
+        /// </summary>
+        public class PictruePropertyHexTable
+        {
+            /// <summary>
+            /// 作者
+            /// </summary>
+            public static readonly int Author = 0x13B;
         }
 
     }

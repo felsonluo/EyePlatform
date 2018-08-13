@@ -2,17 +2,21 @@
 using Eye.Common;
 using Eye.DataModel.DataModel;
 using Eye.PhotoManager.Utility;
+using MetadataExtractor;
+using PhotoManager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Eye.Common.PictureHandler;
 
 namespace Eye.PhotoManager
 {
@@ -39,7 +43,7 @@ namespace Eye.PhotoManager
         /// <summary>
         /// 加载图片
         /// </summary>
-        private void InitLoadPictureWorker(string folder)
+        private void InitLoadPictureWorker(LoadFilter filter)
         {
             this.checkBox1.Checked = false;
 
@@ -53,7 +57,7 @@ namespace Eye.PhotoManager
             backgroundWorker2.DoWork += new DoWorkEventHandler(LoadPictures);
             backgroundWorker2.RunWorkerCompleted += new RunWorkerCompletedEventHandler(LoadPicturesCompleted);
 
-            backgroundWorker2.RunWorkerAsync(folder);
+            backgroundWorker2.RunWorkerAsync(filter);
 
         }
 
@@ -64,9 +68,9 @@ namespace Eye.PhotoManager
         /// <param name="e"></param>
         private void LoadPictures(object sender, DoWorkEventArgs e)
         {
-            var folder = e.Argument as string;
+            var filter = e.Argument as LoadFilter;
 
-            var pictures = Manager.GetPictureList(folder, 2000);
+            var pictures = Manager.GetPictureList(filter, Manager.BatchCount);
 
             Action<List<PictureModel>> action = (data) =>
             {
@@ -84,6 +88,24 @@ namespace Eye.PhotoManager
         {
 
 
+        }
+
+        /// <summary>
+        /// 获取过滤条件
+        /// </summary>
+        /// <returns></returns>
+        private LoadFilter GetFilter()
+        {
+            var filter = new LoadFilter()
+            {
+                FromFolder = this.checkBox2.Checked,
+                FromDatabase = this.checkBox3.Checked,
+                IncludeDraft = this.checkBox4.Checked,
+                IncludeSaved = this.checkBox5.Checked,
+                Keyword = string.Empty,
+                Folder = this.textBox1.Text.Trim()
+            };
+            return filter;
         }
 
         /// <summary>
@@ -163,7 +185,11 @@ namespace Eye.PhotoManager
         /// <param name="picture"></param>
         private void FillPicture2Detail(PictureModel picture)
         {
-            this.pictureBox2.ImageLocation = string.IsNullOrWhiteSpace(picture.ESnapshotPath) ? picture.EPath : picture.ESnapshotPath;
+            var img = new Bitmap(picture.EPath);
+
+            var ef = new EXIFextractor(ref img, "");
+
+            this.pictureBox2.ImageLocation = picture.EPath;
             this.txtName.Text = picture.EName;
             this.txtDate.Text = picture.ETakeTime.IsValid() ? picture.ETakeTime.ToString("yyyy-MM-dd HH:mm:ss") : "";
             this.txtLocation.Text = picture.ETakeLocation;
@@ -398,6 +424,22 @@ namespace Eye.PhotoManager
                 box.Text = string.Join(",", tagList);
             }
         }
+        /// <summary>
+        /// 是否加载文件夹内容
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.checkBox2.Checked)
+            {
+                this.panel1.Show();
+            }
+            else
+            {
+                this.panel1.Hide();
+            }
+        }
 
         #endregion
 
@@ -424,10 +466,12 @@ namespace Eye.PhotoManager
         {
             var list = new List<DataGridViewRow>();
 
-            for(var i = 0;i <  this.dataGridView1.Rows.Count;i++)
+            for (var i = 0; i < this.dataGridView1.Rows.Count; i++)
             {
                 list.Add(this.dataGridView1.Rows[i]);
             }
+
+
 
             var pictures = GetPictures(list);
 
@@ -443,11 +487,12 @@ namespace Eye.PhotoManager
         /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
-            var folder = this.textBox1.Text.Trim();
 
-            if (folder.Length == 0 || !Directory.Exists(folder)) return;
+            var filter = GetFilter();
 
-            InitLoadPictureWorker(folder);
+            if (filter.FromFolder && (filter.Folder.Length == 0 || !System.IO.Directory.Exists(filter.Folder))) return;
+
+            InitLoadPictureWorker(filter);
         }
 
         /// <summary>
@@ -620,8 +665,9 @@ namespace Eye.PhotoManager
         }
 
 
+
         #endregion
 
-
+        
     }
 }

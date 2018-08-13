@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -296,8 +297,8 @@ namespace Eye.Common
 
             // Loads a PropertyItem from a Jpeg image stored in the assembly as a resource.  
             Assembly assembly = Assembly.GetExecutingAssembly();
-            Stream emptyBitmapStream = assembly.GetManifestResourceStream("EXIFextractor.decoy.jpg");
-            System.Drawing.Image empty = System.Drawing.Image.FromStream(emptyBitmapStream);
+
+            var empty = global::Eye.Common.Properties.Resources.eye_demo;
 
             item = empty.PropertyItems[0];
 

@@ -20,6 +20,8 @@ using MetadataExtractor;
 using Eye.DataModel.DataModel;
 using Eye.Common;
 using Eye.BusinessService;
+using System.Collections;
+using PhotoManager;
 
 namespace Eye.PhotoManager.Utility
 {
@@ -47,7 +49,7 @@ namespace Eye.PhotoManager.Utility
         }
 
 
-        private static int BatchCount
+        public static int BatchCount
         {
             get
             {
@@ -75,6 +77,12 @@ namespace Eye.PhotoManager.Utility
                 return string.IsNullOrWhiteSpace(setting) ? new List<string>() : setting.Split(',').ToList();
             }
         }
+
+
+        /// <summary>
+        /// 用一个hash表来记录已经处理的记录
+        /// </summary>
+        public static Hashtable Cache = Hashtable.Synchronized(new Hashtable());
         #endregion
 
         #region 构造方法		
@@ -126,6 +134,7 @@ namespace Eye.PhotoManager.Utility
             picture.EDescription = info.Description;
             picture.EWidth = int.Parse(info.Width);
             picture.EHeight = int.Parse(info.Height);
+            picture.EId = info.Author;
 
             DateTime time;
             var s = DateTime.TryParseExact(info.TakeTime,
@@ -266,11 +275,34 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="directory"></param>
         /// <returns></returns>
-        public static List<PictureModel> GetPictureList(string directory, int page = 0)
+        public static List<PictureModel> GetPictureList(LoadFilter filter, int page)
+        {
+            var result = new List<PictureModel>();
+
+            //先获取所有的
+            //var items = new ItemBusiness().GetItems();
+            //获取所有的分类
+            //var categories = new CategoryBusiness().GetCategories();
+            //获取所有的图片
+            //var picturesInDatabase = new PictureBusiness().GetPictures();
+            //文件夹里面的
+            var picturesInFolder = filter.FromFolder ? GetPictureFromFolder(filter, page) : new List<PictureModel>();
+
+
+
+            return picturesInFolder;
+
+        }
+
+        /// <summary>
+        /// 从文件夹获取照片
+        /// </summary>
+        /// <returns></returns>
+        private static List<PictureModel> GetPictureFromFolder(LoadFilter filter, int page)
         {
             var list = new List<PictureModel>();
 
-            var files = GetFiles(directory);
+            var files = GetFiles(filter.Folder);
 
             for (var i = 0; i < files.Count; i++)
             {
@@ -282,7 +314,6 @@ namespace Eye.PhotoManager.Utility
             }
 
             return list;
-
         }
 
         /// <summary>
@@ -299,7 +330,6 @@ namespace Eye.PhotoManager.Utility
             picture.ESize = Math.Ceiling(info.Length / 1024.0);
             picture.EName = info.Name;
             picture.EPath = info.FullName;
-            picture.EId = GUIDHelper.GetGuid();
 
             var result = FillPictureInfo(picture);
 
@@ -350,6 +380,11 @@ namespace Eye.PhotoManager.Utility
         public static bool SavePictures(List<PictureModel> pictures)
         {
             var result = new PictureBusiness().SavePictures(pictures);
+
+            for (var i = 0; i < pictures.Count; i++)
+            {
+                Cache[pictures[i].EId] = true;
+            }
 
             return result;
         }

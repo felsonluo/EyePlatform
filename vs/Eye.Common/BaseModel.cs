@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace Eye.Common
 {
     public class BaseModel
     {
+        public ObjectId _id { get; set; }
 
         public string EId { get; set; }
 
