@@ -100,8 +100,8 @@ namespace Eye.PhotoManager
             {
                 FromFolder = this.checkBox2.Checked,
                 FromDatabase = this.checkBox3.Checked,
-                IncludeDraft = this.checkBox4.Checked,
-                IncludeSaved = this.checkBox5.Checked,
+                IncludeSaved = this.checkBox4.Checked,
+                IncludeDraft = this.checkBox5.Checked,
                 Keyword = string.Empty,
                 Page = Manager.BatchCount,
                 Folder = this.textBox1.Text.Trim()
@@ -479,6 +479,10 @@ namespace Eye.PhotoManager
             pictures.ForEach(x => x.ERow = null);
 
             Manager.SavePictures(pictures);
+
+            MessageBox.Show("保存成功!");
+
+            button3_Click(sender, e);
         }
 
         /// <summary>
@@ -669,6 +673,6 @@ namespace Eye.PhotoManager
 
         #endregion
 
-        
+
     }
 }

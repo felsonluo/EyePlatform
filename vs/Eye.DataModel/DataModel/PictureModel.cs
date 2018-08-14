@@ -7,6 +7,7 @@ CLR 版本:4.0.30319.42000
 * **************************************************/
 
 using Eye.Common;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,7 +98,7 @@ namespace Eye.DataModel.DataModel
         /// </summary>
         public string EDescription { get; set; }
 
-
+        [BsonIgnore]
         public DataGridViewRow ERow { get; set; }
 
 

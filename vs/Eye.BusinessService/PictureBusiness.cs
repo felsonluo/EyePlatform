@@ -39,6 +39,8 @@ namespace Eye.BusinessService
             var categories = _category.GetCategories();
             //项目
             var items = _item.GetItems();
+
+            var picturesInDatabase = GetPictures();
             //需要修改的照片
             var pictures2modify = new List<KeyValuePair<string, string>>();
 
@@ -46,7 +48,7 @@ namespace Eye.BusinessService
             for (var i = 0; i < pictures.Count; i++)
             {
                 //1.处理图片的Id
-                if (string.IsNullOrWhiteSpace(pictures[i].EId) || !pictures.Exists(x => x.EId == pictures[i].EId))
+                if (string.IsNullOrWhiteSpace(pictures[i].EId) || !picturesInDatabase.Exists(x => x.EId == pictures[i].EId))
                 {
                     //新建一个Id
                     pictures[i].EId = GUIDHelper.GetGuid();

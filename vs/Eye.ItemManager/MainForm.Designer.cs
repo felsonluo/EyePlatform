@@ -120,7 +120,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(201, 23);
             this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "E:\\Photo_temp";
+            this.textBox1.Text = "E:\\photo\\1980\\01";
             // 
             // tabControl1
             // 
@@ -585,6 +585,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(432, 32);
             this.panel1.TabIndex = 65;
+            this.panel1.Visible = false;
             // 
             // MainForm
             // 

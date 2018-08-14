@@ -1,4 +1,5 @@
-﻿using Eye.Common;
+﻿using Eye.BusinessService;
+using Eye.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,30 @@ namespace Eye.Api.Controllers
 {
     public class HomeController : Controller
     {
+        private ItemBusiness _item = new ItemBusiness();
+        private PictureBusiness _picture = new PictureBusiness();
+        private CategoryBusiness _category = new CategoryBusiness();
 
-        public ActionResult Test()
+
+        public ActionResult GetItems()
         {
-            return Json(new { Result = "sucess" }, JsonRequestBehavior.AllowGet);
+            var items = _item.GetItems();
+
+            return Json(new { Data = items },JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetCategories()
+        {
+            var categories = _category.GetCategories();
+
+            return Json(new { Data = categories }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetPicutres()
+        {
+            var pictures = _picture.GetPictures();
+
+            return Json(new { Data = pictures }, JsonRequestBehavior.AllowGet);
         }
     }
 }

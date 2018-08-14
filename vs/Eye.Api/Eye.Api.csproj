@@ -45,8 +45,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Eye.BusinessService">
+      <HintPath>..\lib\project\Eye.BusinessService.dll</HintPath>
+    </Reference>
     <Reference Include="Eye.Common">
       <HintPath>..\lib\project\Eye.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Eye.DataModel">
+      <HintPath>..\lib\project\Eye.DataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Eye.DataRepository">
+      <HintPath>..\lib\project\Eye.DataRepository.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>

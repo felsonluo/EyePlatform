@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Eye.Common
 
         public string EName { get; set; }
 
+        [BsonIgnore]
         public bool EIsNew { get; set; }
 
         public bool EIsActive { get; set; }

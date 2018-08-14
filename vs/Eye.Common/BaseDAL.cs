@@ -46,7 +46,16 @@ namespace Eye.Common
         {
             client = new MongoClient(ConnectionString);
             database = client.GetDatabase(new MongoUrl(ConnectionString).DatabaseName);
-            collection = database.GetCollection<T>(("c" + "_" + typeof(T).Name.Replace("Model", "")).ToLower());
+            var collectionName = ("c" + "_" + typeof(T).Name.Replace("Model", "")).ToLower();
+
+            var cList = database.ListCollectionNames()?.ToList();
+
+            if (cList == null || !cList.Contains(collectionName))
+            {
+                database.CreateCollection(collectionName);
+            }
+
+            collection = database.GetCollection<T>(collectionName);
         }
 
         /// <summary>
@@ -234,7 +243,8 @@ namespace Eye.Common
         public bool InsertBatch(IEnumerable<T> list)
         {
             //批量插入
-            collection.InsertMany(list);
+            if (list != null && list.Any())
+                collection.InsertMany(list);
 
             return true;
         }
@@ -251,9 +261,11 @@ namespace Eye.Common
 
             var oldItems = list.Where(x => !x.EIsNew);
             //批量插入
-            collection.InsertMany(newItems);
+            if (newItems != null && newItems.Any())
+                collection.InsertMany(newItems);
 
-            UpdateBatch(oldItems);
+            if (oldItems != null && oldItems.Any())
+                UpdateBatch(oldItems);
 
             return true;
         }
@@ -269,7 +281,7 @@ namespace Eye.Common
 
             bool result = false;
             //使用 IsUpsert = true ，如果没有记录则写入
-            var update = collection.ReplaceOne(s => s.EId == t.EId, t, new UpdateOptions() { IsUpsert = true });
+            var update = collection.ReplaceOne(s => s._id == t._id, t, new UpdateOptions() { IsUpsert = true });
             result = update != null && update.ModifiedCount > 0;
 
             return result;

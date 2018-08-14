@@ -1,4 +1,5 @@
 ﻿using Eye.Common;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,7 @@ namespace Eye.DataModel.DataModel
         public string ECode { get; set; }
 
         //描述
-        public string EDescription
-        { get; set; }
+        public string EDescription { get; set; }
 
         //特性
         public string EFeatures { get; set; }
@@ -53,15 +53,19 @@ namespace Eye.DataModel.DataModel
 
 
         //价格币别
+        [BsonIgnore]
         public CurrencyModel ECurrency { get; set; }
 
         //类别
+        [BsonIgnore]
         public CategoryModel ECategories { get; set; }
 
         //对应的图片
+        [BsonIgnore]
         public PictureModel[] Pictures { get; set; }
 
         //对应的文档
+        [BsonIgnore]
         public DocumentModel[] EDocuments { get; set; }
     }
 }

@@ -268,17 +268,13 @@ namespace Eye.Common
                         if (!tag.HasName) continue;
 
                         if (tag.Name == info.AuthorName)
-                            info.Author = tag.Description?.Replace(@"\0x0001", "");
+                            info.Author = tag.Description?.Replace("\0x0001", "").Replace("\u0001", "").Trim().Substring(0, 32);
                         else if (tag.Name == info.Tag1Name)
                             info.Tag1 = tag.Description;
                         else if (tag.Name == info.Tag2Name)
                             info.Tag2 = tag.Description;
                         else if (tag.Name == info.DescriptionName)
                             info.Description = tag.Description;
-                        else if (tag.Name == info.HeightName)
-                            info.Height = tag.Description.Replace("pixels", "").Trim();
-                        else if (tag.Name == info.WidthName)
-                            info.Width = tag.Description.Replace("pixels", "").Trim();
                         else if (tag.Name == info.TakeTimeName)
                             info.TakeTime = tag.Description;
                     }

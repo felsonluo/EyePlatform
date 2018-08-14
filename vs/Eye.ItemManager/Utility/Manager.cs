@@ -136,6 +136,11 @@ namespace Eye.PhotoManager.Utility
             picture.EHeight = int.Parse(info.Height);
             picture.EId = info.Author;
 
+            var img = Image.FromFile(picture.EPath);
+            picture.EWidth = img.Width;
+            picture.EHeight = img.Height;
+            img.Dispose();
+
             DateTime time;
             var s = DateTime.TryParseExact(info.TakeTime,
                     "yyyy:MM:dd HH:mm:ss",

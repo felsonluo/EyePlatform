@@ -27,3 +27,5 @@ E:\Felson\EyePlatform\vs\Eye.BusinessService\bin\Debug\MongoDB.Bson.xml
 E:\Felson\EyePlatform\vs\Eye.BusinessService\bin\Debug\DnsClient.xml
 E:\Felson\EyePlatform\vs\Eye.BusinessService\obj\Debug\Eye.BusinessService.dll
 E:\Felson\EyePlatform\vs\Eye.BusinessService\obj\Debug\Eye.BusinessService.pdb
+E:\Felson\EyePlatform\vs\lib\project\Eye.BusinessService.dll
+E:\Felson\EyePlatform\vs\lib\project\Eye.BusinessService.pdb
