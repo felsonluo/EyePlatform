@@ -10,7 +10,7 @@ import { ItemModel } from '../../../model/item.model';
 export class CarouselComponent implements OnInit {
 
   //展示在首页的几张图片
-  dashboardItems: ItemModel[] = [];
+  dashboardItems: ItemModel[][] = [];
 
   constructor(private service: DataService) {
 
@@ -18,7 +18,7 @@ export class CarouselComponent implements OnInit {
 
   ngOnInit() {
 
-    this.service.getFeautredItems('').subscribe(data => this.dashboardItems.push(data));
+    this.service.getFeautredItems().subscribe(data => this.dashboardItems.push(data));
   }
 
 }

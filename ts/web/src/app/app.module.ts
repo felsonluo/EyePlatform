@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { CarouselModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { RouterModule } from '@angular/router';
 
 import { MatTreeNestedDataSource } from '@angular/material/tree';
@@ -62,6 +64,7 @@ import { ImageSizePipe } from '../pipe/ImageSizePipe';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     CarouselModule.forRoot(),
     PaginationModule.forRoot(),
@@ -76,7 +79,7 @@ import { ImageSizePipe } from '../pipe/ImageSizePipe';
     MatDialogModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [DataService, AudioService, { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }],
+  providers: [DataService, { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }],
   bootstrap: [AppComponent],
   entryComponents: [PhotoComponent, FeaturedComponent]
 })

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { CategoryModel } from '../model/category.model';
 import { Observable, from, of } from 'rxjs';
 import { map, filter, scan, take } from 'rxjs/operators';
@@ -11,12 +12,12 @@ import { ValueTransformer } from '../../node_modules/@angular/compiler/src/util'
 })
 export class DataService {
 
-  private storage: StorageService;
+
   private apiUrl = "http://api.tanyundan.com/Home/GetCategories";
 
-  constructor() {
+  constructor(private http: HttpClient, private storage: StorageService) {
 
-    this.storage = new StorageService();
+
   }
 
   /**
@@ -24,7 +25,9 @@ export class DataService {
    */
   private getCategoriesFromApi(): Observable<CategoryModel> {
 
-    return from([]);
+    var result = this.http.get<CategoryModel>(this.apiUrl);
+
+    return result;
   }
 
   /**

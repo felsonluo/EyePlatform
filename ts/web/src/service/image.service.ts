@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Size } from '../model/size.model';
+import { Size } from '../entity/size.entity';
 
 @Injectable({
     providedIn: 'root'

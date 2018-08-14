@@ -21,7 +21,7 @@ namespace Eye.Api.Controllers
         {
             var items = _item.GetItems();
 
-            return Json(new { Data = items }, JsonRequestBehavior.AllowGet);
+            return Json(items, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 获取所有的分类，包括item 和 pictures
@@ -52,14 +52,14 @@ namespace Eye.Api.Controllers
             });
 
 
-            return Json(new { Data = firstLevelCategories }, JsonRequestBehavior.AllowGet);
+            return Json(firstLevelCategories, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetPicutres()
         {
             var pictures = _picture.GetPictures();
 
-            return Json(new { Data = pictures }, JsonRequestBehavior.AllowGet);
+            return Json(pictures, JsonRequestBehavior.AllowGet);
         }
     }
 }

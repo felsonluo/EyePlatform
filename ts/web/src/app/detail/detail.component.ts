@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from '../../service/data.service';
-import { Item } from '../../model/item.model';
+import { ItemModel } from '../../model/item.model';
 
 
 
@@ -16,7 +16,7 @@ export class DetailComponent implements OnInit {
 
   photoIndex: number = 0;
 
-  product: Item;
+  product: ItemModel;
 
   constructor(private dataService: DataService) {
 

@@ -500,31 +500,6 @@ namespace Eye.PhotoManager
             InitLoadPictureWorker(filter);
         }
 
-        /// <summary>
-        /// 给所有的照片创建快照
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button4_Click(object sender, EventArgs e)
-        {
-            var pictures = this.GetCheckedPictures();
-
-            if (pictures.Count == 0) return;
-
-            var count = Manager.ReducePictures(pictures, this.textBox2.Text + "\\" + _snapshotPath, FixWidth);
-
-            for (var i = 0; i < pictures.Count; i++)
-            {
-                var picture = pictures[i];
-
-                picture.ERow.Cells[nameof(picture.ESnapshotPath)].Value = picture.ESnapshotPath;
-
-            }
-
-            MessageBox.Show("创建了" + count + "张图片快照!");
-
-        }
-
 
 
         /// <summary>

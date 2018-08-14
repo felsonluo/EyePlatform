@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ImageService } from '../service/image.service';
-import { Size } from '../model/size.model';
+import { Size } from '../entity/size.entity';
 
 @Pipe({
     name: 'imageMeasure',

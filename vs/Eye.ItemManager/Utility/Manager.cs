@@ -95,7 +95,7 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
-        public static int ReducePictures(List<PictureModel> pictures, string targetPath, int width)
+        public static int ReducePictures(List<PictureModel> pictures, int width)
         {
             var count = 0;
 
@@ -105,7 +105,14 @@ namespace Eye.PhotoManager.Utility
             {
                 var picture = pictures[i];
 
-                var target = targetPath + "\\" + picture.EName;
+                var targetPath = new FileInfo(picture.EPath).DirectoryName + "\\snapshot";
+
+                if (!System.IO.Directory.Exists(targetPath))
+                {
+                    System.IO.Directory.CreateDirectory(targetPath);
+                }
+
+                var target = targetPath + "\\" + "snapshot_" + picture.EName;
 
                 var success = PictureHandler.GetReducedImage(picture.EPath, width, target);
 
@@ -132,8 +139,6 @@ namespace Eye.PhotoManager.Utility
             picture.ETags1 = info.Tag1;
             picture.ETags2 = info.Tag2;
             picture.EDescription = info.Description;
-            picture.EWidth = int.Parse(info.Width);
-            picture.EHeight = int.Parse(info.Height);
             picture.EId = info.Author;
 
             var img = Image.FromFile(picture.EPath);
@@ -403,6 +408,14 @@ namespace Eye.PhotoManager.Utility
         /// <returns></returns>
         public static bool SavePictures(List<PictureModel> pictures)
         {
+            var noSnapshotPictures = pictures.Where(x => string.IsNullOrWhiteSpace(x.ESnapshotPath)).ToList();
+
+            if (noSnapshotPictures.Any())
+            {
+                //给没有创建快照的图片创建快照
+                Manager.ReducePictures(noSnapshotPictures, 160);
+            }
+
             var result = new PictureBusiness().SetPictures(pictures);
 
             return result;
