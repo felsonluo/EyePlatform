@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardProduct } from '../../../model/dashboardProduct';
 import { DataService } from '../../../service/data.service';
+import { ItemModel } from '../../../model/item.model';
 
 @Component({
   selector: 'app-carousel',
@@ -10,7 +10,7 @@ import { DataService } from '../../../service/data.service';
 export class CarouselComponent implements OnInit {
 
   //展示在首页的几张图片
-  dashboardProduct: DashboardProduct[] = [];
+  dashboardItems: ItemModel[] = [];
 
   constructor(private service: DataService) {
 
@@ -18,7 +18,7 @@ export class CarouselComponent implements OnInit {
 
   ngOnInit() {
 
-    this.service.getDashboardProduct('').subscribe(data => this.dashboardProduct.push(data));
+    this.service.getFeautredItems('').subscribe(data => this.dashboardItems.push(data));
   }
 
 }

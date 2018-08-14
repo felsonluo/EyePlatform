@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatDialog } from '@angular/material';
 import { ImageService } from '../../../../service/image.service';
-import { Item } from '../../../../model/item.model';
+import { ItemModel } from '../../../../model/item.model';
 import { DataService } from '../../../../service/data.service';
 import { PhotoComponent } from '../../../photo/photo.component';
 
@@ -15,7 +15,7 @@ export class FeaturedComponent implements OnInit {
 
 
   modalRef: BsModalRef;
-  featuredItemList: Item[][] = [];
+  featuredItemList: ItemModel[][] = [];
   detailId: string;
   maxImageSrc: string;
   maxImageHeight: number;
@@ -26,7 +26,8 @@ export class FeaturedComponent implements OnInit {
     public dialog: MatDialog,
     public imageService: ImageService) {
 
-    service.getFeautredItem('').subscribe(data => this.featuredItemList.push(data));
+
+    service.getFeautredItems().subscribe(data => this.featuredItemList.push(data));
   }
 
 
@@ -34,7 +35,6 @@ export class FeaturedComponent implements OnInit {
   openModal(template: TemplateRef<any>, id: string) {
     this.detailId = id;
     this.modalRef = this.modalService.show(template);
-
   }
 
 

@@ -1,20 +1,20 @@
 <div id='latestProduct'>
     <mat-list-item class='product-content'>
-        <div class='latestCard' *ngFor="let product of latestProductList">
+        <div class='latestCard' *ngFor="let item of latestItemList">
             <mat-card class="example-card">
                 <div class='card-picture'>
-                    <img class='clickable' src={{product.detail.photoPath[0]}} [ngStyle]="imageService.getImageStyle(product.detail.photoPath[0], 160)">
+                    <img class='clickable' src={{item.EPictures[0].ESnapshotPath}} [ngStyle]="imageService.getImageStyle(item.EPictures[0].ESnapshotPath, 160)">
                 </div>
-                <mat-card-content>{{product.nameKey}}</mat-card-content>
+                <mat-card-content>{{item.EName}}</mat-card-content>
                 <mat-card-actions>
-                    <button mat-button class='zoom-button' color="primary" (click)="openImageDialog(product.detail.photoPath[0]) ">
+                    <button mat-button class='zoom-button' color="primary" (click)="openImageDialog(item.EPictures[0].ESnapshotPath) ">
                         <i class='icon-zoom-in'></i>
                     </button>
-                    <button mat-button class='view-button' color="primary" (click)="openModal(detail,product.id)">
+                    <button mat-button class='view-button' color="primary" (click)="openModal(detail,item.EId)">
                         VIEW
                     </button>
                     <div mat-button class='price-div' color="primary">
-                        {{product.detail.currency.symbol}} {{product.detail.price}}
+                        <!-- {{item.ECurrency.ESymbol}} {{item.EPrice}} -->
                     </div>
                 </mat-card-actions>
             </mat-card>

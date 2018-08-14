@@ -1,10 +1,7 @@
 import { ItemModel } from "./item.model";
-import { BaseModel } from "src/model/base.model";
+import { BaseModel } from "./base.model";
 
 export class CategoryModel extends BaseModel {
-
-    //名称键
-    ECategoryName?: string;
 
     //父属性id
     EParentId?: string;

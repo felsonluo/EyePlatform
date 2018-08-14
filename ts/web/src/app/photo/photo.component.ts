@@ -15,14 +15,8 @@ export class PhotoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: string) {
     this.src = data;
   }
-  // constructor(
-  //   public dialogRef: MatDialogRef<PhotoComponent>,
-  //   @Inject(MAT_DIALOG_DATA) public data: any) {
-
-  // }
 
   onNoClick(): void {
-    //this.dialogRef.close();
   }
 
   ngOnInit() {

@@ -1,10 +1,10 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { DataService } from '../../../../service/data.service';
-import { Item } from '../../../../model/item.model';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatDialog } from '@angular/material';
 import { ImageService } from '../../../../service/image.service';
 import { PhotoComponent } from '../../../photo/photo.component';
+import { ItemModel } from 'src/model/item.model';
 
 @Component({
   selector: 'app-latest',
@@ -13,7 +13,7 @@ import { PhotoComponent } from '../../../photo/photo.component';
 })
 export class LatestComponent implements OnInit {
 
-  latestItemList: Item[] = [];
+  latestItemList: ItemModel[] = [];
   maxImageSrc: string;
   maxImageHeight: number;
   maxImageWidth: number;
@@ -26,7 +26,7 @@ export class LatestComponent implements OnInit {
     public dialog: MatDialog,
     public imageService: ImageService) {
 
-    service.getLatestItem('').subscribe(data => this.latestItemList.push(data));
+    service.getLatestItems('').subscribe(data => this.latestItemList.push(data));
   }
 
   openModal(template: TemplateRef<any>, id: string) {

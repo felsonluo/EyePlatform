@@ -37,6 +37,7 @@ namespace Eye.DataModel.DataModel
         /// <summary>
         /// 是否选中
         /// </summary>
+        [BsonIgnore]
         public bool EChecked { get; set; }
 
         /// <summary>
@@ -58,6 +59,7 @@ namespace Eye.DataModel.DataModel
         /// <summary>
         /// 拍摄者
         /// </summary>
+        [BsonIgnore]
         public string EAuthor { get; set; }
 
         /// <summary>

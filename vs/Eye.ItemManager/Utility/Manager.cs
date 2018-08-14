@@ -405,11 +405,6 @@ namespace Eye.PhotoManager.Utility
         {
             var result = new PictureBusiness().SetPictures(pictures);
 
-            for (var i = 0; i < pictures.Count; i++)
-            {
-                Cache[pictures[i].EId] = true;
-            }
-
             return result;
         }
 

@@ -20,6 +20,9 @@ namespace Eye.DataModel.DataModel
         //描述
         public string EDescription { get; set; }
 
+        //是否显示在主页
+        public bool EDashboard { get; set; }
+
         //特性
         public string EFeatures { get; set; }
 
@@ -56,16 +59,12 @@ namespace Eye.DataModel.DataModel
         [BsonIgnore]
         public CurrencyModel ECurrency { get; set; }
 
-        //类别
-        [BsonIgnore]
-        public CategoryModel ECategories { get; set; }
-
         //对应的图片
         [BsonIgnore]
-        public PictureModel[] Pictures { get; set; }
+        public IList<PictureModel> Pictures { get; set; }
 
         //对应的文档
         [BsonIgnore]
-        public DocumentModel[] EDocuments { get; set; }
+        public IList<DocumentModel> EDocuments { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-import { BaseModel } from "src/model/base.model";
+import { BaseModel } from "./base.model";
 
 export class DocumentModel  extends BaseModel{
 

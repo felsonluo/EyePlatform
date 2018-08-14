@@ -1,4 +1,4 @@
-import { BaseModel } from "src/model/base.model";
+import { BaseModel } from "./base.model";
 
 //客户
 export class Visitor extends BaseModel {

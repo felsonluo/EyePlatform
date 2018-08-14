@@ -1,78 +1,187 @@
 import { Injectable } from '@angular/core';
-import { Category } from '../model/category.model';
-import { Observable, from } from 'rxjs';
-import { User } from '../model/user.model';
-import { Item } from '../model/item.model';
+import { CategoryModel } from '../model/category.model';
+import { Observable, from, of } from 'rxjs';
+import { map, filter, scan, take } from 'rxjs/operators';
+import { ItemModel } from '../model/item.model';
+import { StorageService } from 'src/service/storage.service';
+import { ValueTransformer } from '../../node_modules/@angular/compiler/src/util';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  constructor() { }
+  private storage: StorageService;
+  private apiUrl = "http://api.tanyundan.com/Home/GetCategories";
 
+  constructor() {
+
+    this.storage = new StorageService();
+  }
+
+  /**
+   * 从api接口获取分类
+   */
+  private getCategoriesFromApi(): Observable<CategoryModel> {
+
+    return from([]);
+  }
 
   /**
    * 获取商品大类
-   * @param userId 用户Id
+   * @param 
    */
-  getCategories(userId: string): Observable<Category> {
+  getCategories(): Observable<CategoryModel> {
 
-    return from([]);
+    var categories = this.storage.getCategories();
+
+    if (categories === null) {
+
+      this.getCategoriesFromApi().subscribe(x => categories.push(x));
+      this.storage.setCategories(categories);
+    }
+
+    return from(categories);
   }
 
-  /**
-   * 获取用户信息
-   * @param userId 用户Id
-   */
-  getUser(userId: string): Observable<User> {
 
-    return from([]);
+  /**
+   * 
+   * @param categoryId 获取某一个Category
+   */
+  getCategoriesById(categoryId: string): CategoryModel {
+
+    var categories = this.getCategories();
+
+    var category: CategoryModel;
+
+    categories.pipe(
+      filter(x => x.EId === categoryId),
+      take(1),
+      map(x => category = x)
+    );
+
+    return category;
+  }
+
+
+  /**
+   * 获取某种类别下的产品
+   * @param categoryId 类别Id
+   */
+  getItemsByCategoryId(categoryId: string): Observable<ItemModel> {
+
+    var categories = this.getCategories();
+
+    var result: Observable<ItemModel>;
+
+    categories.pipe(
+      filter(x => x.EId === categoryId),
+      take(1),
+      map((value, index) => { result = from(value.EItems) })
+    );
+
+    return result;
+  }
+
+
+  /**
+   * 获取项目
+   */
+  getItems(): Observable<ItemModel> {
+
+    var categories = this.getCategories();
+
+    var items: ItemModel[] = [];
+
+    categories.pipe(
+      map((value, index) => { items.concat(value.EItems); })
+    );
+
+    return from(items);
   }
 
   /**
    * 获取某种类别下的产品
    * @param categoryId 类别Id
    */
-  getItemByCategoryId(categoryId: string): Observable<Item[]> {
+  getLatestItems(categoryId?: string): Observable<ItemModel> {
 
-    return from([]);
-  }
+    var categories = categoryId === undefined ? this.getCategories() : from([this.getCategoriesById(categoryId)]);
 
-  /**
-   * 获取某种类别下的产品
-   * @param categoryId 类别Id
-   */
-  getLatestItem(categoryId: string): Observable<Item> {
+    var items: ItemModel[] = [];
 
-    return from([]);
-  }
+    categories.pipe(
+      map(x => items.concat(x.EItems))
+    );
 
-  /**
-   * 获取首页的几个产品
-   * @param userId 用户Id
-   */
-  getDashboardItem(userId: string): Observable<Item> {
-
-    return from([]);
+    return from(items);
   }
 
   /**
    * 获取首页的几个产品
    * @param userId 用户Id
    */
-  getFeautredItem(userId: string): Observable<Item[]> {
+  getDashboardItems(userId: string): Observable<ItemModel> {
 
-    return from([]);
+    var categories = this.getCategories();
+
+    var items: ItemModel[] = [];
+
+    categories.pipe(
+      map((value, index) => { items.concat(value.EItems); })
+    );
+
+    var result = from(items).pipe(
+      filter(x => x.EDashboard === true)
+    );
+
+    return result;
   }
 
-/**
- * 根据一个ID获取项目
- * @param itemId 
- */
-  getItemById(itemId: string): Item {
-    return {};
+  /**
+   * 获取首页的几个产品
+   * @param 
+   */
+  getFeautredItems(): Observable<ItemModel[]> {
+
+    var categories = this.getCategories();
+
+    var items: ItemModel[] = [];
+
+    categories.pipe(
+      map((value, index) => { items.concat(value.EItems); })
+    );
+
+    items = items.sort((a, b) => {
+
+      if (a.EDateTime < b.EDateTime) return 1;
+      if (a.EDateTime === b.EDateTime) return 0;
+      if (a.EDateTime > b.EDateTime) return -1;
+
+    });
+
+
+
+    return from([[items[0], items[0], items[0], items[0]], [items[0], items[0], items[0], items[0]]]);
   }
 
+  /**
+   * 根据一个ID获取项目
+   * @param itemId 
+   */
+  getItemById(itemId: string): ItemModel {
+
+    var items = this.getItems();
+
+    var item: ItemModel;
+
+    items.pipe(
+      filter(x => x.EId === itemId),
+      take(1)
+    );
+
+    return item;
+  }
 
 }

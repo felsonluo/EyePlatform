@@ -1,8 +1,8 @@
 <div id="carouselBlk">
     <carousel>
-        <slide *ngFor="let item of dashboardProduct">
+        <slide *ngFor="let item of dashboardItems">
             <div class='container'>
-                <img src={{item.photoPath}}>
+                <img src={{item.EPictures[0].EPath}}>
             </div>
         </slide>
     </carousel>

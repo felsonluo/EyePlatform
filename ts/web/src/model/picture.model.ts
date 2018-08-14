@@ -1,4 +1,4 @@
-import { BaseModel } from "src/model/base.model";
+import { BaseModel } from "./base.model";
 
 export class PictureModel extends BaseModel {
 
@@ -22,12 +22,6 @@ export class PictureModel extends BaseModel {
     /// 拍摄日期
     /// </summary>
     ETakeTime?: Date;
-
-
-    /// <summary>
-    /// 拍摄者
-    /// </summary>
-    EAuthor?: string;
 
     /// <summary>
     /// 拍摄地点

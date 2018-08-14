@@ -2,7 +2,7 @@ import { CategoryModel } from "./category.model";
 import { CurrencyModel } from "./currency.model";
 import { DocumentModel } from "./document.model";
 import { PictureModel } from "./picture.model";
-import { BaseModel } from "src/model/base.model";
+import { BaseModel } from "./base.model";
 
 //具体商品
 export class ItemModel extends BaseModel {
@@ -16,11 +16,14 @@ export class ItemModel extends BaseModel {
     //描述
     EDescription?: string;
 
+    //是否显示在首页
+    EDashboard?: boolean;
+
+    //产品上架时间
+    EDateTime?:boolean;
+
     //特性
     EFeatures?: string;
-
-    //是否是新品
-    EIsNew?: boolean;
 
     //是否显示
     EShow?: boolean;

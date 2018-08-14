@@ -1,4 +1,4 @@
-import { BaseModel } from "src/model/base.model";
+import { BaseModel } from "./base.model";
 
 //币种
 export class CurrencyModel extends BaseModel {

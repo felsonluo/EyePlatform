@@ -1,5 +1,5 @@
 import { KeyValuePairs } from "../entity/keyvaluepairs";
-import { BaseModel } from "src/model/base.model";
+import { BaseModel } from "./base.model";
 
 //商家
 export class OwnerModel extends BaseModel {
