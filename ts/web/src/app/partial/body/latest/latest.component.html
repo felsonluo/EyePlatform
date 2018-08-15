@@ -3,7 +3,7 @@
         <div class='latestCard' *ngFor="let item of latestItemList">
             <mat-card class="example-card">
                 <div class='card-picture'>
-                    <img class='clickable' src='{{item.EPictures[0].ESnapshotPath | picturePathHandler:1}}' [ngStyle]="imageService.getImageStyle(item.EPictures[0].ESnapshotPath, 160)">
+                    <img class='clickable' src='{{item.EPictures[0].ESnapshotPath | picturePathHandler:1}}' [ngStyle]="imageService.getImageStyle(item.EPictures[0].EPath, 160)">
                 </div>
                 <mat-card-content>{{item.EName}}</mat-card-content>
                 <mat-card-actions>

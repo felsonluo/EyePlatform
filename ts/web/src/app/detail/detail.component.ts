@@ -16,11 +16,11 @@ export class DetailComponent implements OnInit {
 
   photoIndex: number = 0;
 
-  product: ItemModel;
+  item: ItemModel;
 
   constructor(private dataService: DataService) {
 
-    this.product = this.dataService.getItemById(this.id);
+    this.item = this.dataService.getItemById(this.id);
   }
 
   ngOnInit() {

@@ -2,11 +2,11 @@
     <div class='detail-top'>
         <div class='detail-left'>
             <div class='detail-img-big'>
-                <img src={{product.detail.photoPath[photoIndex]}}>
+                <img src='{{item.EPictures[0].EPath | picturePathHandler:0}}'>
             </div>
             <div class='detail-img-small'>
-                <div *ngFor='let img of product.detail.photoPath;let i = index;'>
-                    <img src={{img}} (click)='photoIndex=i;'>
+                <div *ngFor='let p of item.EPictures;let i = index;'>
+                    <img src='{{p.EPath | picturePathHandler:0}}' (click)='photoIndex=i;'>
                 </div>
             </div>
         </div>
