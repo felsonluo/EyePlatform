@@ -13,7 +13,7 @@ import { ValueTransformer } from '../../node_modules/@angular/compiler/src/util'
 export class DataService {
 
 
-  private apiUrl = "http://api.tanyundan.com/Home/GetCategories";
+  private apiUrl = "http://api.luoqunyi.com/Home/GetCategories";
 
   constructor(private http: HttpClient, private storage: StorageService) {
 
@@ -23,9 +23,14 @@ export class DataService {
   /**
    * 从api接口获取分类
    */
-  private getCategoriesFromApi(): Observable<CategoryModel> {
+  private getCategoriesFromApi(): CategoryModel[] {
 
-    var result = this.http.get<CategoryModel>(this.apiUrl);
+    var result: CategoryModel[] = [];
+
+    this.http.get<CategoryModel>(this.apiUrl).subscribe(x => {
+      result = result.concat(x);
+      this.storage.setCategories(result);
+    });
 
     return result;
   }
@@ -34,17 +39,15 @@ export class DataService {
    * 获取商品大类
    * @param 
    */
-  getCategories(): Observable<CategoryModel> {
+  getCategories(): CategoryModel[] {
 
     var categories = this.storage.getCategories();
 
-    if (categories === null) {
-
-      this.getCategoriesFromApi().subscribe(x => categories.push(x));
-      this.storage.setCategories(categories);
+    if (categories === null || categories.length === 0) {
+      categories = this.getCategoriesFromApi();
     }
 
-    return from(categories);
+    return categories;
   }
 
 
@@ -58,11 +61,12 @@ export class DataService {
 
     var category: CategoryModel;
 
-    categories.pipe(
-      filter(x => x.EId === categoryId),
-      take(1),
-      map(x => category = x)
-    );
+    for (var i = 0; i < categories.length; i++) {
+      if (categories[i].EId === categoryId) {
+        category = categories[i];
+        break;
+      }
+    }
 
     return category;
   }
@@ -72,17 +76,11 @@ export class DataService {
    * 获取某种类别下的产品
    * @param categoryId 类别Id
    */
-  getItemsByCategoryId(categoryId: string): Observable<ItemModel> {
+  getItemsByCategoryId(categoryId: string): ItemModel[] {
 
-    var categories = this.getCategories();
+    var category = this.getCategoriesById(categoryId);
 
-    var result: Observable<ItemModel>;
-
-    categories.pipe(
-      filter(x => x.EId === categoryId),
-      take(1),
-      map((value, index) => { result = from(value.EItems) })
-    );
+    var result: ItemModel[] = category.EItems;
 
     return result;
   }
@@ -91,53 +89,75 @@ export class DataService {
   /**
    * 获取项目
    */
-  getItems(): Observable<ItemModel> {
+  getItems(): ItemModel[] {
 
     var categories = this.getCategories();
 
     var items: ItemModel[] = [];
 
-    categories.pipe(
-      map((value, index) => { items.concat(value.EItems); })
-    );
+    for (var i = 0; i < categories.length; i++) {
+      items = items.concat(this.getItemsFromCategory(categories[i]));
+    }
 
-    return from(items);
+    return items;
+  }
+
+  /**
+   * 从分类获取项目
+   * @param category 
+   */
+  getItemsFromCategory(category: CategoryModel): ItemModel[] {
+
+    var items: ItemModel[] = [];
+
+    //如果是父级的
+    if (category.EParentId === null) {
+
+      for (var i = 0; i < category.ESubCategories.length; i++) {
+
+        items = items.concat(this.getItemsFromCategory(category.ESubCategories[i]));
+      }
+    }
+    else {
+      if (category.ESubCategories === null || category.ESubCategories.length == 0)
+        items = items.concat(category.EItems);
+      else {
+        for (var i = 0; i < category.ESubCategories.length; i++) {
+
+          items = items.concat(this.getItemsFromCategory(category.ESubCategories[i]));
+        }
+      }
+    }
+
+    return items;
   }
 
   /**
    * 获取某种类别下的产品
    * @param categoryId 类别Id
    */
-  getLatestItems(categoryId?: string): Observable<ItemModel> {
+  getLatestItems(categoryId?: string): ItemModel[] {
 
-    var categories = categoryId === undefined ? this.getCategories() : from([this.getCategoriesById(categoryId)]);
+    var result = categoryId === undefined ? this.getItems() : this.getItemsByCategoryId(categoryId);
 
-    var items: ItemModel[] = [];
-
-    categories.pipe(
-      map(x => items.concat(x.EItems))
-    );
-
-    return from(items);
+    return result;
   }
 
   /**
    * 获取首页的几个产品
    * @param userId 用户Id
    */
-  getDashboardItems(userId: string): Observable<ItemModel> {
+  getDashboardItems(): ItemModel[] {
 
-    var categories = this.getCategories();
+    var items = this.getItems();
 
-    var items: ItemModel[] = [];
+    var result: ItemModel[] = [];
 
-    categories.pipe(
-      map((value, index) => { items.concat(value.EItems); })
-    );
+    for (var i = 0; i < items.length; i++) {
 
-    var result = from(items).pipe(
-      filter(x => x.EDashboard === true)
-    );
+      if (items[i].EDashboard === true)
+        result.push(items[i]);
+    }
 
     return result;
   }
@@ -146,15 +166,11 @@ export class DataService {
    * 获取首页的几个产品
    * @param 
    */
-  getFeautredItems(): Observable<ItemModel[]> {
+  getFeautredItems(): ItemModel[][] {
 
-    var categories = this.getCategories();
+    var items = this.getItems();
 
-    var items: ItemModel[] = [];
-
-    categories.pipe(
-      map((value, index) => { items.concat(value.EItems); })
-    );
+    var result: ItemModel[][] = [];
 
     items = items.sort((a, b) => {
 
@@ -164,9 +180,9 @@ export class DataService {
 
     });
 
+    result = [[items[0], items[0], items[0], items[0]], [items[0], items[0], items[0], items[0]]];
 
-
-    return from([[items[0], items[0], items[0], items[0]], [items[0], items[0], items[0], items[0]]]);
+    return result;
   }
 
   /**
@@ -179,10 +195,10 @@ export class DataService {
 
     var item: ItemModel;
 
-    items.pipe(
-      filter(x => x.EId === itemId),
-      take(1)
-    );
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].EId === itemId)
+        item = items[i];
+    }
 
     return item;
   }

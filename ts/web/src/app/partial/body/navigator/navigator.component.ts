@@ -22,7 +22,7 @@ export class NavigatorComponent implements OnInit {
     this.nestedDataSource = new MatTreeNestedDataSource();
     this.nestedDataSource.data = [];
 
-    service.getCategories().subscribe(data => this.nestedDataSource.data.push(data));
+    this.nestedDataSource.data = service.getCategories();
   }
 
   hasNestedChild = (_: number, nodeData: CategoryModel) => !!nodeData.ESubCategories;

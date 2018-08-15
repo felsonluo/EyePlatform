@@ -232,7 +232,7 @@ namespace Eye.PhotoManager.Utility
             date = date.IsValid() ? date : DateTime.Now;
 
             var yearPath = path + "\\" + date.Year;
-            var monthPath = yearPath + "\\" + date.ToString("MM");
+            var monthPath = yearPath + "\\" + date.ToString("yyyy-MM");
 
             if (!System.IO.Directory.Exists(yearPath))
             {

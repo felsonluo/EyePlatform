@@ -25,11 +25,6 @@ namespace Eye.PhotoManager
 
         private Manager manager = new Manager();
 
-
-        private static readonly string _snapshotPath = "snapshot";
-        private static readonly string _mainPath = "photo";
-        private static readonly int FixWidth = 160;
-
         //当前编辑的行
         private int EditIndex = -1;
 
@@ -338,7 +333,7 @@ namespace Eye.PhotoManager
 
             var pictures = e.Argument as List<PictureModel>;
 
-            var path = this.textBox2.Text + "\\" + _mainPath;
+            var path = this.textBox2.Text + "\\";
 
             var count = 0;
 

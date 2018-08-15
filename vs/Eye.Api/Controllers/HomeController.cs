@@ -35,7 +35,7 @@ namespace Eye.Api.Controllers
 
             for (var i = 0; i < items.Count; i++)
             {
-                items[i].Pictures = pictures.Where(x => x.EItemId == items[i].EId).ToList();
+                items[i].EPictures = pictures.Where(x => x.EItemId == items[i].EId).ToList();
             }
 
             for (var i = 0; i < categories.Count; i++)
@@ -48,11 +48,77 @@ namespace Eye.Api.Controllers
 
             firstLevelCategories.ForEach(x =>
             {
+                x.EName = GetYearName(x.EName);
                 x.ESubCategories = categories.Where(y => y.EParentId == x.EId).ToList();
+                x.ESubCategories.ForEach(m => m.EName = GetMonthName(m.EName));
             });
 
 
             return Json(firstLevelCategories, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 获取年份
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        private string GetYearName(string year)
+        {
+            int y = int.Parse(year);
+
+            switch (y)
+            {
+                case 2014: return year + "(" + "Horse" + ")";
+                case 2015: return year + "(" + "Goat" + ")";
+                case 2016: return year + "(" + "Monkey" + ")";
+                case 2017: return year + "(" + "Rooster" + ")";
+                case 2018: return year + "(" + "Dog" + ")";
+                case 2019: return year + "(" + "Pig" + ")";
+                case 2020: return year + "(" + "Rat" + ")";
+                default: return year;
+            }
+        }
+
+        /// <summary>
+        /// 获取月份
+        /// </summary>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        private string GetMonthName(string month)
+        {
+
+            var m = month.Split('-')[1];
+
+            switch (m)
+            {
+                case "01":
+                    return  "Jan.(" + "apricornus" + ")";
+                case "02":
+                    return  "Feb.(" + "Aquarius" + ")";
+                case "03":
+                    return  "Mar.(" + "Pisces" + ")";
+                case "04":
+                    return  "Apr.(" + "Aries" + ")";
+                case "05":
+                    return  "May.(" + "Taurus" + ")";
+                case "06":
+                    return  "Jun.(" + "Gemini" + ")";
+                case "07":
+                    return  "Jul.(" + "Cancer" + ")";
+                case "08":
+                    return  "Aug.(" + "Leo" + ")";
+                case "09":
+                    return  "Sep.(" + "Virgo" + ")";
+                case "10":
+                    return  "Oct.(" + "Libra" + ")";
+                case "11":
+                    return  "Nov.(" + "Scorpio" + ")";
+                case "12":
+                    return  "Dec.(" + "Sagittarius" + ")";
+                default: return m;
+            }
+
+
         }
 
         public ActionResult GetPicutres()

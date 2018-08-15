@@ -43,6 +43,7 @@ import { ROUTES } from '../router/AppRouter';
 import { PhotoComponent } from './photo/photo.component';
 
 import { ImageSizePipe } from '../pipe/ImageSizePipe';
+import { PicturePathPipe } from '../pipe/PicturePathPipe';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { ImageSizePipe } from '../pipe/ImageSizePipe';
     NavigatorComponent,
     ProductListComponent,
     PhotoComponent,
-    ImageSizePipe
+    ImageSizePipe,
+    PicturePathPipe
   ],
   imports: [
     BrowserModule,

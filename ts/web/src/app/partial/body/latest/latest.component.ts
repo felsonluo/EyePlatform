@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { ImageService } from '../../../../service/image.service';
 import { PhotoComponent } from '../../../photo/photo.component';
 import { ItemModel } from 'src/model/item.model';
+import { PictureService } from '../../../../service/picture.service';
 
 @Component({
   selector: 'app-latest',
@@ -24,9 +25,10 @@ export class LatestComponent implements OnInit {
   constructor(private service: DataService,
     private modalService: BsModalService,
     public dialog: MatDialog,
-    public imageService: ImageService) {
+    public imageService: ImageService,
+    private pictureService: PictureService) {
 
-    service.getLatestItems('').subscribe(data => this.latestItemList.push(data));
+      this.latestItemList = service.getLatestItems();
   }
 
   openModal(template: TemplateRef<any>, id: string) {
@@ -36,11 +38,15 @@ export class LatestComponent implements OnInit {
   }
 
   openImageDialog(src: string): void {
+
+    src = this.pictureService.getPath(src);
+
     var img = new Image();
     this.maxImageSrc = src;
     img.src = src;
     this.maxImageHeight = img.height + 50;
     this.maxImageWidth = img.width + 50;
+
     const dialogRef = this.dialog.open(PhotoComponent, {
       width: this.maxImageWidth + 'px',
       height: this.maxImageHeight + 'px',

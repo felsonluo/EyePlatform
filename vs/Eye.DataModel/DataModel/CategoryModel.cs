@@ -18,10 +18,10 @@ namespace Eye.DataModel.DataModel
 
         //子类别
         [BsonIgnore]
-        public IList<CategoryModel> ESubCategories { get; set; }
+        public List<CategoryModel> ESubCategories { get; set; }
 
         //对应的项目
         [BsonIgnore]
-        public IList<ItemModel> EItems { get; set; }
+        public List<ItemModel> EItems { get; set; }
     }
 }

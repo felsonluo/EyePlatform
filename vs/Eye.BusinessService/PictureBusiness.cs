@@ -91,7 +91,10 @@ namespace Eye.BusinessService
                     {
                         EId = GUIDHelper.GetGuid(),
                         ECategoryId = category.EId,
-                        EIsNew = true
+                        EIsNew = true,
+                        EName = pictures[i].ETakeTime.ToString("yyyy-MM-dd"),
+                        EDetailName = pictures[i].EName,
+                        EDateTime = pictures[i].ETakeTime
                     };
                     items.Add(item);
 

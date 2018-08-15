@@ -5,6 +5,7 @@ import { ImageService } from '../../../../service/image.service';
 import { ItemModel } from '../../../../model/item.model';
 import { DataService } from '../../../../service/data.service';
 import { PhotoComponent } from '../../../photo/photo.component';
+import { PictureService } from '../../../../service/picture.service';
 
 @Component({
   selector: 'app-featured',
@@ -24,10 +25,11 @@ export class FeaturedComponent implements OnInit {
   constructor(private service: DataService,
     private modalService: BsModalService,
     public dialog: MatDialog,
-    public imageService: ImageService) {
+    public imageService: ImageService,
+    private pictureService: PictureService) {
 
 
-    service.getFeautredItems().subscribe(data => this.featuredItemList.push(data));
+      this.featuredItemList = service.getFeautredItems();
   }
 
 
@@ -40,11 +42,17 @@ export class FeaturedComponent implements OnInit {
 
 
   openImageDialog(src: string): void {
-    var img = new Image();
+
+    src = this.pictureService.getPath(src);
+
     this.maxImageSrc = src;
+
+    var img = new Image();
     img.src = src;
+
     this.maxImageHeight = img.height + 50;
     this.maxImageWidth = img.width + 50;
+    
     const dialogRef = this.dialog.open(PhotoComponent, {
       width: this.maxImageWidth + 'px',
       height: this.maxImageHeight + 'px',

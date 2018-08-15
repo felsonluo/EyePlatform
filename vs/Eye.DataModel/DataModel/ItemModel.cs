@@ -17,6 +17,9 @@ namespace Eye.DataModel.DataModel
         //商品代码
         public string ECode { get; set; }
 
+        //商品日期
+        public DateTime EDateTime { get; set; }
+
         //描述
         public string EDescription { get; set; }
 
@@ -61,7 +64,7 @@ namespace Eye.DataModel.DataModel
 
         //对应的图片
         [BsonIgnore]
-        public IList<PictureModel> Pictures { get; set; }
+        public IList<PictureModel> EPictures { get; set; }
 
         //对应的文档
         [BsonIgnore]
