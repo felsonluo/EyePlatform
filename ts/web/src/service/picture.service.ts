@@ -6,7 +6,8 @@ import { PictureModel } from '../model/picture.model';
 })
 export class PictureService {
 
-  private rootPath = "http://image.luoqunyi.com/yuki/";
+  //private rootPath = "http://image.luoqunyi.com/yuki/";
+  private rootPath = "src/photo/";
 
   constructor() { }
 

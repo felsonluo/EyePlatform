@@ -9,7 +9,7 @@
                             <div class='card-picture'>
                                 <img class='clickable' src='{{item.EPictures[0].ESnapshotPath | picturePathHandler : 1}}' [ngStyle]="imageService.getImageStyle(item.EPictures[0].ESnapshotPath, 160)" (click)="openImageDialog(item.EPictures[0].EPath) ">
                             </div>
-                            <mat-card-content>{{item.EName}}</mat-card-content>
+                            <!-- <mat-card-content>{{item.EName}}</mat-card-content> -->
                             <mat-card-actions>
                                 <button (click)="openModal(detail, item.EId)" mat-button>VIEW</button>
                                 <mat-chip color="primary" selected>

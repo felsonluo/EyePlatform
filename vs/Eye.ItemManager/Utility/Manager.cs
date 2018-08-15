@@ -164,15 +164,18 @@ namespace Eye.PhotoManager.Utility
         /// <param name="picture"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool MovePicture(PictureModel picture, string path)
+        public static void MovePictures(List<PictureModel> pictures, string root)
         {
 
-            var dirPath = CreateCategoryFolder(path, picture.ETakeTime);
-
-            var newPath = dirPath + "\\" + picture.EName;
-
-            try
+            for (var i = 0; i < pictures.Count; i++)
             {
+
+                var picture = pictures[i];
+
+                var dirPath = CreateCategoryFolder(root, picture.ETakeTime);
+
+                var newPath = dirPath + "\\" + picture.EName;
+
                 if (File.Exists(picture.EPath))
                 {
                     if (!File.Exists(newPath))
@@ -189,39 +192,13 @@ namespace Eye.PhotoManager.Utility
                         File.Delete(picture.EPath);
                     }
 
-
                     picture.EPath = newPath;
 
                     picture.ERow.Cells[nameof(picture.EPath)].Value = newPath;
                 }
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
         }
-
-        /// <summary>
-        /// 将图片转移
-        /// </summary>
-        /// <param name="pictures"></param>
-        /// <returns></returns>
-        public static int MovePictures(List<PictureModel> pictures, string path)
-        {
-            var count = 0;
-
-            if (pictures == null || !pictures.Any()) return count;
-
-            for (var i = 0; i < pictures.Count; i++)
-            {
-                var result = MovePicture(pictures[i], path);
-
-                if (result) count++;
-            }
-
-            return count;
-        }
+        
 
         /// <summary>
         /// 

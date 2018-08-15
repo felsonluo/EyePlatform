@@ -2,7 +2,7 @@
     <carousel>
         <slide *ngFor="let item of dashboardItems">
             <div class='container'>
-                <img src='{{item.EPictures[0].EPath | picturePathHandler:0}}'>
+                <img src='{{item.EPictures[0].EPath | picturePathHandler:0}}' [ngStyle]="imageService.getImageStyleByFixSize(item.EPictures[0].EPath, 480, 1170 )">
             </div>
         </slide>
     </carousel>

@@ -159,7 +159,7 @@ export class DataService {
         result.push(items[i]);
     }
 
-    return result;
+    return [result[0]];
   }
 
   /**

@@ -335,30 +335,10 @@ namespace Eye.PhotoManager
 
             var path = this.textBox2.Text + "\\";
 
-            var count = 0;
-
             this.progressBar1.Visible = true;
 
-            for (var i = 0; i < pictures.Count; i++)
-            {
-                try
-                {
-                    var result = Manager.MovePicture(pictures[i], path);
+            Manager.MovePictures(pictures, path);
 
-                    if (result)
-                    {
-                        var value = Convert.ToInt32(++count * 1.0 / pictures.Count * 100.00);
-
-                        this.backgroundWorker1.ReportProgress(value);
-                    }
-                }
-                catch (Exception)
-                {
-
-                    continue;
-                }
-
-            }
         }
         /// <summary>
         /// 
@@ -460,16 +440,7 @@ namespace Eye.PhotoManager
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            var list = new List<DataGridViewRow>();
-
-            for (var i = 0; i < this.dataGridView1.Rows.Count; i++)
-            {
-                list.Add(this.dataGridView1.Rows[i]);
-            }
-
-
-
-            var pictures = GetPictures(list);
+            var pictures = this.dataGridView1.DataSource as List<PictureModel>;
 
             pictures.ForEach(x => x.ERow = null);
 
@@ -495,7 +466,31 @@ namespace Eye.PhotoManager
             InitLoadPictureWorker(filter);
         }
 
+        /// <summary>
+        /// 保存并整理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var pictures = this.dataGridView1.DataSource as List<PictureModel>;
 
+            var path = this.textBox2.Text + "\\";
+
+            //移动
+            Manager.MovePictures(pictures, path);
+
+            //保存
+            Manager.SavePictures(pictures);
+
+            MessageBox.Show("保存成功!");
+
+            button3_Click(sender, e);
+
+
+
+
+        }
 
         /// <summary>
         /// 保存图片信息
@@ -638,6 +633,7 @@ namespace Eye.PhotoManager
 
             BatchSetPictrueData(selectedPictures, pcitrue);
         }
+
 
 
 

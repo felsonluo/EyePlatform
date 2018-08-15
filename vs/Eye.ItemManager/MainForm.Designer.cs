@@ -84,6 +84,7 @@
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -284,7 +285,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(752, 514);
+            this.button2.Location = new System.Drawing.Point(668, 513);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(84, 25);
@@ -431,7 +432,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(662, 514);
+            this.button6.Location = new System.Drawing.Point(578, 513);
             this.button6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(84, 25);
@@ -442,7 +443,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(227, 515);
+            this.textBox2.Location = new System.Drawing.Point(134, 515);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(164, 23);
             this.textBox2.TabIndex = 51;
@@ -451,7 +452,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(153, 517);
+            this.label3.Location = new System.Drawing.Point(60, 517);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 52;
@@ -459,7 +460,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(397, 514);
+            this.button7.Location = new System.Drawing.Point(304, 514);
             this.button7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(36, 25);
@@ -470,7 +471,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(58, 514);
+            this.button8.Location = new System.Drawing.Point(346, 515);
             this.button8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(84, 25);
@@ -575,11 +576,23 @@
             this.panel1.TabIndex = 65;
             this.panel1.Visible = false;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(758, 513);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(84, 25);
+            this.button4.TabIndex = 66;
+            this.button4.Text = "整理并保存";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1057, 542);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.button13);
@@ -685,6 +698,7 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button4;
     }
 }
 
