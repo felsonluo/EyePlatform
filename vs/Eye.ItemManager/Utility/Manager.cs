@@ -335,6 +335,8 @@ namespace Eye.PhotoManager.Utility
 
             for (var i = 0; i < files.Count; i++)
             {
+                if (files[i].Name.StartsWith("snapshot_")) continue;
+
                 var picture = GetPicture(files[i]);
 
                 list.Add(picture);
