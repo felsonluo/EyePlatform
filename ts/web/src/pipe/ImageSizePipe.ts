@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ImageService } from '../service/image.service';
 import { Size } from '../entity/size.entity';
+import { PictureService } from '../service/picture.service';
 
 @Pipe({
     name: 'imageMeasure',
@@ -11,6 +12,6 @@ export class ImageSizePipe implements PipeTransform {
 
     transform(src: string, max: number): Size {
 
-        return new ImageService().getSize(src, max);
+        return new ImageService(new PictureService()).getSize(src, max);
     }
 }

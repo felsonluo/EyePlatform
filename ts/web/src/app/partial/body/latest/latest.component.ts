@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input } from '@angular/core';
 import { DataService } from '../../../../service/data.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatDialog } from '@angular/material';
@@ -6,6 +6,7 @@ import { ImageService } from '../../../../service/image.service';
 import { PhotoComponent } from '../../../photo/photo.component';
 import { ItemModel } from 'src/model/item.model';
 import { PictureService } from '../../../../service/picture.service';
+import { PictureModel } from 'src/model/picture.model';
 
 @Component({
   selector: 'app-latest',
@@ -21,6 +22,9 @@ export class LatestComponent implements OnInit {
   detailId: string;
   modalRef: BsModalRef;
 
+  @Input()
+  public categoryId: string;
+
 
   constructor(private service: DataService,
     private modalService: BsModalService,
@@ -28,7 +32,15 @@ export class LatestComponent implements OnInit {
     public imageService: ImageService,
     private pictureService: PictureService) {
 
-      this.latestItemList = service.getLatestItems();
+    this.init();
+  }
+
+  /**
+   * 初始化
+   */
+  init(categoryId?: string) {
+    this.categoryId = categoryId;
+    this.latestItemList = this.service.getLatestItems(this.categoryId);
   }
 
   openModal(template: TemplateRef<any>, id: string) {
@@ -37,15 +49,14 @@ export class LatestComponent implements OnInit {
 
   }
 
-  openImageDialog(src: string): void {
+  openImageDialog(picture: PictureModel): void {
 
-    src = this.pictureService.getPath(src);
+    var src = this.pictureService.getPath(picture.EPath);
 
-    var img = new Image();
     this.maxImageSrc = src;
-    img.src = src;
-    this.maxImageHeight = img.height + 50;
-    this.maxImageWidth = img.width + 50;
+
+    this.maxImageHeight = picture.EHeight + 50;
+    this.maxImageWidth = picture.EWidth + 50;
 
     const dialogRef = this.dialog.open(PhotoComponent, {
       width: this.maxImageWidth + 'px',

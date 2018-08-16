@@ -1,11 +1,11 @@
 <div id="productList">
     <mat-list>
-        <h3 mat-subheader>
+        <h3 mat-subheader *ngIf="categoryId === undefined">
             <div>Fresh Memories</div>
         </h3>
-        <app-featured></app-featured>
+        <app-featured *ngIf="categoryId === undefined"></app-featured>
         <mat-divider></mat-divider>
         <h3 mat-subheader>Ages Memories</h3>
-        <app-latest></app-latest>
+        <app-latest #latest></app-latest>
     </mat-list>
 </div>

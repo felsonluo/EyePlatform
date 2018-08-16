@@ -2,7 +2,8 @@
     <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="example-tree">
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
             <li class="mat-tree-node">
-                <button mat-icon-button></button> {{node.EName}}
+                <button mat-icon-button></button>
+                <button mat-button (click)='changeCategory(node.EId)'>{{node.EName}}</button>
             </li>
         </mat-tree-node>
 
@@ -13,7 +14,8 @@
                         <mat-icon class="mat-icon-rtl-mirror">
                             {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                         </mat-icon>
-                    </button> {{node.EName}}
+                    </button>
+                    <button mat-button (click)='selectCategory(node.EId)'>{{node.EName}}</button>
                 </div>
                 <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
                     <ng-container matTreeNodeOutlet></ng-container>

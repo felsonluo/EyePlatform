@@ -57,6 +57,31 @@ namespace Eye.PhotoManager
         }
 
         /// <summary>
+        /// 保存图片
+        /// </summary>
+        /// <param name="filter"></param>
+        private void InitSavePictureWorker(List<PictureModel> pictures)
+        {
+            this.button2.Enabled = false;
+            this.button4.Enabled = false;
+            this.button8.Enabled = false;
+
+            this.progressBar1.Visible = true;
+
+            this.backgroundWorker3 = new BackgroundWorker(); // 实例化后台对象
+
+            backgroundWorker3.WorkerReportsProgress = true; // 设置可以通告进度
+            backgroundWorker3.WorkerSupportsCancellation = true; // 设置可以取消
+
+            backgroundWorker3.DoWork += new DoWorkEventHandler(SavePictures);
+            backgroundWorker3.ProgressChanged += new ProgressChangedEventHandler(UpdateSavePictureProgress);
+            backgroundWorker3.RunWorkerCompleted += new RunWorkerCompletedEventHandler(SavePicturesCompleted);
+
+            backgroundWorker3.RunWorkerAsync(pictures);
+
+        }
+
+        /// <summary>
         /// 加载图片
         /// </summary>
         /// <param name="sender"></param>
@@ -78,11 +103,56 @@ namespace Eye.PhotoManager
             this.Invoke(action, pictures);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SavePictures(object sender, DoWorkEventArgs e)
+        {
+            var pictures = e.Argument as List<PictureModel>;
+
+            var path = this.textBox2.Text + "\\";
+
+            for (var i = 0; i < pictures.Count; i++)
+            {
+                //移动
+                if (pictures[i].Arrage)
+                {
+                    Manager.MovePicture(pictures[i], path);
+                }
+
+                //是否创建了快照
+                if (string.IsNullOrWhiteSpace(pictures[i].ESnapshotPath))
+                {
+                    Manager.ReducePicture(pictures[i], 160);
+                }
+
+                //保存
+                Manager.SavePicture(pictures[i]);
+
+                var value = i * 100 / pictures.Count;
+
+                this.backgroundWorker3.ReportProgress(value);
+            }
+
+        }
+
         //加载图片完成
         private void LoadPicturesCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
 
+        }
+
+        private void SavePicturesCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button2.Enabled = true;
+            this.button4.Enabled = true;
+            this.button8.Enabled = true;
+            this.progressBar1.Visible = false;
+
+            MessageBox.Show("保存成功！");
         }
 
         /// <summary>
@@ -111,6 +181,8 @@ namespace Eye.PhotoManager
         private void showPictures2Grid(List<PictureModel> pictures)
         {
             this.dataGridView1.Rows.Clear();
+
+            if (pictures == null) return;
 
             this.EditIndex = -1;
 
@@ -142,7 +214,8 @@ namespace Eye.PhotoManager
             row.Cells[nameof(picture.ETakeTime)].Value = picture.ETakeTime;
             row.Cells[nameof(picture.ETakeLocation)].Value = picture.ETakeLocation;
             row.Cells[nameof(picture.ESize)].Value = picture.ESize;
-            row.Cells[nameof(picture.ETags1)].Value = picture.ETags1;
+            row.Cells[nameof(picture.EWidth)].Value = picture.EWidth;
+            row.Cells[nameof(picture.EHeight)].Value = picture.EHeight;
             row.Cells[nameof(picture.ETags2)].Value = picture.ETags2;
             row.Cells[nameof(picture.EDescription)].Value = picture.EDescription;
 
@@ -167,6 +240,8 @@ namespace Eye.PhotoManager
             picture.ETakeTime = DateTime.Parse(row.Cells[nameof(picture.ETakeTime)].Value?.ToString());
             picture.ETakeLocation = row.Cells[nameof(picture.ETakeLocation)].Value?.ToString();
             picture.ESize = double.Parse(row.Cells[nameof(picture.ESize)].Value?.ToString());
+            picture.EWidth = int.Parse(row.Cells[nameof(picture.EWidth)].Value?.ToString());
+            picture.EHeight = int.Parse(row.Cells[nameof(picture.EHeight)].Value?.ToString());
             picture.ETags1 = row.Cells[nameof(picture.ETags1)].Value?.ToString();
             picture.ETags2 = row.Cells[nameof(picture.ETags2)].Value?.ToString();
             picture.EDescription = row.Cells[nameof(picture.EDescription)].Value?.ToString();
@@ -315,7 +390,7 @@ namespace Eye.PhotoManager
             backgroundWorker1.WorkerSupportsCancellation = true; // 设置可以取消
 
             backgroundWorker1.DoWork += new DoWorkEventHandler(ArrangePicture);
-            backgroundWorker1.ProgressChanged += new ProgressChangedEventHandler(UpdateProgress);
+            backgroundWorker1.ProgressChanged += new ProgressChangedEventHandler(UpdateLoadPictureProgress);
 
             backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CompletedWork);
 
@@ -352,7 +427,12 @@ namespace Eye.PhotoManager
             }));
         }
 
-        private void UpdateProgress(object sender, ProgressChangedEventArgs e)
+        private void UpdateSavePictureProgress(object sender, ProgressChangedEventArgs e)
+        {
+            SetProgress(e.ProgressPercentage);
+        }
+
+        private void UpdateLoadPictureProgress(object sender, ProgressChangedEventArgs e)
         {
             SetProgress(e.ProgressPercentage);
         }
@@ -440,15 +520,21 @@ namespace Eye.PhotoManager
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            var pictures = this.dataGridView1.DataSource as List<PictureModel>;
+            var pictures = GetCheckedPictures();
 
-            pictures.ForEach(x => x.ERow = null);
+            if (pictures == null || !pictures.Any())
+            {
+                MessageBox.Show("请勾选要操作的记录");
+                return;
+            }
 
-            Manager.SavePictures(pictures);
+            DialogResult dr = MessageBox.Show("确定要保存" + pictures.Count + "条记录吗?", "提示", MessageBoxButtons.OKCancel);
 
-            MessageBox.Show("保存成功!");
+            if (dr == DialogResult.OK)
+            {
 
-            button3_Click(sender, e);
+                this.InitSavePictureWorker(pictures);
+            }
         }
 
         /// <summary>
@@ -473,23 +559,23 @@ namespace Eye.PhotoManager
         /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
-            var pictures = this.dataGridView1.DataSource as List<PictureModel>;
+            var pictures = GetCheckedPictures();
 
-            var path = this.textBox2.Text + "\\";
+            if (pictures == null || !pictures.Any())
+            {
+                MessageBox.Show("请勾选要操作的记录");
+                return;
+            }
 
-            //移动
-            Manager.MovePictures(pictures, path);
+            pictures.ForEach(x => x.Arrage = true);
 
-            //保存
-            Manager.SavePictures(pictures);
+            DialogResult dr = MessageBox.Show("确定要保存并整理" + pictures.Count + "条记录吗?", "提示", MessageBoxButtons.OKCancel);
 
-            MessageBox.Show("保存成功!");
+            if (dr == DialogResult.OK)
+            {
 
-            button3_Click(sender, e);
-
-
-
-
+                this.InitSavePictureWorker(pictures);
+            }
         }
 
         /// <summary>

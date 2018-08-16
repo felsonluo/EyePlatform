@@ -32,7 +32,7 @@ namespace Eye.BusinessService
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
-        public bool SetPictures(List<PictureModel> pictures)
+        public bool SavePicture(PictureModel picture)
         {
 
             //项目分类
@@ -44,65 +44,61 @@ namespace Eye.BusinessService
             //需要修改的照片
             var pictures2modify = new List<KeyValuePair<string, string>>();
 
-
-            for (var i = 0; i < pictures.Count; i++)
+            //1.处理图片的Id
+            if (string.IsNullOrWhiteSpace(picture.EId) || !picturesInDatabase.Exists(x => x.EId == picture.EId))
             {
-                //1.处理图片的Id
-                if (string.IsNullOrWhiteSpace(pictures[i].EId) || !picturesInDatabase.Exists(x => x.EId == pictures[i].EId))
+                //新建一个Id
+                picture.EId = GUIDHelper.GetGuid();
+                picture.EIsNew = true;
+                //处理分类
+                var catetoryName = picture.ETakeTime.ToString("yyyy-MM");
+                var category = categories.FirstOrDefault(x => x.EName == catetoryName);
+
+                var parentCategoryName = picture.ETakeTime.ToString("yyyy");
+                var parentCategory = categories.FirstOrDefault(x => x.EName == parentCategoryName);
+
+                if (parentCategory == null)
                 {
-                    //新建一个Id
-                    pictures[i].EId = GUIDHelper.GetGuid();
-                    pictures[i].EIsNew = true;
-                    //处理分类
-                    var catetoryName = pictures[i].ETakeTime.ToString("yyyy-MM");
-                    var category = categories.FirstOrDefault(x => x.EName == catetoryName);
-
-                    var parentCategoryName = pictures[i].ETakeTime.ToString("yyyy");
-                    var parentCategory = categories.FirstOrDefault(x => x.EName == parentCategoryName);
-
-                    if (parentCategory == null)
-                    {
-                        parentCategory = new CategoryModel()
-                        {
-                            EId = GUIDHelper.GetGuid(),
-                            EName = parentCategoryName,
-                            EIsNew = true
-                        };
-
-                        categories.Add(parentCategory);
-                    }
-                    //如果不存在
-                    if (category == null)
-                    {
-
-                        category = new CategoryModel()
-                        {
-                            EId = GUIDHelper.GetGuid(),
-                            EName = catetoryName,
-                            EParentId = parentCategory.EId,
-                            EIsNew = true
-                        };
-
-                        categories.Add(category);
-                    }
-
-                    //处理项目
-                    var item = new ItemModel()
+                    parentCategory = new CategoryModel()
                     {
                         EId = GUIDHelper.GetGuid(),
-                        ECategoryId = category.EId,
-                        EIsNew = true,
-                        EName = pictures[i].ETakeTime.ToString("yyyy-MM-dd"),
-                        EDetailName = pictures[i].EName,
-                        EDateTime = pictures[i].ETakeTime
+                        EName = parentCategoryName,
+                        EIsNew = true
                     };
-                    items.Add(item);
 
-
-                    pictures[i].EItemId = item.EId;
-
-                    pictures2modify.Add(new KeyValuePair<string, string>(pictures[i].EPath, pictures[i].EId));
+                    categories.Add(parentCategory);
                 }
+                //如果不存在
+                if (category == null)
+                {
+
+                    category = new CategoryModel()
+                    {
+                        EId = GUIDHelper.GetGuid(),
+                        EName = catetoryName,
+                        EParentId = parentCategory.EId,
+                        EIsNew = true
+                    };
+
+                    categories.Add(category);
+                }
+
+                //处理项目
+                var item = new ItemModel()
+                {
+                    EId = GUIDHelper.GetGuid(),
+                    ECategoryId = category.EId,
+                    EIsNew = true,
+                    EName = picture.ETakeTime.ToString("yyyy-MM-dd"),
+                    EDetailName = picture.EName,
+                    EDateTime = picture.ETakeTime
+                };
+                items.Add(item);
+
+
+                picture.EItemId = item.EId;
+
+                pictures2modify.Add(new KeyValuePair<string, string>(picture.EPath, picture.EId));
             }
 
 
@@ -112,7 +108,7 @@ namespace Eye.BusinessService
 
             _category.SaveCategorys(categories);
 
-            SavePictures(pictures);
+            SavePictures(new List<PictureModel>() { picture });
 
             return true;
         }

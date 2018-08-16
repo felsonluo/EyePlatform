@@ -80,7 +80,7 @@ export class DataService {
 
     var category = this.getCategoriesById(categoryId);
 
-    var result: ItemModel[] = category.EItems;
+    var result: ItemModel[] = this.getItemsFromCategory(category);
 
     return result;
   }
@@ -180,7 +180,7 @@ export class DataService {
 
     });
 
-    result = [[items[0], items[0], items[0], items[0]], [items[0], items[0], items[0], items[0]]];
+    result = [[items[0], items[1], items[2], items[3]], [items[4], items[5], items[6], items[7]]];
 
     return result;
   }

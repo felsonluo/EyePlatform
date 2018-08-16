@@ -25,11 +25,11 @@ export class ImageService {
     /**
      * 按照比例来缩放
      */
-    getImageStyleByFixSize(src: string, fixHeight: number, fixWidth: number): any {
+    getImageStyleByFixSize(src: string, height: number, width: number, fixHeight: number, fixWidth: number): any {
 
         src = this.pictureService.getPath(src, 0);
-        
-        var size = this.getSizeByFixSize(src, fixHeight, fixWidth);
+
+        var size = this.getSizeByFixSize(height, width, fixHeight, fixWidth);
         return {
             'width': size.width + 'px',
             'height': size.height + 'px',
@@ -44,11 +44,7 @@ export class ImageService {
      * @param maxHeight 
      * @param maxWidth 
      */
-    getSizeByFixSize(src: string, fixHeight: number, fixWidth: number): Size {
-        var img = new Image();
-        img.src = src;
-        var width = img.width;
-        var height = img.height;
+    getSizeByFixSize(height: number, width: number, fixHeight: number, fixWidth: number): Size {
         var left = 0;
         var top = 0;
 

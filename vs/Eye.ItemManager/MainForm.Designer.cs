@@ -33,23 +33,11 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.EChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.EId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ETakeTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ETakeLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ESnapshotPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ESize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ETags1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ETags2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
@@ -85,6 +73,21 @@
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
+            this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
+            this.EChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.EId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETakeTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETakeLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ESnapshotPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ESize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EWidth = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EHeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETags1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ETags2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -134,7 +137,6 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.progressBar1);
             this.tabPage2.Controls.Add(this.dataGridView1);
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
@@ -143,14 +145,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "照片列表";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(207, 197);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(407, 23);
-            this.progressBar1.TabIndex = 58;
-            this.progressBar1.Visible = false;
             // 
             // dataGridView1
             // 
@@ -169,6 +163,8 @@
             this.EPath,
             this.ESnapshotPath,
             this.ESize,
+            this.EWidth,
+            this.EHeight,
             this.ETags1,
             this.ETags2,
             this.EDescription});
@@ -182,79 +178,6 @@
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
-            // 
-            // EChecked
-            // 
-            this.EChecked.HeaderText = "选择";
-            this.EChecked.Name = "EChecked";
-            this.EChecked.ReadOnly = true;
-            // 
-            // EId
-            // 
-            this.EId.HeaderText = "ID";
-            this.EId.Name = "EId";
-            this.EId.ReadOnly = true;
-            this.EId.Visible = false;
-            // 
-            // EItemId
-            // 
-            this.EItemId.HeaderText = "EItemId";
-            this.EItemId.Name = "EItemId";
-            this.EItemId.Visible = false;
-            // 
-            // EName
-            // 
-            this.EName.HeaderText = "名称";
-            this.EName.Name = "EName";
-            this.EName.ReadOnly = true;
-            // 
-            // ETakeTime
-            // 
-            this.ETakeTime.HeaderText = "拍摄日期";
-            this.ETakeTime.Name = "ETakeTime";
-            this.ETakeTime.ReadOnly = true;
-            // 
-            // ETakeLocation
-            // 
-            this.ETakeLocation.HeaderText = "拍摄地点";
-            this.ETakeLocation.Name = "ETakeLocation";
-            this.ETakeLocation.ReadOnly = true;
-            // 
-            // EPath
-            // 
-            this.EPath.HeaderText = "原始路径";
-            this.EPath.Name = "EPath";
-            this.EPath.ReadOnly = true;
-            // 
-            // ESnapshotPath
-            // 
-            this.ESnapshotPath.HeaderText = "快照路径";
-            this.ESnapshotPath.Name = "ESnapshotPath";
-            this.ESnapshotPath.ReadOnly = true;
-            // 
-            // ESize
-            // 
-            this.ESize.HeaderText = "大小";
-            this.ESize.Name = "ESize";
-            this.ESize.ReadOnly = true;
-            // 
-            // ETags1
-            // 
-            this.ETags1.HeaderText = "人物";
-            this.ETags1.Name = "ETags1";
-            this.ETags1.ReadOnly = true;
-            // 
-            // ETags2
-            // 
-            this.ETags2.HeaderText = "标签";
-            this.ETags2.Name = "ETags2";
-            this.ETags2.ReadOnly = true;
-            // 
-            // EDescription
-            // 
-            this.EDescription.HeaderText = "描述";
-            this.EDescription.Name = "EDescription";
-            this.EDescription.ReadOnly = true;
             // 
             // tabPage1
             // 
@@ -283,6 +206,14 @@
             this.treeView1.Size = new System.Drawing.Size(162, 423);
             this.treeView1.TabIndex = 0;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(683, 10);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(369, 23);
+            this.progressBar1.TabIndex = 58;
+            this.progressBar1.Visible = false;
+            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(668, 513);
@@ -296,7 +227,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(764, 14);
+            this.button3.Location = new System.Drawing.Point(595, 9);
             this.button3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(82, 25);
@@ -565,6 +496,7 @@
             // 
             // panel1
             // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.checkBox5);
             this.panel1.Controls.Add(this.textBox1);
             this.panel1.Controls.Add(this.checkBox4);
@@ -587,11 +519,95 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // EChecked
+            // 
+            this.EChecked.HeaderText = "选择";
+            this.EChecked.Name = "EChecked";
+            this.EChecked.ReadOnly = true;
+            // 
+            // EId
+            // 
+            this.EId.HeaderText = "ID";
+            this.EId.Name = "EId";
+            this.EId.ReadOnly = true;
+            this.EId.Visible = false;
+            // 
+            // EItemId
+            // 
+            this.EItemId.HeaderText = "EItemId";
+            this.EItemId.Name = "EItemId";
+            this.EItemId.Visible = false;
+            // 
+            // EName
+            // 
+            this.EName.HeaderText = "名称";
+            this.EName.Name = "EName";
+            this.EName.ReadOnly = true;
+            // 
+            // ETakeTime
+            // 
+            this.ETakeTime.HeaderText = "日期";
+            this.ETakeTime.Name = "ETakeTime";
+            this.ETakeTime.ReadOnly = true;
+            // 
+            // ETakeLocation
+            // 
+            this.ETakeLocation.HeaderText = "地点";
+            this.ETakeLocation.Name = "ETakeLocation";
+            this.ETakeLocation.ReadOnly = true;
+            // 
+            // EPath
+            // 
+            this.EPath.HeaderText = "路径";
+            this.EPath.Name = "EPath";
+            this.EPath.ReadOnly = true;
+            // 
+            // ESnapshotPath
+            // 
+            this.ESnapshotPath.HeaderText = "快照";
+            this.ESnapshotPath.Name = "ESnapshotPath";
+            this.ESnapshotPath.ReadOnly = true;
+            // 
+            // ESize
+            // 
+            this.ESize.HeaderText = "大小";
+            this.ESize.Name = "ESize";
+            this.ESize.ReadOnly = true;
+            // 
+            // EWidth
+            // 
+            this.EWidth.HeaderText = "宽度";
+            this.EWidth.Name = "EWidth";
+            // 
+            // EHeight
+            // 
+            this.EHeight.HeaderText = "高度";
+            this.EHeight.Name = "EHeight";
+            // 
+            // ETags1
+            // 
+            this.ETags1.HeaderText = "人物";
+            this.ETags1.Name = "ETags1";
+            this.ETags1.ReadOnly = true;
+            // 
+            // ETags2
+            // 
+            this.ETags2.HeaderText = "标签";
+            this.ETags2.Name = "ETags2";
+            this.ETags2.ReadOnly = true;
+            // 
+            // EDescription
+            // 
+            this.EDescription.HeaderText = "描述";
+            this.EDescription.Name = "EDescription";
+            this.EDescription.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1057, 542);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.checkBox2);
@@ -681,6 +697,13 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button4;
+        private System.ComponentModel.BackgroundWorker backgroundWorker3;
         private System.Windows.Forms.DataGridViewCheckBoxColumn EChecked;
         private System.Windows.Forms.DataGridViewTextBoxColumn EId;
         private System.Windows.Forms.DataGridViewTextBoxColumn EItemId;
@@ -690,15 +713,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn EPath;
         private System.Windows.Forms.DataGridViewTextBoxColumn ESnapshotPath;
         private System.Windows.Forms.DataGridViewTextBoxColumn ESize;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EWidth;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EHeight;
         private System.Windows.Forms.DataGridViewTextBoxColumn ETags1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ETags2;
         private System.Windows.Forms.DataGridViewTextBoxColumn EDescription;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button4;
     }
 }
 

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { CategoryModel } from 'src/model/category.model';
 import { DataService } from 'src/service/data.service';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-navigator',
@@ -15,6 +16,13 @@ export class NavigatorComponent implements OnInit {
   nestedTreeControl: NestedTreeControl<CategoryModel>;
   nestedDataSource: MatTreeNestedDataSource<CategoryModel>;
 
+  hasNestedChild = (_: number, nodeData: CategoryModel) => !!nodeData.ESubCategories;
+
+  private _getChildren = (node: CategoryModel) => node.ESubCategories;
+
+  @Output()
+  changeCategory: EventEmitter<string> = new EventEmitter<string>();
+
 
   constructor(private service: DataService) {
 
@@ -25,9 +33,11 @@ export class NavigatorComponent implements OnInit {
     this.nestedDataSource.data = service.getCategories();
   }
 
-  hasNestedChild = (_: number, nodeData: CategoryModel) => !!nodeData.ESubCategories;
+  selectCategory(categoryId: string) {
 
-  private _getChildren = (node: CategoryModel) => node.ESubCategories;
+    this.changeCategory.emit(categoryId);
+  }
+
 
   ngOnInit() {
 

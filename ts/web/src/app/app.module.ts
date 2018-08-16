@@ -19,6 +19,7 @@ import { MatDividerModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import {DataScrollerModule} from 'primeng/datascroller';
 
 import { AppComponent } from './app.component';
 import { DataService } from '../service/data.service';
@@ -71,6 +72,7 @@ import { PicturePathPipe } from '../pipe/PicturePathPipe';
     CarouselModule.forRoot(),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
+    DataScrollerModule,
     MatTreeModule,
     MatIconModule,
     MatButtonModule,

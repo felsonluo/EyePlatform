@@ -4,8 +4,8 @@
 </div>
 <div id="mainBody">
     <div class='container'>
-        <app-navigator></app-navigator>
-        <app-product-list></app-product-list>
+        <app-navigator (changeCategory)="changeCategory($event)"></app-navigator>
+        <app-product-list #product [categoryId]="categoryId"></app-product-list>
     </div>
 </div>
 <!-- <div id='footerSection'>

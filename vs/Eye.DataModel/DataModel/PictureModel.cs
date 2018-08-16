@@ -101,6 +101,9 @@ namespace Eye.DataModel.DataModel
         public string EDescription { get; set; }
 
         [BsonIgnore]
+        public bool Arrage { get; set; }
+
+        [BsonIgnore]
         public DataGridViewRow ERow { get; set; }
 
 

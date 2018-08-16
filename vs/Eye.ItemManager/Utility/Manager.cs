@@ -35,7 +35,7 @@ namespace Eye.PhotoManager.Utility
     {
 
         #region 全局变量	
-        private readonly static string[] IncludeFiles = new string[] { ".jpg", ".jpeg", ".png" };
+        private readonly static string[] IncludeFiles = new string[] { ".jpg", ".jpeg" };
 
 
         private static bool DeleteAfterCopy
@@ -90,40 +90,37 @@ namespace Eye.PhotoManager.Utility
 
         #region 公开方法
 
+        public static void ReducePicture(PictureModel picture, int width)
+        {
+            var targetPath = new FileInfo(picture.EPath).DirectoryName + "\\snapshot";
+
+            if (!System.IO.Directory.Exists(targetPath))
+            {
+                System.IO.Directory.CreateDirectory(targetPath);
+            }
+
+            var target = targetPath + "\\" + "snapshot_" + picture.EName;
+
+            var success = PictureHandler.GetReducedImage(picture.EPath, width, target);
+
+            picture.ESnapshotPath = target;
+        }
+
         /// <summary>
         /// 压缩图片
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
-        public static int ReducePictures(List<PictureModel> pictures, int width)
+        public static void ReducePictures(List<PictureModel> pictures, int width)
         {
-            var count = 0;
-
-            if (pictures == null || !pictures.Any()) return count;
+            if (pictures == null || !pictures.Any()) return;
 
             for (var i = 0; i < pictures.Count; i++)
             {
                 var picture = pictures[i];
 
-                var targetPath = new FileInfo(picture.EPath).DirectoryName + "\\snapshot";
-
-                if (!System.IO.Directory.Exists(targetPath))
-                {
-                    System.IO.Directory.CreateDirectory(targetPath);
-                }
-
-                var target = targetPath + "\\" + "snapshot_" + picture.EName;
-
-                var success = PictureHandler.GetReducedImage(picture.EPath, width, target);
-
-                if (success)
-                {
-                    count++;
-                    picture.ESnapshotPath = target;
-                }
+                ReducePicture(picture, width);
             }
-
-            return count;
         }
 
         /// <summary>
@@ -157,6 +154,36 @@ namespace Eye.PhotoManager.Utility
 
             return true;
         }
+        /// <summary>
+        /// 移动图片
+        /// </summary>
+        /// <param name="picture"></param>
+        /// <param name="root"></param>
+        public static void MovePicture(PictureModel picture, string root)
+        {
+            var dirPath = CreateCategoryFolder(root, picture.ETakeTime);
+
+            var newPath = dirPath + "\\" + picture.EName;
+
+            if (File.Exists(picture.EPath))
+            {
+                if (!File.Exists(newPath))
+                {
+                    File.Copy(picture.EPath, newPath, false);
+                }
+
+                if (DeleteAfterCopy)
+                {
+                    if (File.GetAttributes(picture.EPath).ToString().IndexOf("ReadOnly") != -1)
+                    {
+                        File.SetAttributes(picture.EPath, FileAttributes.Normal);
+                    }
+                    File.Delete(picture.EPath);
+                }
+
+                picture.EPath = newPath;
+            }
+        }
 
         /// <summary>
         /// 
@@ -172,33 +199,10 @@ namespace Eye.PhotoManager.Utility
 
                 var picture = pictures[i];
 
-                var dirPath = CreateCategoryFolder(root, picture.ETakeTime);
-
-                var newPath = dirPath + "\\" + picture.EName;
-
-                if (File.Exists(picture.EPath))
-                {
-                    if (!File.Exists(newPath))
-                    {
-                        File.Copy(picture.EPath, newPath, false);
-                    }
-
-                    if (DeleteAfterCopy)
-                    {
-                        if (File.GetAttributes(picture.EPath).ToString().IndexOf("ReadOnly") != -1)
-                        {
-                            File.SetAttributes(picture.EPath, FileAttributes.Normal);
-                        }
-                        File.Delete(picture.EPath);
-                    }
-
-                    picture.EPath = newPath;
-
-                    picture.ERow.Cells[nameof(picture.EPath)].Value = newPath;
-                }
+                MovePicture(picture, root);
             }
         }
-        
+
 
         /// <summary>
         /// 
@@ -341,8 +345,6 @@ namespace Eye.PhotoManager.Utility
 
             var result = FillPictureInfo(picture);
 
-            if (!result) File.Delete(info.FullName);
-
             picture.ETakeTime = !picture.ETakeTime.IsValid() ? info.LastWriteTime : picture.ETakeTime;
 
             return picture;
@@ -385,17 +387,10 @@ namespace Eye.PhotoManager.Utility
         /// </summary>
         /// <param name="pictures"></param>
         /// <returns></returns>
-        public static bool SavePictures(List<PictureModel> pictures)
+        public static bool SavePicture(PictureModel picture)
         {
-            var noSnapshotPictures = pictures.Where(x => string.IsNullOrWhiteSpace(x.ESnapshotPath)).ToList();
 
-            if (noSnapshotPictures.Any())
-            {
-                //给没有创建快照的图片创建快照
-                Manager.ReducePictures(noSnapshotPictures, 160);
-            }
-
-            var result = new PictureBusiness().SetPictures(pictures);
+            var result = new PictureBusiness().SavePicture(picture);
 
             return result;
         }
