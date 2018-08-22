@@ -533,6 +533,26 @@
     margin-top: 8px;
 }
 
+.letter-max {
+    width: 540px;
+    margin-left: 200px;
+}
+
+.letter-max img {
+    width: 540px;
+}
+
+.letter-min {
+    position: absolute;
+    right: 0px;
+    z-index: 100;
+    cursor: pointer
+}
+
+.letter-min img {
+    width: 100px;
+}
+
 
 /* Responsive--------------------- */
 

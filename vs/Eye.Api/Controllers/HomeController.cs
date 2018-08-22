@@ -46,11 +46,18 @@ namespace Eye.Api.Controllers
             //处理级别
             var firstLevelCategories = categories.Where(x => string.IsNullOrWhiteSpace(x.EParentId)).ToList();
 
+            firstLevelCategories = firstLevelCategories.OrderBy(x => int.Parse(x.EName.Replace("-", ""))).ToList();
+
             firstLevelCategories.ForEach(x =>
             {
                 x.EName = GetYearName(x.EName);
                 x.ESubCategories = categories.Where(y => y.EParentId == x.EId).ToList();
-                x.ESubCategories.ForEach(m => m.EName = GetMonthName(m.EName));
+                x.ESubCategories = x.ESubCategories?.OrderBy(y => int.Parse(y.EName.Replace("-", ""))).ToList();
+                x.ESubCategories.ForEach(m =>
+                {
+                    m.EName = GetMonthName(m.EName);
+                    m.EItems = m.EItems?.OrderBy(y => DateTime.Parse(y.EName)).ToList();
+                });
             });
 
 
@@ -92,29 +99,29 @@ namespace Eye.Api.Controllers
             switch (m)
             {
                 case "01":
-                    return  "Jan.(" + "apricornus" + ")";
+                    return "Jan.(" + "apricornus" + ")";
                 case "02":
-                    return  "Feb.(" + "Aquarius" + ")";
+                    return "Feb.(" + "Aquarius" + ")";
                 case "03":
-                    return  "Mar.(" + "Pisces" + ")";
+                    return "Mar.(" + "Pisces" + ")";
                 case "04":
-                    return  "Apr.(" + "Aries" + ")";
+                    return "Apr.(" + "Aries" + ")";
                 case "05":
-                    return  "May.(" + "Taurus" + ")";
+                    return "May.(" + "Taurus" + ")";
                 case "06":
-                    return  "Jun.(" + "Gemini" + ")";
+                    return "Jun.(" + "Gemini" + ")";
                 case "07":
-                    return  "Jul.(" + "Cancer" + ")";
+                    return "Jul.(" + "Cancer" + ")";
                 case "08":
-                    return  "Aug.(" + "Leo" + ")";
+                    return "Aug.(" + "Leo" + ")";
                 case "09":
-                    return  "Sep.(" + "Virgo" + ")";
+                    return "Sep.(" + "Virgo" + ")";
                 case "10":
-                    return  "Oct.(" + "Libra" + ")";
+                    return "Oct.(" + "Libra" + ")";
                 case "11":
-                    return  "Nov.(" + "Scorpio" + ")";
+                    return "Nov.(" + "Scorpio" + ")";
                 case "12":
-                    return  "Dec.(" + "Sagittarius" + ")";
+                    return "Dec.(" + "Sagittarius" + ")";
                 default: return m;
             }
 

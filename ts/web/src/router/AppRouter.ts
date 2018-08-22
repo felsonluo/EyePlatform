@@ -7,7 +7,7 @@ export const ROUTES: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'index'
+        component: IndexComponent
     },
     {
         path: 'index',

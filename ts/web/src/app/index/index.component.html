@@ -1,10 +1,13 @@
-<div id='header'>
-    <app-header></app-header>
+<div class="letter-min">
+    <img src='src/images/theme/letter.png' class='clickable' (click)="showLetter() ">
+</div>
+<div id='' *ngIf="dataLoaded === true">
+    <!-- <app-header></app-header> -->
     <app-carousel></app-carousel>
 </div>
-<div id="mainBody">
+<div id="mainBody" *ngIf="dataLoaded === true">
     <div class='container'>
-        <app-navigator (changeCategory)="changeCategory($event)"></app-navigator>
+        <app-navigator (changeCategory)="selectCategory($event)"></app-navigator>
         <app-product-list #product [categoryId]="categoryId"></app-product-list>
     </div>
 </div>

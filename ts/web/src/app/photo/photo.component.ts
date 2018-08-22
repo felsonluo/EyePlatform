@@ -9,11 +9,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class PhotoComponent implements OnInit {
 
   @Input()
-  src: string;
+  pictureData: any;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: string) {
-    this.src = data;
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.pictureData = data;
   }
 
   onNoClick(): void {

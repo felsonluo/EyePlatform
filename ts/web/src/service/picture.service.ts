@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { PictureModel } from '../model/picture.model';
+import { PhotoComponent } from 'src/app/photo/photo.component';
+import { MatDialog } from '../../node_modules/@angular/material';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PictureService {
+
+  maxImageSrc: string;
+  maxImageHeight: number;
+  maxImageWidth: number;
 
   //private rootPath = "http://image.luoqunyi.com/yuki/";
   private rootPath = "src/photo/";
@@ -32,5 +38,30 @@ export class PictureService {
     }
 
     return path;
+  }
+
+  openImageDialog(dialog: MatDialog, picture: PictureModel): void {
+
+    var src = this.getPath(picture.EPath);
+
+    var pictrueWidth = picture.EWidth;
+    var pictureHeight = picture.EHeight;
+
+    if (picture.EWidth > (window.innerWidth - 100)) {
+      pictrueWidth = window.innerWidth - 100;
+      pictureHeight = picture.EHeight * (pictrueWidth / picture.EWidth);
+    }
+
+    if (pictureHeight > (window.innerHeight - 100)) {
+      var temp = window.innerHeight - 100;
+      pictrueWidth = pictrueWidth * (temp / pictureHeight);
+      pictureHeight = temp;
+    }
+
+    const dialogRef = dialog.open(PhotoComponent, {
+      width: (pictrueWidth + 50) + 'px',
+      height: (pictureHeight + 50) + 'px',
+      data: { src: src, width: pictrueWidth, height: pictureHeight }
+    });
   }
 }

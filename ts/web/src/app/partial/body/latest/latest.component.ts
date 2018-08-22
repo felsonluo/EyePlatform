@@ -16,9 +16,7 @@ import { PictureModel } from 'src/model/picture.model';
 export class LatestComponent implements OnInit {
 
   latestItemList: ItemModel[] = [];
-  maxImageSrc: string;
-  maxImageHeight: number;
-  maxImageWidth: number;
+
   detailId: string;
   modalRef: BsModalRef;
 
@@ -47,22 +45,6 @@ export class LatestComponent implements OnInit {
     this.detailId = id;
     this.modalRef = this.modalService.show(template);
 
-  }
-
-  openImageDialog(picture: PictureModel): void {
-
-    var src = this.pictureService.getPath(picture.EPath);
-
-    this.maxImageSrc = src;
-
-    this.maxImageHeight = picture.EHeight + 50;
-    this.maxImageWidth = picture.EWidth + 50;
-
-    const dialogRef = this.dialog.open(PhotoComponent, {
-      width: this.maxImageWidth + 'px',
-      height: this.maxImageHeight + 'px',
-      data: this.maxImageSrc
-    });
   }
 
   ngOnInit() {

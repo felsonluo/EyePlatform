@@ -15,6 +15,8 @@ export class DataService {
 
   private apiUrl = "http://api.luoqunyi.com/Home/GetCategories";
 
+  private lockName = 'eye_lock';
+
   constructor(private http: HttpClient, private storage: StorageService) {
 
 
@@ -23,16 +25,19 @@ export class DataService {
   /**
    * 从api接口获取分类
    */
-  private getCategoriesFromApi(): CategoryModel[] {
+  public getCategoriesFromApi(callback: () => void) {
 
     var result: CategoryModel[] = [];
 
-    this.http.get<CategoryModel>(this.apiUrl).subscribe(x => {
-      result = result.concat(x);
-      this.storage.setCategories(result);
-    });
-
-    return result;
+    this.http.get<CategoryModel>(this.apiUrl).subscribe(
+      (x: CategoryModel) => {
+        result = result.concat(x);
+      },
+      undefined,
+      () => {
+        this.storage.setCategories(result);
+        callback();
+      });
   }
 
   /**
@@ -43,10 +48,6 @@ export class DataService {
 
     var categories = this.storage.getCategories();
 
-    if (categories === null || categories.length === 0) {
-      categories = this.getCategoriesFromApi();
-    }
-
     return categories;
   }
 
@@ -55,17 +56,20 @@ export class DataService {
    * 
    * @param categoryId 获取某一个Category
    */
-  getCategoriesById(categoryId: string): CategoryModel {
-
-    var categories = this.getCategories();
+  getCategoryById(categories: CategoryModel[], categoryId: string): CategoryModel {
 
     var category: CategoryModel;
 
     for (var i = 0; i < categories.length; i++) {
       if (categories[i].EId === categoryId) {
         category = categories[i];
-        break;
+        return category;
       }
+      if (category == null && categories[i].ESubCategories != null && categories[i].ESubCategories != undefined && categories[i].ESubCategories.length > 0) {
+        category = this.getCategoryById(categories[i].ESubCategories, categoryId);
+      }
+
+      if (category != null) return category;
     }
 
     return category;
@@ -78,7 +82,9 @@ export class DataService {
    */
   getItemsByCategoryId(categoryId: string): ItemModel[] {
 
-    var category = this.getCategoriesById(categoryId);
+    var categories = this.getCategories();
+
+    var category = this.getCategoryById(categories, categoryId);
 
     var result: ItemModel[] = this.getItemsFromCategory(category);
 
@@ -159,7 +165,7 @@ export class DataService {
         result.push(items[i]);
     }
 
-    return [result[0]];
+    return result;
   }
 
   /**

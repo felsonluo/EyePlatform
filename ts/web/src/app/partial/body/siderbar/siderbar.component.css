@@ -10,6 +10,11 @@
     float: left;
 }
 
+#sidebar li {
+    background: rgb(117, 162, 173);
+    color: #fff;
+}
+
 #sidebar li a {
     font-weight: bold;
     background: url(themes/images/tabRepeatInactive.png) repeat-x 0 0;
