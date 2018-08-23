@@ -46,7 +46,7 @@ export class IndexComponent implements OnInit {
       this.dataLoaded = true;
     });
 
-    this.showLetter();
+    //this.showLetter();
   }
 
 }

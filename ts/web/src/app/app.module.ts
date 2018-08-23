@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import {MatInputModule} from '@angular/material/input';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import {DataScrollerModule} from 'primeng/datascroller';
 
@@ -45,6 +46,7 @@ import { PhotoComponent } from './photo/photo.component';
 
 import { ImageSizePipe } from '../pipe/ImageSizePipe';
 import { PicturePathPipe } from '../pipe/PicturePathPipe';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -63,7 +65,8 @@ import { PicturePathPipe } from '../pipe/PicturePathPipe';
     ProductListComponent,
     PhotoComponent,
     ImageSizePipe,
-    PicturePathPipe
+    PicturePathPipe,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +84,7 @@ import { PicturePathPipe } from '../pipe/PicturePathPipe';
     MatCardModule,
     MatChipsModule,
     MatDialogModule,
+    MatInputModule,
     RouterModule.forRoot(ROUTES)
   ],
   providers: [DataService, { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }],

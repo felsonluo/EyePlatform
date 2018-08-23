@@ -25,16 +25,6 @@
     margin-top: 20px;
 }
 
-#featuredProduct .featuredCard .tag {
-    background: url(src/themes/images/new.png) no-repeat 0 0;
-    position: absolute;
-    display: block;
-    top: -4px;
-    right: -18px;
-    height: 48px;
-    width: 48px;
-}
-
 #featuredProduct .mat-chip {
     float: right;
     background: white;
