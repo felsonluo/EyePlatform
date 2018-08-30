@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 import { IndexComponent } from "../app/index/index.component";
 import { DetailComponent } from "../app/detail/detail.component";
-import { LoginComponent } from "../app/login/login.component";
+import { LoginIndexComponent } from "../app/login/index/login.index.component";
 import { RouterGuardService } from "../router/router-guard.service";
 
 export const ROUTES: Routes = [
@@ -27,7 +27,7 @@ export const ROUTES: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent,
+        component: LoginIndexComponent,
         canActivate: [RouterGuardService]
     }
 ];

@@ -1,0 +1,13 @@
+<div id="eyeLogin">
+    <form class="example-form">
+        <mat-form-field>
+            <input type="text" matInput name="username" placeholder="username" [(ngModel)]="user.username">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput name="password" placeholder="password" type='password' [(ngModel)]="user.password">
+        </mat-form-field>
+
+    </form>
+    <button mat-flat-button color="primary" (click)="login()">LOGIN</button>
+</div>

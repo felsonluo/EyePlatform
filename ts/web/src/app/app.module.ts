@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { CarouselModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
+import { NgForm, NgModel } from '@angular/forms';
+
 import { HttpClientModule } from '@angular/common/http';
 
 import { RouterModule } from '@angular/router';
@@ -18,9 +20,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
-import {DataScrollerModule} from 'primeng/datascroller';
 
 import { AppComponent } from './app.component';
 import { DataService } from '../service/data.service';
@@ -46,7 +47,8 @@ import { PhotoComponent } from './photo/photo.component';
 
 import { ImageSizePipe } from '../pipe/ImageSizePipe';
 import { PicturePathPipe } from '../pipe/PicturePathPipe';
-import { LoginComponent } from './login/login.component';
+import { LoginIndexComponent } from './login/index/login.index.component';
+import { DialogComponent } from './login/dialog/dialog/dialog.component';
 
 
 @NgModule({
@@ -66,7 +68,10 @@ import { LoginComponent } from './login/login.component';
     PhotoComponent,
     ImageSizePipe,
     PicturePathPipe,
-    LoginComponent
+    LoginIndexComponent,
+    DialogComponent,
+    NgForm,
+    NgModel,
   ],
   imports: [
     BrowserModule,
@@ -75,7 +80,6 @@ import { LoginComponent } from './login/login.component';
     CarouselModule.forRoot(),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
-    DataScrollerModule,
     MatTreeModule,
     MatIconModule,
     MatButtonModule,
@@ -89,6 +93,6 @@ import { LoginComponent } from './login/login.component';
   ],
   providers: [DataService, { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }],
   bootstrap: [AppComponent],
-  entryComponents: [PhotoComponent, FeaturedComponent]
+  entryComponents: [PhotoComponent, FeaturedComponent, DialogComponent]
 })
 export class AppModule { }
