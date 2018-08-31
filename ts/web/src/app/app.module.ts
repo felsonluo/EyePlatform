@@ -1,17 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, forwardRef } from '@angular/core';
 
 import { CarouselModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
-import { NgForm, NgModel, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgModule } from '@angular/core';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 
 import { RouterModule } from '@angular/router';
-
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { NestedTreeControl } from '@angular/cdk/tree';
 
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,6 +19,7 @@ import { MatDividerModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
+import { MatError } from '@angular/material';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
@@ -70,11 +69,11 @@ import { DialogComponent } from './login/dialog/dialog/dialog.component';
     PicturePathPipe,
     LoginIndexComponent,
     DialogComponent,
-    NgForm,
-    NgModel,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     CarouselModule.forRoot(),
@@ -92,12 +91,7 @@ import { DialogComponent } from './login/dialog/dialog/dialog.component';
     RouterModule.forRoot(ROUTES)
   ],
   providers: [DataService,
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
-    { 
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => LoginIndexComponent),
-    }],
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },],
   bootstrap: [AppComponent],
   entryComponents: [PhotoComponent, FeaturedComponent, DialogComponent]
 })

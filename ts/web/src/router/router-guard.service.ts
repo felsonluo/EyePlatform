@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '../../node_modules/@angular/router';
-import UserModel from 'src/model/user.model';
+import { StorageService } from '../service/storage.service';
 
 
 @Injectable({
@@ -8,7 +8,8 @@ import UserModel from 'src/model/user.model';
 })
 export class RouterGuardService implements CanActivate {
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+    private storageService: StorageService) {
 
   }
 
@@ -26,7 +27,7 @@ export class RouterGuardService implements CanActivate {
 
     const nextRoute = ['index', 'detail'];
 
-    let isLogin = UserModel.isLogin;
+    let isLogin = this.storageService.getLoginState();
 
     if (nextRoute.indexOf(path) >= 0) {
 
@@ -36,13 +37,13 @@ export class RouterGuardService implements CanActivate {
       }
       return true;
     }
-    if(path === 'login'){
-      if(!isLogin){
+    if (path === 'login') {
+      if (!isLogin) {
         return true;
       }
-      else{
+      else {
         this.router.navigate(['index']);
-      }  
+      }
     }
   }
 }

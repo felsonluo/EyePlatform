@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'src/app/login/dialog/dialog/dialog.component';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-login-index',
@@ -32,7 +32,7 @@ export class LoginIndexComponent implements OnInit, ControlValueAccessor {
 
 
   ngOnInit() {
-    //this.showLoginDialog();
+    this.showLoginDialog();
   }
 
   showLoginDialog() {
@@ -41,10 +41,6 @@ export class LoginIndexComponent implements OnInit, ControlValueAccessor {
       height: 230 + 'px',
       disableClose: true
     });
-  }
-
-  login() {
-
   }
 
 
