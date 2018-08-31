@@ -1,13 +1,17 @@
 <div id="eyeLogin">
-    <form class="example-form">
+    <!-- <form class="example-form">
         <mat-form-field>
-            <input type="text" matInput name="username" placeholder="username" [(ngModel)]="user.username">
+            <input matInput type="text" placeholder="username" name="username" [(ngModel)]="username" (change)="changeUserName($event.target.value)">
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput name="password" placeholder="password" type='password' [(ngModel)]="user.password">
+            <input matInput name="password" placeholder="password" type='password' [(ngModel)]="password" (change)="changePassword($event.target.value)">
         </mat-form-field>
 
-    </form>
-    <button mat-flat-button color="primary" (click)="login()">LOGIN</button>
+    </form> -->
+    <!-- <button mat-flat-button color="primary" (click)="login()">LOGIN</button>
+    <input matInput type="text" placeholder="username" #ctrl="ngModel" name="username" [(ngModel)]="username">
+    <input matInput name="password" placeholder="password" type='password' [(ngModel)]="password"> -->
+
+    <input name="first" type="text" ngModel>
 </div>

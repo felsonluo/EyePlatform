@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, forwardRef } from '@angular/core';
 
 import { CarouselModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
-import { NgForm, NgModel } from '@angular/forms';
+import { NgForm, NgModel, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -91,7 +91,13 @@ import { DialogComponent } from './login/dialog/dialog/dialog.component';
     MatInputModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [DataService, { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }],
+  providers: [DataService,
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
+    { 
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => LoginIndexComponent),
+    }],
   bootstrap: [AppComponent],
   entryComponents: [PhotoComponent, FeaturedComponent, DialogComponent]
 })

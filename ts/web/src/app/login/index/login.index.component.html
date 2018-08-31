@@ -1,0 +1,16 @@
+<form>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" class="form-control" id="alterEgo">
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+
+</form>
+
+<input id="name" name="name" required minlength="4" appForbiddenName="bob" [(ngModel)]="hero.name" #name="ngModel">

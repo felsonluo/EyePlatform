@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import UserModel from '../../../../model/user.model';
+import { NgForm, NgModel, NgControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material';
-import { FormGroup, FormControl, ControlContainer } from '@angular/forms';
+import UserModel from 'src/model/user.model';
 
 
 @Component({
@@ -12,14 +12,11 @@ import { FormGroup, FormControl, ControlContainer } from '@angular/forms';
 })
 export class DialogComponent implements OnInit {
 
-  user = {
-    username: 'felson',
-    password: '11111111'
-  }
+  username: string = "felson";
+  password: string = "11111111";
+  public first: string;
 
-  public loginForm: FormGroup;
-
-  constructor(    
+  constructor(
     private router: Router,
     public dialogRef: MatDialogRef<DialogComponent>
   ) { }
@@ -31,15 +28,22 @@ export class DialogComponent implements OnInit {
    * 登陆
    */
   public login(): void {
-    if (this.user.username == "felson" && this.user.password == "11111111") {
+    if (this.username == "felson" && this.password == "11111111") {
       UserModel.isLogin = true;
-      UserModel.account = this.user.username;
-      UserModel.password = this.user.password;
       this.router.navigate(['/index']);
       this.dialogRef.close();
     }
     else {
       UserModel.isLogin = false;
     }
+  }
+
+
+  changeUserName(name: string) {
+    this.username = name;
+  }
+
+  changePassword(pass: string) {
+    this.password = pass;
   }
 }
