@@ -1,14 +1,14 @@
 <div id="eyeLogin">
     <form class="example-form">
         <mat-form-field>
-            <input matInput type="text" placeholder="username" #username="ngModel" name="username" [(ngModel)]="user.username">
-            <mat-error *ngIf="!this.user.username || this.user.username.length === 0">
+            <input matInput type="text" placeholder="USERNAME" #EUsername="ngModel" name="EUsername" [(ngModel)]="user.EUsername">
+            <mat-error *ngIf="!this.user.EUsername || this.user.EUsername.length === 0">
                 Username is <strong>required</strong>
             </mat-error>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput name="password" placeholder="password" type='password' #password='ngModel' [(ngModel)]="user.password">
+            <input matInput name="EPassword" placeholder="PASSWORD" type='password' #EPassword='ngModel' [(ngModel)]="user.EPassword">
             <mat-error>
                 Password is <strong>required</strong>
             </mat-error>

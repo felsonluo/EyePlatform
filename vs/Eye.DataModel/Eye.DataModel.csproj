@@ -70,6 +70,7 @@
     <Compile Include="DataModel\OwnerModel.cs" />
     <Compile Include="DataModel\PersonModel.cs" />
     <Compile Include="DataModel\PictureModel.cs" />
+    <Compile Include="DataModel\UserModel.cs" />
     <Compile Include="DataModel\VisitorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

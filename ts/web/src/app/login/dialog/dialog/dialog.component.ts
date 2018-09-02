@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material';
 import { StorageService } from '../../../../service/storage.service';
+import { UserModel } from 'src/model/user.model';
+import { UserService } from '../../../../service/user.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -17,14 +19,15 @@ export class DialogComponent implements OnInit {
   /**
    * 用户
    */
-  user = {
-    username: "felson",
-    password: ""
+  user: UserModel = {
+    EUsername: "",
+    EPassword: ""
   }
 
   constructor(
     private router: Router,
-    private storageService:StorageService,
+    private storageService: StorageService,
+    private userService: UserService,
     public dialogRef: MatDialogRef<DialogComponent>
   ) { }
 
@@ -36,14 +39,9 @@ export class DialogComponent implements OnInit {
    */
   public login(): void {
 
-
-    if (this.user.username == "felson" && this.user.password == "11111111") {
-      this.storageService.setLoginState(true);
+    this.userService.login(this.user, () => {
       this.router.navigate(['/index']);
       this.dialogRef.close();
-    }
-    else {
-      this.storageService.setLoginState(false);
-    }
+     }, () => { });
   }
 }

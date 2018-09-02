@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CategoryModel } from '../model/category.model';
-import { Observable, from, of } from 'rxjs';
-import { map, filter, scan, take } from 'rxjs/operators';
 import { ItemModel } from '../model/item.model';
 import { StorageService } from 'src/service/storage.service';
-import { ValueTransformer } from '../../node_modules/@angular/compiler/src/util';
 
 @Injectable({
   providedIn: 'root'

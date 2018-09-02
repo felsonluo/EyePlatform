@@ -1,5 +1,6 @@
 ﻿using Eye.BusinessService;
 using Eye.Common;
+using Eye.DataModel.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Eye.Api.Controllers
         private ItemBusiness _item = new ItemBusiness();
         private PictureBusiness _picture = new PictureBusiness();
         private CategoryBusiness _category = new CategoryBusiness();
+        private UserBusiness _user = new UserBusiness();
 
 
         public ActionResult GetItems()
@@ -133,6 +135,60 @@ namespace Eye.Api.Controllers
             var pictures = _picture.GetPictures();
 
             return Json(pictures, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Login(UserModel user)
+        {
+            var users = _user.GetUsers();
+
+            var userModel = users.FirstOrDefault(x => x.EUserName == user.EUserName && x.EPassword == user.EPassword);
+
+            if(userModel == null)
+            {
+                return Json(null, JsonRequestBehavior.DenyGet);
+            }
+            else
+            {
+                userModel.ERefreshTime = DateTime.Now;
+                var token = GUIDHelper.GetGuid();
+                userModel.EToken = token;
+                userModel.EIp = HttpContext.Request.UserHostAddress;
+                if (string.IsNullOrWhiteSpace(user.EId))
+                {
+                    userModel.EId = GUIDHelper.GetGuid();
+                    _user.SaveUsers(new List<UserModel>() { userModel });
+                }
+                {
+                    _user.UpdateUsers(new List<UserModel>() { userModel });
+                }
+                return Json(token, JsonRequestBehavior.DenyGet);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ActionResult CheckToken(string token)
+        {
+            var ip = HttpContext.Request.UserHostAddress;
+            var users = _user.GetUsers();
+            var userModel = users.FirstOrDefault(x => x.EIp == ip && x.EToken == token && x.ERefreshTime.AddMinutes(60) > DateTime.Now);
+
+            if(userModel == null)
+            {
+                return Json(null, JsonRequestBehavior.DenyGet);
+            }
+            {
+                userModel.ERefreshTime = DateTime.Now;
+                token = GUIDHelper.GetGuid();
+                userModel.EToken = token;
+                userModel.EIp = HttpContext.Request.UserHostAddress;
+                _user.UpdateUsers(new List<UserModel>() { userModel });
+                return Json(token, JsonRequestBehavior.DenyGet);
+            }
         }
     }
 }

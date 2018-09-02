@@ -29,15 +29,22 @@ export class StorageService {
   /**
    * 保存登陆状态
    */
-  setLoginState(value: boolean) {
+  setLoginState(value: string) {
 
-    sessionStorage.setItem("loginState", value ? "1" : "0");
+    sessionStorage.setItem("token", value);
+  }
+
+  /**
+   * 获取令牌
+   */
+  getToken(): string {
+    return sessionStorage.getItem("token");
   }
 
   /**
    * 获取登陆状态
    */
   getLoginState(): boolean {
-    return sessionStorage.getItem("loginState") === "1";
+    return !!this.getToken();
   }
 }
